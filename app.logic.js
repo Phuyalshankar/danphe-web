@@ -51,13 +51,14 @@ module.exports = {
 
   'theme:toggle': ({ rx, tx }) => {
     const current = (rx ? rx('theme::current') : 'danphe') || 'danphe';
-    const next = current === 'danphe' ? 'laligurans' : (current === 'laligurans' ? 'sagarmatha' : 'danphe');
+    const next = current === 'danphe' ? 'laligurans' : (current === 'laligurans' ? 'sagarmatha' : (current === 'sagarmatha' ? 'light' : 'danphe'));
     console.log(`⚡ [App Logic] Theme toggled to: ${next}`);
     if (tx) {
       tx('theme::current', next);
       tx('theme', next);
-      tx('theme_label', next === 'laligurans' ? 'लालीगुराँस (Laligurans) 🌺' : (next === 'sagarmatha' ? 'सगरमाथा (Sagarmatha) 🏔️' : 'डाँफे (Danphe) 🦅'));
-      tx('alert_msg', `🎨 ${next.toUpperCase()} हिमालयन थिम सक्रिय भयो!`);
+      const label = next === 'light' ? 'उज्यालो (Light) ☀️' : (next === 'laligurans' ? 'लालीगुराँस (Laligurans) 🌺' : (next === 'sagarmatha' ? 'सगरमाथा (Sagarmatha) 🏔️' : 'डाँफे (Danphe) 🦅'));
+      tx('theme_label', label);
+      tx('alert_msg', next === 'light' ? '☀️ उज्यालो आइस-ग्लास (Ice-White Glass) थिम सक्रिय भयो!' : `🎨 ${next.toUpperCase()} हिमालयन थिम सक्रिय भयो!`);
     }
   },
 
@@ -94,6 +95,15 @@ module.exports = {
       tx('theme', 'tilicho');
       tx('theme_label', 'तिलिचो (Tilicho) 🌊');
       tx('alert_msg', '🌊 तिलिचो ताल थिम सक्रिय भयो!');
+    }
+  },
+
+  'theme::light': ({ tx }) => {
+    if (tx) {
+      tx('theme::current', 'light');
+      tx('theme', 'light');
+      tx('theme_label', 'उज्यालो (Light) ☀️');
+      tx('alert_msg', '☀️ उज्यालो आइस-ग्लास (Ice-White Glass) थिम सक्रिय भयो!');
     }
   },
 

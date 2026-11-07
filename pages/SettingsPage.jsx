@@ -37,7 +37,7 @@ export default function SettingsPage() {
           <p className="text-[11px] text-slate-300">
             कुनै पनि थिम चयन गर्दा सम्पूर्ण पृष्ठभूमि तुरुन्तै परिवर्तन हुन्छ:
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
             <button
               tx="theme::danphe"
               className="p-3 rounded-xl cursor-pointer text-xs font-black shadow-lg transition-transform active:scale-95 flex flex-col items-center gap-1 border border-white/20"
@@ -72,6 +72,15 @@ export default function SettingsPage() {
             >
               <span className="text-base">🌊</span>
               <span>तिलिचो (Tilicho)</span>
+            </button>
+
+            <button
+              tx="theme::light"
+              className="p-3 rounded-xl cursor-pointer text-xs font-black shadow-lg transition-transform active:scale-95 flex flex-col items-center gap-1 border border-slate-300"
+              style={{ background: 'linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)', color: '#0f172a' }}
+            >
+              <span className="text-base">☀️</span>
+              <span>उज्यालो (Light)</span>
             </button>
           </div>
         </div>

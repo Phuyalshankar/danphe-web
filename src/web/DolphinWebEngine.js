@@ -667,6 +667,16 @@ class DolphinWebEngine {
               state['nav'] = 'home';
               state['nav::current'] = 'home';
             }
+            if (window.location.search) {
+              try {
+                var qParams = new URLSearchParams(window.location.search);
+                if (qParams.get('theme')) {
+                  var qTheme = qParams.get('theme').toLowerCase();
+                  state['theme'] = qTheme;
+                  state['theme::current'] = qTheme;
+                }
+              } catch (e) {}
+            }
             updateDOM();
           };
           syncFromUrl();
@@ -1054,15 +1064,20 @@ class DolphinWebEngine {
             p.style.display = isMatch ? 'block' : 'none';
           });
 
-          // 🎨 Dynamic Himalayan Theme Background Synchronizer (bg-danphe, bg-laligurans, etc.)
+          // 🎨 Dynamic Himalayan Theme Background Synchronizer (bg-danphe, bg-laligurans, bg-light, etc.)
           var activeTheme = String(state['theme::current'] || state['theme'] || localStorage.getItem('danphe_theme') || 'danphe').toLowerCase();
           if (activeTheme.startsWith('bg-')) activeTheme = activeTheme.replace(/^bg-/, '');
-          var expectedBodyClass = 'bg-' + activeTheme;
-          if (document.body && !document.body.classList.contains(expectedBodyClass)) {
+          var isLight = (activeTheme === 'light');
+          var expectedBodyClass = 'bg-' + activeTheme + (isLight ? ' theme-light' : '');
+          if (document.documentElement) {
+            document.documentElement.setAttribute('data-theme-mode', isLight ? 'light' : 'dark');
+            document.documentElement.classList.toggle('theme-light', isLight);
+          }
+          if (document.body && !document.body.classList.contains('bg-' + activeTheme)) {
             document.body.className = expectedBodyClass;
           }
           var appCont = document.getElementById('app-root-container');
-          if (appCont && !appCont.classList.contains(expectedBodyClass)) {
+          if (appCont && !appCont.classList.contains('bg-' + activeTheme)) {
             appCont.className = 'min-h-screen w-full flex flex-col font-sans ' + expectedBodyClass;
           }
 
