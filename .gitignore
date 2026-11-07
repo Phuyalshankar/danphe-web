@@ -1,0 +1,14 @@
+node_modules/
+.danphe-android/
+dist/
+scratch/
+build/
+.gradle/
+*.log
+*.dolp
+.DS_Store
+Thumbs.db
+
+.vscode/
+
+*.apk

@@ -1,23 +1,27 @@
 {
   "name": "danphe-web",
   "version": "1.0.0",
-  "description": "The Post-Virtual-DOM Reactive Web Framework with Built-in Polymorphic Design Tokens and Deterministic Carrier Slots",
+  "description": "Pure Clean Reactive Web Framework: Zero-VDOM JSX, DolphinCSS, Circuits, and Titan-Bus",
   "main": "src/index.js",
-  "module": "src/index.mjs",
-  "scripts": {
-    "test": "node tests/run_all.js",
-    "demo": "node examples/run_demo.js"
+  "bin": {
+    "danphe": "bin/dolphin.js",
+    "dolphin": "bin/dolphin.js"
   },
+  "scripts": {
+    "test": "node tests/test_danphe_native_pipeline.js",
+    "dev": "node server.js 9090 9091",
+    "start": "node server.js 9090 9091"
+  },
+  "dependencies": {},
   "keywords": [
     "danphe",
-    "reactive",
-    "zero-virtual-dom",
-    "dolphin-css",
-    "carrier-slots",
-    "polymorphic-tokens",
-    "react-killer",
-    "titan-bus"
+    "web",
+    "titan-bus",
+    "zero-vdom",
+    "circuits",
+    "dolphincss",
+    "reactive"
   ],
-  "author": "Shankar Phuyal / Danphe Team",
+  "author": "Danphe / Titan Team",
   "license": "MIT"
 }

@@ -1,0 +1,176 @@
+// 🐬 registers.dolphin — Master 300+ 16-Bit Universal Hardware Register Map
+// Symmetrical Architecture across Android NDK, Kotlin, C++ ThorVG, and TitanJSX
+
+// ── ZONE 0: System, Routing & Error Core ──
+register SYSTEM_MAGIC           = 0x0000; // 0x5449544E ("TITN")
+register SYS_POWER              = 0x0001; // Power ON/OFF (1/0)
+register SYS_HEARTBEAT          = 0x0002; // Watchdog Pulse
+register SYS_AUTH_TOKEN         = 0x0003; // Rolling Bearer Security Token
+register SYS_STATUS_FLAGS       = 0x0004; // System Flags (Ready, Running)
+register SYS_E_STOP             = 9;      // Emergency Stop (9)
+register SYS_ROUTE              = 0x000A; // Page Router (10)
+register SYS_THEME_MODE         = 0x000C; // 0=Auto, 1=Dark, 2=Light
+register SYS_CPU_USAGE          = 0x0010; // CPU Load % (0-100)
+register SYS_RAM_USED_MB        = 0x0011; // RAM Usage in MB
+register SYS_UPTIME_SEC         = 0x0012; // System Uptime in Seconds
+register ERROR_MASTER           = 90;     // Master Alert Status
+register ERROR_COUNT            = 91;     // Accumulated Error Counter
+register ERROR_MODULE           = 92;     // Subsystem Error ID
+register ERROR_CODE             = 93;     // Error Classification Code
+register ERROR_SEVERITY         = 94;     // Error Severity (1=Info, 2=Warn, 3=Fatal)
+register REMOTE_STATUS          = 98;     // Remote Bridge Link State
+register ERROR_JSON             = 99;     // Rich Debug Error Payload
+
+// ── ZONE 0B: Starter Counter & Input Modules ──
+register REG_COUNTER            = 0x0200; // Counter Value (512)
+register REG_COUNTER_STEP       = 0x0201; // Counter Step Delta (513)
+register ACT_COUNTER_INC        = 0x0201; // Increment Action Trigger
+register ACT_COUNTER_DEC        = 0x0202; // Decrement Action Trigger
+register ACT_COUNTER_RESET      = 0x0203; // Reset Action Trigger
+register ACT_COUNTER_SAVE       = 0x0204; // SQLite Save Action Trigger
+register REG_COUNTER_STREAM     = 0x0208; // History Stream Carrier
+
+// ── ZONE 1: Android Sensors, Battery & Connectivity ──
+register TEL_BATTERY            = 0x1000; // Battery Level % (0-100)
+register TEL_CHARGING           = 0x1001; // Battery Charging Status (0/1)
+register BATTERY_PLUG_TYPE      = 0x1002; // 0=Unplugged, 1=AC, 2=USB, 3=Wireless
+register BATTERY_TEMP           = 0x1003; // Battery Temperature (0.1 deg C)
+register BATTERY_VOLTAGE_MV     = 0x1004; // Battery Voltage in Millivolts
+register BATTERY_HEALTH         = 0x1005; // Battery Health Status
+register TEL_ONLINE             = 0x1010; // Network Online (0/1)
+register NETWORK_TYPE           = 0x1011; // 0=None, 1=WiFi, 2=Cellular, 3=Ethernet
+register NETWORK_SIGNAL         = 0x1012; // Signal Strength (0-4 bars)
+register BLUETOOTH_STATE        = 0x1020; // 0=Off, 1=On, 2=Connected
+register NFC_AVAILABLE          = 0x1030; // NFC Hardware Available (0/1)
+register TEL_BIOMETRIC_STATUS   = 0x1040; // Biometric Hardware State (0=None, 1=Ready, 2=Not Enrolled)
+register TEL_BIOMETRIC_RESULT   = 0x1041; // Biometric Result (0=Idle, 1=Success, 2=Failed, 3=Cancel)
+
+// Motion & Environmental Sensors (NDK Fast Path)
+register TEL_ACCEL_X            = 0x1080; // Accelerometer X Axis
+register TEL_ACCEL_Y            = 0x1081; // Accelerometer Y Axis
+register TEL_ACCEL_Z            = 0x1082; // Accelerometer Z Axis
+register GYRO_X                 = 0x1090; // Gyroscope X Axis
+register GYRO_Y                 = 0x1091; // Gyroscope Y Axis
+register GYRO_Z                 = 0x1092; // Gyroscope Z Axis
+register STEP_COUNTER           = 0x10A0; // Pedometer Step Counter
+register COMPASS_HEADING        = 0x10A8; // Magnetometer Azimuth (0-360)
+register TEL_LIGHT              = 0x10B0; // Ambient Light Sensor (Lux)
+register PROXIMITY_CM           = 0x1101; // Proximity Sensor (cm)
+register BAROMETER_HPA          = 0x1102; // Barometer Pressure (hPa)
+register AMBIENT_TEMP           = 0x1103; // Room Temperature (0.1 deg C)
+
+// Location & GPS Coordinates
+register GPS_LATITUDE           = 0x1200; // Latitude (fixed-point)
+register GPS_LONGITUDE          = 0x1201; // Longitude (fixed-point)
+register GPS_ALTITUDE           = 0x1202; // Altitude (meters)
+register GPS_ACCURACY           = 0x1203; // Accuracy Radius (meters)
+register GPS_SPEED              = 0x1204; // Ground Speed (m/s)
+register GPS_BEARING            = 0x1205; // Heading / Bearing (0-360)
+register GPS_PERMISSION_STATUS  = 0x1208; // 0=None, 1=Granted, 2=Denied
+
+// ── ZONE 2: UI Input, Multi-Touch & Physical Keys ──
+register TOUCH_X                = 0x2000; // Pointer 0 X (pixels)
+register TOUCH_Y                = 0x2001; // Pointer 0 Y (pixels)
+register TOUCH_PRESSURE         = 0x2002; // Pointer 0 Pressure
+register TOUCH_STATE            = 0x2003; // Pointer 0 State (0=Up, 1=Down, 2=Move)
+register TOUCH_P1_X             = 0x2004; // Pointer 1 X
+register TOUCH_P1_Y             = 0x2005; // Pointer 1 Y
+register TOUCH_P1_PRESSURE      = 0x2006; // Pointer 1 Pressure
+register TOUCH_P1_STATE         = 0x2007; // Pointer 1 State
+register TOUCH_P2_X             = 0x2008; register TOUCH_P2_Y = 0x2009; register TOUCH_P2_STATE = 0x200B;
+register TOUCH_P3_X             = 0x200C; register TOUCH_P3_Y = 0x200D; register TOUCH_P3_STATE = 0x200F;
+register TOUCH_P4_X             = 0x2010; register TOUCH_P4_Y = 0x2011; register TOUCH_P4_STATE = 0x2013;
+register TOUCH_COUNT            = 0x2028; // Active Pointers Count (0-10)
+
+register GESTURE_TYPE           = 0x2200; // 0=None, 1=Tap, 2=DoubleTap, 3=LongPress, 4=Fling, 5=Pinch
+register GESTURE_VELOCITY_X     = 0x2201; // Velocity X (px/s)
+register GESTURE_VELOCITY_Y     = 0x2202; // Velocity Y (px/s)
+register GESTURE_SCALE          = 0x2203; // Pinch Zoom Scale (100 = 1.0x)
+
+register KEY_BACK               = 0x2400; // Hardware Back Key
+register KEY_VOLUME_UP          = 0x2401; // Hardware Volume Up
+register KEY_VOLUME_DOWN        = 0x2402; // Hardware Volume Down
+register KEY_HEADSET_HOOK       = 0x2403; // Earphone Hook Button
+register KEY_POWER              = 0x2404; // Hardware Power Button
+
+register SCREEN_WIDTH           = 0x2800; // Display Width (pixels)
+register SCREEN_HEIGHT          = 0x2801; // Display Height (pixels)
+register SCREEN_DPI             = 0x2802; // Display Density DPI
+register SCREEN_ORIENTATION     = 0x2803; // 0=Portrait, 1=Landscape
+register SAFE_AREA_TOP          = 0x2804; // Notch / Status Bar Top Inset
+register SAFE_AREA_BOTTOM       = 0x2805; // Nav Bar Bottom Inset
+register SCREEN_REFRESH_RATE    = 0x2808; // Display Refresh Rate (Hz)
+register APP_LIFECYCLE_STATE    = 0x2A00; // 0=Destroyed, 3=Resumed, 4=Paused
+
+// ── ZONE 3: Hardware Actuators & Actions (TX) ──
+register ACT_HAPTIC             = 0x3000; // Haptic (1=Click, 2=Med, 3=Heavy, 4=Success, 5=Error)
+register ACT_TORCH              = 0x3010; // Torch / Camera Flashlight (0/1)
+register ACT_BRIGHTNESS         = 0x3020; // Screen Brightness (0-255)
+register ACT_WAKELOCK           = 0x3021; // Keep Screen ON / WakeLock (0/1)
+register ACT_MEDIA_VOL          = 0x3030; // System Media Volume (0-100)
+register ACT_MIC_MUTE           = 0x3031; // Hardware Mic Mute (0/1)
+register ACT_AUDIO_REC          = 0x3032; // Mic Audio Record (1=Start, 0=Stop)
+register ACT_AUDIO_STREAM       = 0x3033; // Serial Audio Stream to Titan-Bus (0/1)
+register TEL_AUDIO_PEAK         = 0x3034; // Mic Peak Volume / VU Meter (0-100)
+register TEL_AUDIO_TIMER        = 0x3035; // Recording Duration Seconds (0, 1, 2...)
+register SYS_VOICE_OPCODE       = 0x3038; // Voice Command Opcode (1=Start, 2=Stop, 3=Flip, 4=Rotate)
+register ACT_CLIPBOARD          = 0x3040; // Clipboard Action (1=Copy, 2=Paste)
+register ACT_REQUEST_PERMISSION = 0x3050; // Permission (1=Cam, 2=Mic, 3=Loc)
+register ACT_OPEN_CAMERA_APP    = 0x3060; // Launch Native Camera Intent
+register ACT_RINGTONE_BEEP      = 0x3070; // System Beep / Ringtone
+register ACT_BIOMETRIC_AUTH     = 0x3080; // Trigger Biometric Authentication Prompt (1=Start)
+
+// ── ZONE 4: Media, Transport & Video Compositing ──
+register ACT_PLAY               = 0x4001; // Play / Pause (0/1)
+register ACT_REW                = 0x4002; // Rewind Trigger
+register ACT_FWD                = 0x4003; // Fast-Forward Trigger
+register PLAYHEAD_SEC           = 0x4004; // Playhead Time (seconds)
+register AUDIO_PAN              = 0x4005; // Stereo Balance Pan (-100 to +100)
+register MASTER_VOLUME          = 0x4006; // Master Gain (0-200%)
+register TIMECODE_MS            = 0x4007; // Millisecond Precision Timecode
+register FPS_TARGET             = 0x4008; // Target FPS (24, 30, 60, 120)
+register DURATION_SEC           = 0x4009; // Total Media Duration (seconds)
+
+register VIDEO_SCALE            = 0x4100; // Video Scale (100 = 1.0x)
+register VIDEO_ZOOM             = 0x4101; // Video Zoom
+register VIDEO_ROTATION         = 0x4102; // Video Rotation (0-360)
+register VIDEO_PAN_X            = 0x4103; // Pan Offset X
+register VIDEO_TILT             = 0x4104; // Pan Offset Y / Tilt
+register VIDEO_OPACITY          = 0x4105; // Opacity (0-100%)
+register VIDEO_SPEED            = 0x4106; // Playback Speed (100 = 1.0x)
+register ASPECT_RATIO           = 0x4107; // 0=9:16 Shorts, 1=16:9, 2=1:1
+register GIZMO_ACTIVE           = 0x410C; // Transform Overlay Gizmo (0/1)
+
+register AUDIO_VOLUME           = 0x0200; // Master Audio Volume (512)
+register AUDIO_MUTE             = 0x0201; // Audio Mute Toggle (0/1)
+register AUDIO_EQ_BASS          = 0x4402; // Bass EQ (-12 to +12 dB)
+register AUDIO_EQ_TREBLE        = 0x4403; // Treble EQ (-12 to +12 dB)
+register BEAT_SYNC_FLAG         = 0x4404; // Beat Detection Pulse (0/1)
+
+// ── ZONE 5: Universal Component Slots ──
+register COMPONENT_TABLE_BASE   = 0x5000; // Dynamic Component Slot Base
+
+// ── ZONE 6: Universal Audio Stream, Telemetry & DataStore ──
+register STREAM_SIG             = 101;    // Call Signaling (RING, ACCEPT, HANGUP)
+register STREAM_AUDIO           = 102;    // Low-Latency Binary PCM Stream (16kHz)
+register STREAM_CHANNEL_ACTIVE  = 103;    // Active Audio Channel Connected
+register STREAM_STATUS          = 104;    // 0=IDLE, 1=RINGING, 2=TALKING
+register NOTIF_BANNER           = 109;    // Public Announcement Banner
+register NOTIF_PUSH             = 110;    // High-priority Push Notification frame
+register NOTIF_ACK              = 111;    // Client Delivery Acknowledgment
+register NOTIF_UNREAD_COUNT     = 112;    // Current unread count
+register NOTIF_TOAST            = 113;    // Instant Alert Toast
+register DISP_COMMAND           = 200;    // Display Command
+register DISP_CARD              = 201;    // Generic Card Display
+register SOUNDBOX_VOICE         = 301;    // Soundbox Voice Chime
+register SOUNDBOX_CHIME         = 302;    // Soundbox Chime Announcement
+register MOTOR_LEFT             = 401;    // Motor Left Track
+register MOTOR_RIGHT            = 402;    // Motor Right Track
+register DISP_BRIGHTNESS        = 0x0100; // Screen Brightness (256)
+register DATA_FEED_LIVE         = 2000;   // Live Ingest Feed
+register DATA_TELEMETRY         = 2001;   // Telemetry Live Stream
+register DATA_USERS             = 2002;   // User Collection Slot
+register DATA_PAYMENTS          = 2010;   // Payments & Ledger
+register RELAY_1                = 20001;  // Hardware Relay 1
+register RELAY_2                = 20002;  // Hardware Relay 2
+register SOLENOID_LOCK          = 20010;  // Solenoid Actuator Pulse
