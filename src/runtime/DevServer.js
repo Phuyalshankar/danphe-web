@@ -1623,6 +1623,9 @@ class DevServer extends EventEmitter {
                             return `const { ${names} } = require('${p}');`;
                         })
                         .replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, '')
+                        .replace(/export\s+const\s+/g, 'const ')
+                        .replace(/export\s+let\s+/g, 'let ')
+                        .replace(/export\s+var\s+/g, 'var ')
                         .replace(/export\s+default\s+function\s+App\s*\(\)\s*\{/, 'function App() {');
                     const registers = {
                         items: [
@@ -1659,6 +1662,9 @@ class DevServer extends EventEmitter {
                         ...(TitanJSX || {}),
                         ...(TitanWidgets || {}),
                         ...registers,
+                        reg: require('../registers/TitanRegisters').reg,
+                        defineRegisters: require('../registers/TitanRegisters').defineRegisters,
+                        TitanRegisters: require('../registers/TitanRegisters'),
                         require: (mod) => {
                             if (mod.includes('TitanWidgets')) return TitanWidgets;
                             if (mod.includes('TitanJSX')) return TitanJSX;

@@ -75,5 +75,22 @@ module.exports = {
       tx('form::note', '');
       tx('alert_msg', '🔄 सम्पूर्ण काउन्टर र नोट डाटा शून्यमा रिसेट गरियो!');
     }
+  },
+
+  // ── ४. नेभिगेसन स्लट लजिक (Unified Navigation Actions) ──────────────────────
+  'nav::home': ({ tx }) => {
+    console.log(`🧭 [App Logic] Navigated to Home (Slot 1)`);
+    if (tx) {
+      tx('nav::current', 'home');
+      tx(10, 0); // Hardware Register 10 (SYS_ROUTE) -> 0
+    }
+  },
+
+  'nav::settings': ({ tx }) => {
+    console.log(`🧭 [App Logic] Navigated to Settings (Slot 2)`);
+    if (tx) {
+      tx('nav::current', 'settings');
+      tx(10, 3); // Hardware Register 10 (SYS_ROUTE) -> 3
+    }
   }
 };

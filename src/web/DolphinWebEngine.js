@@ -342,7 +342,8 @@ class DolphinWebEngine {
             }
         }
 
-        const txVal = props.tx !== undefined ? props.tx : (props.action || props['data-tx']);
+        const rawTx = props.tx !== undefined ? props.tx : (props.action || props['data-tx']);
+        const txVal = (rawTx && typeof rawTx === 'object' && rawTx.fullName) ? rawTx.fullName : (rawTx && typeof rawTx === 'object' && rawTx.name ? `${rawTx.parent || 'nav'}::${rawTx.name}` : rawTx);
         const txValue = props.txValue !== undefined ? props.txValue : (props['tx-value'] !== undefined ? props['tx-value'] : (props.value !== undefined ? props.value : null));
         if (txVal !== undefined) {
             let busAction;
@@ -357,6 +358,7 @@ class DolphinWebEngine {
                 finalAction = `${busAction};${props.action}`;
             }
 
+            attrs.push(`tx="${this._escapeHTML(txVal)}"`);
             attrs.push(`data-tx="${this._escapeHTML(txVal)}"`);
             if (txValue !== null && txValue !== undefined) {
                 attrs.push(`data-tx-val="${this._escapeHTML(txValue)}"`);
@@ -365,18 +367,28 @@ class DolphinWebEngine {
             attrs.push(`tb-on:click="action:${this._escapeHTML(finalAction)}"`);
         }
 
-        const rxVal = props.rx !== undefined ? props.rx : (props.bus !== undefined ? props.bus : (props['data-rx'] || props['data-bus']));
-        if (rxVal && typeof rxVal === 'object' && rxVal.slot && props.slot === undefined) {
-            attrs.push(`slot="${rxVal.slot}"`);
-            attrs.push(`data-slot="${rxVal.slot}"`);
+        const rawRx = props.rx !== undefined ? props.rx : (props.bus !== undefined ? props.bus : (props['data-rx'] || props['data-bus']));
+        const rxVal = (rawRx && typeof rawRx === 'object' && rawRx.fullName) ? rawRx.fullName : rawRx;
+        if (rawRx && typeof rawRx === 'object' && rawRx.slot && props.slot === undefined) {
+            attrs.push(`slot="${rawRx.slot}"`);
+            attrs.push(`data-slot="${rawRx.slot}"`);
         }
         if (rxVal !== undefined) {
+            attrs.push(`rx="${this._escapeHTML(rxVal)}"`);
             attrs.push(`data-rx="${this._escapeHTML(rxVal)}"`);
             // Only add data-bus & tb-text if NOT a collection repeater list container!
             if (!props.collection && !props['data-collection'] && !props.repeat && !props['data-repeat']) {
                 attrs.push(`data-bus="${this._escapeHTML(rxVal)}"`);
                 attrs.push(`tb-text="${this._escapeHTML(rxVal)}"`);
             }
+        }
+
+        // 🧭 Universal Route Viewports (including nav.home, nav.settings)
+        if (props.page !== undefined || props['data-page'] !== undefined) {
+            const rawPage = props.page !== undefined ? props.page : props['data-page'];
+            const pageStr = (rawPage && typeof rawPage === 'object' && rawPage.fullName) ? rawPage.fullName : String(rawPage);
+            attrs.push(`page="${this._escapeHTML(pageStr)}"`);
+            attrs.push(`data-page="${this._escapeHTML(pageStr)}"`);
         }
         
         let extractedStateKey = props.statekey || props.stateKey || null;
@@ -963,14 +975,14 @@ class DolphinWebEngine {
           });
 
           // 📑 Page Router & Role Viewport & Drawer
-          var curRoute = String(state['bus:10'] !== undefined ? state['bus:10'] : (state['10'] !== undefined ? state['10'] : '0'));
-          var pageMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4' };
-          if (pageMap[curRoute.toLowerCase()] !== undefined) curRoute = pageMap[curRoute.toLowerCase()];
+          var curRoute = String(state['nav::current'] !== undefined ? state['nav::current'] : (state['bus:10'] !== undefined ? state['bus:10'] : (state['10'] !== undefined ? state['10'] : '0'))).toLowerCase().replace(/^nav::/, '');
+          var pageMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4', 'about': '5', 'contact': '6' };
+          var curIndex = pageMap[curRoute] !== undefined ? pageMap[curRoute] : curRoute;
 
-          document.querySelectorAll('[data-page], [data-screen], [data-route-url], route').forEach(function(p) {
+          document.querySelectorAll('[data-page], [data-screen], [data-route-url], route, [page]').forEach(function(p) {
             var pRoute = p.getAttribute('data-route-url') || p.getAttribute('url');
             var pScreen = p.getAttribute('data-screen');
-            var pPage = p.getAttribute('data-page');
+            var pPage = (p.getAttribute('data-page') || p.getAttribute('page') || '').toLowerCase().replace(/^nav::/, '');
 
             // 1. Drawer Screen Handler (e.g. data-screen="MainDrawer")
             if (pScreen && pScreen.toLowerCase().includes('drawer')) {
@@ -1001,14 +1013,21 @@ class DolphinWebEngine {
               return;
             }
 
-            // 3. Default Screen & Route Matching (Register 10: SYS_ROUTE)
-            var isMatch = (pPage === curRoute || (pScreen && pScreen.toLowerCase() === curRoute.toLowerCase()) || (pRoute && (pRoute === curRoute || pRoute.toLowerCase() === curRoute.toLowerCase() || pageMap[pRoute.toLowerCase()] === curRoute)));
+            // 3. Default Screen & Route Matching (Semantic nav:: or Register 10)
+            var isMatch = (pPage === curRoute || 
+                           pPage === curIndex || 
+                           (pageMap[pPage] !== undefined && pageMap[pPage] === curIndex) ||
+                           (pScreen && pScreen.toLowerCase() === curRoute) || 
+                           (pRoute && (pRoute === curRoute || pRoute.toLowerCase() === curRoute || pageMap[pRoute.toLowerCase()] === curIndex)));
             p.style.display = isMatch ? 'block' : 'none';
           });
-          document.querySelectorAll('[data-tab]').forEach(function(t) {
-            var tabId = t.getAttribute('data-tab');
-            var tabAction = (t.getAttribute('action') || '').toLowerCase().replace('nav:', '');
-            if (tabId === curRoute || (tabAction && tabAction === curRoute.toLowerCase()) || (pageMap[curRoute.toLowerCase()] === tabId)) {
+          document.querySelectorAll('[data-tab], [tx^="nav::"], [action^="nav:"]').forEach(function(t) {
+            var tabId = (t.getAttribute('data-tab') || '').toLowerCase().replace(/^nav::/, '');
+            var tabTx = (t.getAttribute('tx') || '').toLowerCase().replace(/^nav::/, '');
+            var tabAction = (t.getAttribute('action') || '').toLowerCase().replace(/^nav:/, '');
+            var tKey = tabTx || tabId || tabAction;
+            var isTabActive = (tKey === curRoute || tKey === curIndex || pageMap[tKey] === curIndex);
+            if (isTabActive) {
               t.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
               t.classList.remove('text-slate-400', 'border-transparent');
             } else {
@@ -1226,14 +1245,17 @@ class DolphinWebEngine {
               updateDOM();
             }
 
-            // 2. Direct Navigation
-            if (lowerAct.startsWith('nav:') || lowerAct.startsWith('tab:') || lowerAct.startsWith('nav.to:') || lowerAct.startsWith('app:nav:')) {
-              var screenName = actionStr.split(':').slice(1).join(':').trim();
+            // 2. Direct Navigation (Semantic nav::home, nav::about, or legacy nav:0)
+            if (lowerAct.startsWith('nav::') || lowerAct.startsWith('nav:') || lowerAct.startsWith('tab:') || lowerAct.startsWith('nav.to:') || lowerAct.startsWith('app:nav:')) {
+              var screenName = actionStr.indexOf('::') !== -1
+                ? actionStr.split('::').slice(1).join('::').trim()
+                : actionStr.split(':').slice(1).join(':').trim();
               if (screenName) {
-                var screenMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4' };
+                var screenMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4', 'about': '5', 'contact': '6' };
                 var routeVal = screenMap[screenName.toLowerCase()] !== undefined ? screenMap[screenName.toLowerCase()] : screenName;
                 state['10'] = routeVal;
                 state['bus:10'] = routeVal;
+                state['nav::current'] = screenName.toLowerCase();
                 state['currentScreen'] = screenName;
                 state.activeNav = screenName;
                 state.activeTab = screenName;

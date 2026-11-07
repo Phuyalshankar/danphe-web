@@ -74,6 +74,14 @@ try {
             } catch (err) {
                 console.error(`❌ [Logic Error] ${actionKey}:`, err.message);
             }
+        } else if (typeof actionKey === 'string' && actionKey.startsWith('nav::')) {
+            const page = actionKey.replace(/^nav::/, '').trim().toLowerCase();
+            console.log(`🧭 [Navigation Auto-Router] Switched to: ${page}`);
+            tx('nav::current', page);
+            const pageMap = { 'home': 0, 'telemetry': 1, 'controls': 2, 'settings': 3, 'icons': 4, 'about': 5, 'contact': 6 };
+            if (pageMap[page] !== undefined) {
+                tx(10, pageMap[page]);
+            }
         }
     });
 

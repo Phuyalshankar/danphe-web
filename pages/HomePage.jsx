@@ -3,7 +3,7 @@ import InputCarrierCard from '../components/InputCarrierCard';
 
 export default function HomePage() {
   return (
-    <div data-page="0" className="w-full space-y-4">
+    <div className="w-full space-y-4">
       {/* Telemetry Status Strip */}
       <div className="w-full p-3 rounded-2xl bg-gradient-to-r from-purple-950/80 to-slate-900 border border-purple-500/30 flex items-center justify-between shadow-lg">
         <div className="flex items-center gap-2">

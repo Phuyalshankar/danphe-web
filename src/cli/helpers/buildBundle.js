@@ -142,6 +142,9 @@ function buildBundle(appPath, config) {
                 return `const { ${names} } = require('${p}');`;
             })
             .replace(/import\s+[\s\S]*?from\s+['"].*?['"];?/g, '')
+            .replace(/export\s+const\s+/g, 'const ')
+            .replace(/export\s+let\s+/g, 'let ')
+            .replace(/export\s+var\s+/g, 'var ')
             .replace(/export\s+default\s+function\s+App\s*\(\)\s*\{/, 'function App() {');
 
         const regFile = path.resolve(path.dirname(appPath), 'registers', 'registers.dolphin');

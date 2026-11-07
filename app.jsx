@@ -1,6 +1,9 @@
 import HomePage from './pages/HomePage';
 import SettingsPage from './pages/SettingsPage';
 
+// 🧭 रुट तथा नेभिगेसन स्लट परिभाषा (Unified Navigation Slots)
+export const nav = reg('nav:: home, settings');
+
 export default function App() {
   return (
     <div className="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col font-sans">
@@ -16,7 +19,7 @@ export default function App() {
               <span className="text-sm font-black tracking-tight text-white flex items-center gap-2">
                 Danphe Web
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-400 border border-cyan-500/30 font-mono font-normal">
-                  v1.0 • Zero-VDOM
+                  v1.0 • Unified Slots
                 </span>
               </span>
               <span className="text-[11px] text-slate-400">
@@ -25,19 +28,17 @@ export default function App() {
             </div>
           </div>
 
-          {/* Web Navigation Controls */}
+          {/* Web Navigation Controls via nav slots */}
           <nav className="flex items-center gap-2">
             <button
-              action="nav:0"
-              data-tab="0"
+              tx={nav.home}
               className="px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 transition-all cursor-pointer flex items-center gap-1.5"
             >
               <span>🏠</span>
               <span>गृहपृष्ठ</span>
             </button>
             <button
-              action="nav:1"
-              data-tab="1"
+              tx={nav.settings}
               className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white border border-transparent hover:border-slate-700 transition-all cursor-pointer flex items-center gap-1.5"
             >
               <span>⚙️</span>
@@ -49,8 +50,12 @@ export default function App() {
 
       {/* 🧭 Centered Web Viewport Container */}
       <main className="flex-1 w-full max-w-4xl mx-auto p-4 sm:p-6 space-y-6">
-        <HomePage />
-        <SettingsPage />
+        <div page={nav.home}>
+          <HomePage />
+        </div>
+        <div page={nav.settings}>
+          <SettingsPage />
+        </div>
       </main>
 
       {/* 🦶 Clean Web Footer */}

@@ -1,6 +1,6 @@
 export default function SettingsPage() {
   return (
-    <div data-page="1" className="w-full space-y-4">
+    <div className="w-full space-y-4">
       <div className="w-full p-4 rounded-3xl bg-slate-900 border border-emerald-500/40 shadow-xl space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-emerald-500/20 pb-3">
