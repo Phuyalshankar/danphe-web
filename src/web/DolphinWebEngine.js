@@ -607,6 +607,7 @@ class DolphinWebEngine {
     <!-- 100% Offline Local Assets & Icons Support -->
     <link rel="stylesheet" href="/assets/icons/icons.css" />
     <link rel="stylesheet" href="/assets/cdn/fa-all.min.css" />
+    <link rel="stylesheet" href="/dolphincss.css" />
     <link rel="stylesheet" href="/assets/cdn/dolphin-css.css" />
     <style>
         ${WebCSS.getBaseStyles()}

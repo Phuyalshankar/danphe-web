@@ -12,7 +12,9 @@
     "dev": "node server.js 7080 7081",
     "start": "node server.js 7080 7081"
   },
-  "dependencies": {},
+  "dependencies": {
+    "dolphincss": "^1.4.6"
+  },
   "keywords": [
     "danphe",
     "web",

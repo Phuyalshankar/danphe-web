@@ -689,7 +689,35 @@ class DevServer extends EventEmitter {
             let url = req.url.split('?')[0];
             if (url.length > 1 && url.endsWith('/')) url = url.slice(0, -1);
 
-            // 1. Dashboard & Admin UI
+            const cleanUrl = decodeURIComponent(url);
+
+            // 🐬 0. Direct DolphinCSS NPM Package Highway
+            if (cleanUrl === '/dolphincss.css' || cleanUrl === '/dolphin-css.css' || cleanUrl === '/assets/cdn/dolphin-css.css' || cleanUrl.startsWith('/node_modules/dolphincss/')) {
+                let dolphinCssPath = null;
+                try {
+                    dolphinCssPath = require.resolve('dolphincss');
+                } catch (e) {}
+                if (!dolphinCssPath || !fs.existsSync(dolphinCssPath)) {
+                    const localPath = path.join(this.watchDir, 'node_modules', 'dolphincss', 'dolphin-css.css');
+                    if (fs.existsSync(localPath)) dolphinCssPath = localPath;
+                }
+                if (!dolphinCssPath || !fs.existsSync(dolphinCssPath)) {
+                    const desktopPath = 'C:\\Users\\USER\\Desktop\\dolphincss\\dolphincss\\dolphin-css.css';
+                    if (fs.existsSync(desktopPath)) dolphinCssPath = desktopPath;
+                }
+                if (dolphinCssPath && fs.existsSync(dolphinCssPath)) {
+                    cors(res);
+                    const cssBuf = fs.readFileSync(dolphinCssPath);
+                    res.writeHead(200, {
+                        'Content-Type': 'text/css; charset=utf-8',
+                        'Content-Length': cssBuf.length,
+                        'Cache-Control': 'public, max-age=86400'
+                    });
+                    res.end(cssBuf);
+                    return;
+                }
+            }
+
             // 1. Direct Live Web App (Root: http://localhost:7080/)
             if (url === '' || url === '/' || url === '/web' || url === '/app') {
                 const html = this._renderWebApp();
@@ -909,7 +937,7 @@ class DevServer extends EventEmitter {
             }
 
             // 8. 💽 TitanDisk Static Stream & RFC 7233 Byte-Range Server Engine
-            const cleanUrl = decodeURIComponent(url);
+            // cleanUrl reused
             const candidatePaths = [
                 path.join(this.watchDir, cleanUrl),
                 path.join(this.watchDir, 'assets', cleanUrl.replace(/^\/(assets|disk)\//, '')),
