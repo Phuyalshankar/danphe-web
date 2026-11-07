@@ -1043,18 +1043,34 @@ class DolphinWebEngine {
           });
         }
 
-        // Live input binding for forms
+        // Live input binding for forms, carrier slots, and registers
         document.addEventListener('input', function(e) {
           var el = e.target;
           if (!el) return;
           var key = el.getAttribute('data-state-key') || el.getAttribute('name');
+          var rxAttr = el.getAttribute('data-rx') || el.getAttribute('rx');
+          var slotAttr = el.getAttribute('slot') || el.getAttribute('data-slot');
+          var val = el.value;
+
           if (key) {
-            state[key] = el.value;
-            var targets = document.querySelectorAll('[data-state-key="' + key + '"]');
-            targets.forEach(function(t) {
-              if (t !== el && t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA') {
-                t.textContent = el.value;
-              }
+            state[key] = val;
+            document.querySelectorAll('[data-state-key="' + key + '"], [name="' + key + '"]').forEach(function(t) {
+              if (t !== el && t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA') t.textContent = val;
+            });
+          }
+
+          if (rxAttr) {
+            state[rxAttr] = val;
+            state['bus:' + rxAttr] = val;
+            document.querySelectorAll('[data-rx="' + rxAttr + '"], [rx="' + rxAttr + '"], [tb-text="' + rxAttr + '"]').forEach(function(t) {
+              if (t !== el && t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA') t.textContent = val;
+            });
+          }
+
+          if (slotAttr) {
+            state['slot_' + slotAttr] = val;
+            document.querySelectorAll('[slot="' + slotAttr + '"], [data-slot="' + slotAttr + '"]').forEach(function(t) {
+              if (t !== el && t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA') t.textContent = val;
             });
           }
         });
@@ -1244,21 +1260,51 @@ class DolphinWebEngine {
                 state['bus:10'] = target;
                 state['currentScreen'] = target;
               } else {
-                // Direct register toggle or write (e.g. bus:0x4001, bus:512, bus:0x3010:1)
+                // Direct register toggle, circuit action, or write
                 var regStr = parts[1] || '';
                 var reg = (regStr.startsWith('0x') || regStr.startsWith('0X')) ? parseInt(regStr, 16) : parseInt(regStr, 10);
                 if (!isNaN(reg)) {
-                  var cur = state[reg] !== undefined ? state[reg] : (state['0x' + reg.toString(16)] !== undefined ? state['0x' + reg.toString(16)] : 0);
-                  var val = parts.length > 2 ? parseInt(parts[2], 10) : (cur == 0 ? 1 : 0);
-                  state[reg] = val;
-                  state['bus:' + reg] = val;
-                  state['0x' + reg.toString(16).toLowerCase()] = val;
-                  state['bus:0x' + reg.toString(16).toLowerCase()] = val;
+                  // 16-Bit Counter Circuit Actions (0x0201: INC, 0x0202: DEC, 0x0203: RESET)
+                  if (reg === 513 || reg === 0x0201) {
+                    var cur = parseInt(state['512'] !== undefined ? state['512'] : (state['0x200'] !== undefined ? state['0x200'] : 0), 10);
+                    var next = (isNaN(cur) ? 0 : cur) + 1;
+                    state['512'] = next;
+                    state['0x200'] = next;
+                    state['bus:512'] = next;
+                    state['bus:0x200'] = next;
+                  } else if (reg === 514 || reg === 0x0202) {
+                    var cur = parseInt(state['512'] !== undefined ? state['512'] : (state['0x200'] !== undefined ? state['0x200'] : 0), 10);
+                    var next = (isNaN(cur) || cur <= 0) ? 0 : cur - 1;
+                    state['512'] = next;
+                    state['0x200'] = next;
+                    state['bus:512'] = next;
+                    state['bus:0x200'] = next;
+                  } else if (reg === 515 || reg === 0x0203) {
+                    state['512'] = 0;
+                    state['0x200'] = 0;
+                    state['bus:512'] = 0;
+                    state['bus:0x200'] = 0;
+                  } else {
+                    var cur = state[reg] !== undefined ? state[reg] : (state['0x' + reg.toString(16)] !== undefined ? state['0x' + reg.toString(16)] : 0);
+                    var val = parts.length > 2 ? parseInt(parts[2], 10) : (cur == 0 ? 1 : 0);
+                    state[reg] = val;
+                    state['bus:' + reg] = val;
+                    state['0x' + reg.toString(16).toLowerCase()] = val;
+                    state['bus:0x' + reg.toString(16).toLowerCase()] = val;
+                  }
                   if (window.TitanBusClient && window.TitanBusClient.write) {
-                    window.TitanBusClient.write(reg, val);
+                    window.TitanBusClient.write(reg, state[reg] || 0);
                   }
                 }
               }
+              // Always forward action to backend server circuit engine
+              try {
+                fetch('/action', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ action: actionStr, value: '' })
+                }).catch(function() {});
+              } catch (_) {}
               updateDOM();
               return;
             }
