@@ -19,7 +19,7 @@ export default function App() {
               <span className="text-sm font-black tracking-tight text-white flex items-center gap-2">
                 Danphe Web
                 <span className="badge fx-holo">
-                  DolphinCSS 2.0 • Special FX
+                  DolphinCSS 2.0 • सगरमाथा वालपेपर
                 </span>
               </span>
               <span className="text-[11px] text-slate-300">

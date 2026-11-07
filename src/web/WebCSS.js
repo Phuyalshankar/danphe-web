@@ -24,14 +24,22 @@ class WebCSS {
         html, body {
             min-height: 100vh;
             color: #f8fafc !important;
-            background-color: #090d16;
-            background-attachment: fixed;
-            background-size: cover;
+            background: linear-gradient(rgba(8, 14, 28, 0.40), rgba(8, 14, 28, 0.50)), url('/assets/sagarmatha.jpg') no-repeat center center fixed !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+        }
+
+        /* 🏔️ Majestic Mount Everest (Sagarmatha) Real High-Res Photography Wallpaper */
+        body.bg-everest, .bg-everest, body.bg-sagarmatha-photo, .bg-sagarmatha-photo {
+            background: linear-gradient(rgba(8, 14, 28, 0.40), rgba(8, 14, 28, 0.50)), url('/assets/sagarmatha.jpg') no-repeat center center fixed !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            color: #ffffff !important;
         }
 
         /* 🇳🇵 Authentic Nepali Himalayan Heritage Gradients */
         body.bg-danphe, .bg-danphe {
-            background: linear-gradient(45deg, #10b981 0%, #3b82f6 25%, #8b5cf6 50%, #f97316 75%, #ef4444 100%) !important;
+            background: linear-gradient(45deg, #10b981 0%, #3b82f6 25%, #8b5cf6 50%, #f97316 75%, #ef4444 100%) fixed !important;
             color: #ffffff !important;
         }
         body.bg-laligurans, .bg-laligurans {
@@ -423,7 +431,7 @@ class WebCSS {
         html, body {
             width: 100%; height: 100%; min-height: 100vh;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #020617; color: #f8fafc;
+            color: #f8fafc;
             -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
         }

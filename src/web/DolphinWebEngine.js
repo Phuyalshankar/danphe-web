@@ -633,7 +633,7 @@ class DolphinWebEngine {
     ${titanDomBundle}
     </script>
 </head>
-<body class="bg-danphe">
+<body class="bg-everest">
     <div id="root">${bodyHTML}</div>
 
     ${WebNavigation.getDrawerHTML()}
@@ -1064,8 +1064,8 @@ class DolphinWebEngine {
             p.style.display = isMatch ? 'block' : 'none';
           });
 
-          // 🎨 Dynamic Himalayan Theme Background Synchronizer (bg-danphe, bg-laligurans, bg-light, etc.)
-          var activeTheme = String(state['theme::current'] || state['theme'] || localStorage.getItem('danphe_theme') || 'danphe').toLowerCase();
+          // 🎨 Dynamic Himalayan Theme Background Synchronizer (bg-everest, bg-danphe, bg-laligurans, etc.)
+          var activeTheme = String(state['theme::current'] || state['theme'] || localStorage.getItem('danphe_theme') || 'everest').toLowerCase();
           if (activeTheme.startsWith('bg-')) activeTheme = activeTheme.replace(/^bg-/, '');
           var isLight = (activeTheme === 'light');
           var expectedBodyClass = 'bg-' + activeTheme + (isLight ? ' theme-light' : '');
