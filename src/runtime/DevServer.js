@@ -850,11 +850,7 @@ class DevServer extends EventEmitter {
                         const { action, value } = payload;
                         if (action) {
                             console.log(`🌐 [Web Action] ${action} (value: ${value})`);
-                            this.emit('deviceAction', { id: 'web-browser', action, value });
                             this.server.emit('deviceAction', { id: 'web-browser', action, value });
-                            if (this._appActionHandler) {
-                                try { this._appActionHandler(action, value, 'web-browser'); } catch(e){}
-                            }
                         }
                         res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
                         res.end(JSON.stringify({ success: true, action }));
