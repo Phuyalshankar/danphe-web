@@ -691,19 +691,22 @@ class DevServer extends EventEmitter {
 
             const cleanUrl = decodeURIComponent(url);
 
-            // 🐬 0. Direct DolphinCSS NPM Package Highway
+            // 🐬 0. Direct DolphinCSS Desktop Live Development Highway (Priority: Desktop > Local > NPM)
             if (cleanUrl === '/dolphincss.css' || cleanUrl === '/dolphin-css.css' || cleanUrl === '/assets/cdn/dolphin-css.css' || cleanUrl.startsWith('/node_modules/dolphincss/')) {
                 let dolphinCssPath = null;
-                try {
-                    dolphinCssPath = require.resolve('dolphincss');
-                } catch (e) {}
+                // १. पहिलो प्राथमिकता: सिधै डेस्कटप स्रोतबाट प्रत्यक्ष लोड (Live Desktop Source)
+                const desktopPath = 'C:\\Users\\USER\\Desktop\\dolphincss\\dolphincss\\dolphin-css.css';
+                if (fs.existsSync(desktopPath)) {
+                    dolphinCssPath = desktopPath;
+                }
+                // २. दोस्रो प्राथमिकता: स्थानीय node_modules
                 if (!dolphinCssPath || !fs.existsSync(dolphinCssPath)) {
                     const localPath = path.join(this.watchDir, 'node_modules', 'dolphincss', 'dolphin-css.css');
                     if (fs.existsSync(localPath)) dolphinCssPath = localPath;
                 }
+                // ३. तेस्रो प्राथमिकता: npm require.resolve
                 if (!dolphinCssPath || !fs.existsSync(dolphinCssPath)) {
-                    const desktopPath = 'C:\\Users\\USER\\Desktop\\dolphincss\\dolphincss\\dolphin-css.css';
-                    if (fs.existsSync(desktopPath)) dolphinCssPath = desktopPath;
+                    try { dolphinCssPath = require.resolve('dolphincss'); } catch (e) {}
                 }
                 if (dolphinCssPath && fs.existsSync(dolphinCssPath)) {
                     cors(res);
