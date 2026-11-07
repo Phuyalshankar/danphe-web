@@ -1606,13 +1606,20 @@ class DolphinWebEngine {
             document.documentElement.classList.toggle('dark', state.theme === 'dark');
             document.body.classList.toggle('dark', state.theme === 'dark');
             updateDOM();
-          } else if (action === 'counter:increment' || action === 'counter.increment' || action === 'app.increment') {
-            state.counter = (typeof state.counter === 'number' ? state.counter : 0) + 1;
+          } else if (action === 'counter:increment' || action === 'counter.increment' || action === 'app.increment' || action === 'counter::inc') {
+            var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state.counter || 0), 10);
+            var next = (isNaN(cur) ? 0 : cur) + 1;
+            state['counter::value'] = next;
+            state.counter = next;
             updateDOM();
-          } else if (action === 'counter:decrement' || action === 'counter.decrement' || action === 'app.decrement') {
-            state.counter = (typeof state.counter === 'number' ? state.counter : 0) - 1;
+          } else if (action === 'counter:decrement' || action === 'counter.decrement' || action === 'app.decrement' || action === 'counter::dec') {
+            var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state.counter || 0), 10);
+            var next = (isNaN(cur) || cur <= 0) ? 0 : cur - 1;
+            state['counter::value'] = next;
+            state.counter = next;
             updateDOM();
-          } else if (action === 'app.resetAll' || action === 'store.reset' || action === 'store:reset' || action === 'app:resetAll' || action === 'app.reset') {
+          } else if (action === 'counter::reset' || action === 'counter:reset' || action === 'app.resetAll' || action === 'store.reset' || action === 'store:reset' || action === 'app:resetAll' || action === 'app.reset') {
+            state['counter::value'] = 0;
             state.counter = 0;
             state.isLoggedIn = false;
             state.userStatus = 'Guest User (Reset Completed 🔄)';

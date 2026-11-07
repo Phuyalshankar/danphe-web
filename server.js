@@ -23,18 +23,27 @@ try {
         appLogic = require(logicPath);
     }
 
-    const registers = new Map();
+    const stateMap = new Map();
 
     const tx = (addr, val) => {
-        const numAddr = Number(addr) & 0xFFFF;
-        const numVal = typeof val === 'number' ? val : (parseInt(val, 10) || 0);
-        registers.set(numAddr, numVal);
-        devServer.broadcastRegister(numAddr, numVal);
+        stateMap.set(String(addr), val);
+        if (typeof addr === 'number' || (!isNaN(Number(addr)) && !String(addr).includes(':'))) {
+            const numAddr = Number(addr) & 0xFFFF;
+            const numVal = typeof val === 'number' ? val : (parseInt(val, 10) || 0);
+            devServer.broadcastRegister(numAddr, numVal);
+        } else {
+            // String key patch over SSE to all browser tabs
+            if (devServer.sseClients && devServer.sseClients.length > 0) {
+                const sseData = JSON.stringify({ type: 'patch', key: String(addr), value: val });
+                devServer.sseClients.forEach(client => {
+                    try { client.write(`data: ${sseData}\n\n`); } catch(e) {}
+                });
+            }
+        }
     };
 
     const rx = (addr) => {
-        const numAddr = Number(addr) & 0xFFFF;
-        return registers.has(numAddr) ? registers.get(numAddr) : 0;
+        return stateMap.get(String(addr)) || 0;
     };
 
     // Attach Pure JS Action Handler

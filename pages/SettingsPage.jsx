@@ -1,5 +1,3 @@
-import { SYS_POWER, SYS_THEME_MODE, HW_HAPTIC } from '../registers/TitanRegisters';
-
 export default function SettingsPage() {
   return (
     <div data-page="1" className="w-full space-y-4">
@@ -9,7 +7,7 @@ export default function SettingsPage() {
             सिस्टम कन्फिगरेसन (Settings)
           </span>
           <span className="text-[10px] font-mono text-emerald-300 font-bold bg-emerald-950 px-2 py-0.5 rounded-full">
-            REG 0x0001
+            SETTINGS
           </span>
         </div>
 
@@ -17,36 +15,33 @@ export default function SettingsPage() {
           {/* Power Switch */}
           <div className="w-full p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-xs font-bold text-white">टाइटन मास्टर पावर (SYS_POWER)</span>
-              <span className="text-[10px] text-slate-400 font-mono">Register 0x0001</span>
+              <span className="text-xs font-bold text-white">मास्टर पावर (System Power)</span>
+              <span className="text-[10px] text-slate-400 font-mono">पावर अन/अफ टगल</span>
             </div>
-            <switch tx={SYS_POWER} className="text-emerald-400" />
+            <switch tx="power" className="text-emerald-400" />
           </div>
 
           {/* Theme Selector */}
           <div className="w-full p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-xs font-bold text-white">युआई थिम (SYS_THEME_MODE)</span>
-              <span className="text-[10px] text-slate-400 font-mono">Register 0x000C</span>
+              <span className="text-xs font-bold text-white">युआई थिम (Theme Mode)</span>
+              <span className="text-[10px] text-slate-400 font-mono">गाढा वा उज्यालो रङ्ग</span>
             </div>
             <div className="flex items-center gap-2">
-              <button tx={SYS_THEME_MODE} txValue={1} className="px-3 py-1.5 rounded-xl bg-slate-800 text-indigo-300 text-xs font-bold border border-indigo-500/30">
-                गाढा (Dark)
-              </button>
-              <button tx={SYS_THEME_MODE} txValue={2} className="px-3 py-1.5 rounded-xl bg-slate-800 text-amber-300 text-xs font-bold border border-amber-500/30">
-                उज्यालो (Light)
+              <button action="theme:toggle" className="px-3 py-1.5 rounded-xl bg-slate-800 text-indigo-300 text-xs font-bold border border-indigo-500/30 cursor-pointer">
+                थिम बदल्नुहोस् (Toggle Theme)
               </button>
             </div>
           </div>
 
-          {/* Haptic Test */}
+          {/* Device Alert Test */}
           <div className="w-full p-3 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="text-xs font-bold text-white">ह्याप्टिक कम्पन (HW_HAPTIC)</span>
-              <span className="text-[10px] text-slate-400 font-mono">Register 0x3000</span>
+              <span className="text-xs font-bold text-white">प्रणाली सूचना (Notification Test)</span>
+              <span className="text-[10px] text-slate-400 font-mono">सूचना पठाउनुहोस्</span>
             </div>
-            <button tx={HW_HAPTIC} txValue={100} className="px-3 py-1.5 rounded-xl bg-purple-950 text-fuchsia-300 text-xs font-bold border border-fuchsia-500/40 cursor-pointer">
-              कम्पन जाँच्नुहोस्
+            <button action="app.showToast" className="px-3 py-1.5 rounded-xl bg-purple-950 text-fuchsia-300 text-xs font-bold border border-fuchsia-500/40 cursor-pointer">
+              सूचना देखाउनुहोस्
             </button>
           </div>
         </div>
