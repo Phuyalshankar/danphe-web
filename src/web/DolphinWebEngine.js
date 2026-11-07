@@ -653,9 +653,11 @@ class DolphinWebEngine {
         // 🧭 Universal HTML5 History & URL Path Synchronizer (Generic for any URL)
         if (typeof window !== 'undefined' && window.location) {
           var syncFromUrl = function() {
-            var path = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').toLowerCase();
-            if (path) {
-              var segments = path.split('/');
+            var rawPath = (window.location.pathname || '').toLowerCase();
+            while (rawPath.indexOf('/') === 0) rawPath = rawPath.substring(1);
+            while (rawPath.lastIndexOf('/') === rawPath.length - 1 && rawPath.length > 0) rawPath = rawPath.substring(0, rawPath.length - 1);
+            if (rawPath) {
+              var segments = rawPath.split('/').filter(Boolean);
               if (segments[0]) {
                 state['nav'] = segments[0];
                 state['nav::current'] = segments[0];
@@ -900,14 +902,20 @@ class DolphinWebEngine {
           });
 
           // 3. 📡 Titan Carrier & Direct Hardware Register Binding (Guarded against Objects & Collections)
-          var rxElements = document.querySelectorAll('[data-rx]');
+          var rxElements = document.querySelectorAll('[data-rx], [rx]');
           rxElements.forEach(function(el) {
             if (el.hasAttribute('collection') || el.hasAttribute('data-collection')) return;
-            var rxVal = el.getAttribute('data-rx');
+            var rxVal = el.getAttribute('data-rx') || el.getAttribute('rx');
             if (rxVal) {
-              var hexKey = (rxVal.startsWith('0x') || rxVal.startsWith('0X')) ? rxVal.toLowerCase() : '0x' + parseInt(rxVal, 10).toString(16);
-              var decKey = (rxVal.startsWith('0x') || rxVal.startsWith('0X')) ? String(parseInt(rxVal, 16)) : rxVal;
-              var val = state[hexKey] !== undefined ? state[hexKey] : (state[decKey] !== undefined ? state[decKey] : (state['bus:' + hexKey] !== undefined ? state['bus:' + hexKey] : state['bus:' + decKey]));
+              // 1. Direct state key check (e.g. 'counter::value', 'power_status', 'theme_label', 'alert_msg')
+              var val = state[rxVal] !== undefined ? state[rxVal] : (state['bus:' + rxVal] !== undefined ? state['bus:' + rxVal] : undefined);
+
+              // 2. Numeric / Hex hardware fallback
+              if (val === undefined && (!isNaN(Number(rxVal)) || rxVal.startsWith('0x') || rxVal.startsWith('0X'))) {
+                var hexKey = (rxVal.startsWith('0x') || rxVal.startsWith('0X')) ? rxVal.toLowerCase() : '0x' + parseInt(rxVal, 10).toString(16);
+                var decKey = (rxVal.startsWith('0x') || rxVal.startsWith('0X')) ? String(parseInt(rxVal, 16)) : rxVal;
+                val = state[hexKey] !== undefined ? state[hexKey] : (state[decKey] !== undefined ? state[decKey] : (state['bus:' + hexKey] !== undefined ? state['bus:' + hexKey] : state['bus:' + decKey]));
+              }
               
               if (val !== undefined && val !== null) {
                 if (typeof val === 'object') return; // 🛡️ GUARD: NEVER dump Object to textContent!
@@ -1007,37 +1015,23 @@ class DolphinWebEngine {
           });
 
           // 📑 Page Router & Role Viewport & Drawer
-          var curRoute = String(state['nav::current'] !== undefined ? state['nav::current'] : (state['bus:10'] !== undefined ? state['bus:10'] : (state['10'] !== undefined ? state['10'] : '0'))).toLowerCase().replace(/^nav::/, '');
+          var activeNav = String(state['nav'] || state['nav::current'] || 'home').toLowerCase();
           var pageMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4', 'about': '5', 'contact': '6' };
-          var curIndex = pageMap[curRoute] !== undefined ? pageMap[curRoute] : curRoute;
 
           document.querySelectorAll('[data-page], [data-screen], [data-route-url], route, [page]').forEach(function(p) {
-            var pRoute = p.getAttribute('data-route-url') || p.getAttribute('url');
-            var pScreen = p.getAttribute('data-screen');
-            var pPage = (p.getAttribute('data-page') || p.getAttribute('page') || '').toLowerCase().replace(/^nav::/, '');
+            var pTarget = (p.getAttribute('page') || p.getAttribute('data-page') || p.getAttribute('data-screen') || p.getAttribute('data-route-url') || p.getAttribute('url') || '').trim();
+            if (!pTarget) return;
 
-            // 1. Drawer Screen Handler (e.g. data-screen="MainDrawer")
-            if (pScreen && pScreen.toLowerCase().includes('drawer')) {
+            // 1. Drawer Screen Handler
+            if (pTarget.toLowerCase().includes('drawer')) {
               var isDrawerOpen = state.drawerOpen === true || state['drawer'] === 'open' || state['drawer:open'] === true;
               p.style.display = isDrawerOpen ? 'block' : 'none';
-              if (isDrawerOpen) {
-                p.style.position = 'fixed';
-                p.style.top = '0';
-                p.style.left = '0';
-                p.style.bottom = '0';
-                p.style.width = '340px';
-                p.style.maxWidth = '85vw';
-                p.style.height = '100vh';
-                p.style.zIndex = '99999';
-                p.style.boxShadow = '20px 0 50px rgba(0,0,0,0.8)';
-                p.style.overflowY = 'auto';
-              }
               return;
             }
 
-            // 2. Hardware Register Mapped Viewports (e.g. data-page="5:0", data-page="5:1")
-            if (pPage && pPage.indexOf(':') > 0) {
-              var parts = pPage.split(':');
+            // 2. Hardware Register Mapped Viewports (e.g. data-page="5:0")
+            if (pTarget.indexOf(':') > 0 && pTarget.indexOf('::') === -1) {
+              var parts = pTarget.split(':');
               var reg = parts[0];
               var expectedVal = parts[1];
               var actualVal = String(state[reg] !== undefined ? state[reg] : (state['bus:' + reg] !== undefined ? state['bus:' + reg] : '0'));
@@ -1045,22 +1039,21 @@ class DolphinWebEngine {
               return;
             }
 
-            // 3. Universal Namespace-Slot Viewport Matching (page="namespace::slot")
-            if (pPage && pPage.indexOf('::') !== -1) {
-              var nParts = pPage.split('::');
+            // 3. Universal Namespace-Slot Viewport Matching (page="namespace::slot" or page="slot")
+            if (pTarget.indexOf('::') !== -1) {
+              var nParts = pTarget.split('::');
               var ns = nParts[0].trim().toLowerCase();
               var slot = nParts[1].trim().toLowerCase();
-              var activeSlot = String(state[ns] !== undefined ? state[ns] : (state['nav'] || 'home')).toLowerCase();
-              p.style.display = (activeSlot === slot) ? 'block' : 'none';
+              var curSlot = String(state[ns] !== undefined ? state[ns] : (state[ns + '::current'] || (ns === 'nav' ? activeNav : ''))).toLowerCase();
+              p.style.display = (curSlot === slot) ? 'block' : 'none';
               return;
             }
 
-            // Simple route match
-            var isMatch = (pPage === curRoute || 
-                           pPage === curIndex || 
-                           (pageMap[pPage] !== undefined && pageMap[pPage] === curIndex) ||
-                           (pScreen && pScreen.toLowerCase() === curRoute) || 
-                           (pRoute && (pRoute === curRoute || pRoute.toLowerCase() === curRoute || pageMap[pRoute.toLowerCase()] === curIndex)));
+            // 4. Simple Route or Index match (page="home", page="settings", page="0", page="3")
+            var cleanTarget = pTarget.toLowerCase();
+            var isMatch = (cleanTarget === activeNav || 
+                           cleanTarget === pageMap[activeNav] ||
+                           (pageMap[cleanTarget] !== undefined && pageMap[cleanTarget] === pageMap[activeNav]));
             p.style.display = isMatch ? 'block' : 'none';
           });
 
@@ -1071,13 +1064,13 @@ class DolphinWebEngine {
               var bParts = rawAct.split('::');
               var bNs = bParts[0].trim().toLowerCase();
               var bSlot = bParts[1].trim().toLowerCase();
-              var curActive = String(state[bNs] !== undefined ? state[bNs] : (state['nav'] || '')).toLowerCase();
+              var curActive = String(state[bNs] !== undefined ? state[bNs] : (state[bNs + '::current'] || (bNs === 'nav' ? activeNav : ''))).toLowerCase();
               var isBtnActive = (bSlot === curActive);
               btn.classList.toggle('active', isBtnActive);
               if (isBtnActive) {
                 btn.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
                 btn.classList.remove('text-slate-400', 'border-transparent');
-              } else if (curActive) {
+              } else {
                 btn.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
                 btn.classList.add('text-slate-400', 'border-transparent');
               }
