@@ -1,0 +1,23 @@
+{
+  "name": "danphe-web",
+  "version": "1.0.0",
+  "description": "The Post-Virtual-DOM Reactive Web Framework with Built-in Polymorphic Design Tokens and Deterministic Carrier Slots",
+  "main": "src/index.js",
+  "module": "src/index.mjs",
+  "scripts": {
+    "test": "node tests/run_all.js",
+    "demo": "node examples/run_demo.js"
+  },
+  "keywords": [
+    "danphe",
+    "reactive",
+    "zero-virtual-dom",
+    "dolphin-css",
+    "carrier-slots",
+    "polymorphic-tokens",
+    "react-killer",
+    "titan-bus"
+  ],
+  "author": "Shankar Phuyal / Danphe Team",
+  "license": "MIT"
+}

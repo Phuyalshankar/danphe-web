@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🇳🇵 Danphe-Web — The Post-Virtual-DOM Reactive Engine</title>
+  <style>
+    body {
+      background: #090d16;
+      color: #f8fafc;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+  </style>
+  <!-- Load Standalone Danphe-Web (< 10 KB) -->
+  <script src="../dist/danphe-web.standalone.js"></script>
+</head>
+<body>
+
+  <div id="app" class="container"></div>
+
+  <script>
+    const { h, render, reg } = window.DanpheWeb;
+
+    // 1. Declare Form State in ONE line! Zero useState, Zero useEffect!
+    const form = reg('form:: name, email, password');
+    form.name = 'Shankar Phuyal';
+    form.email = 'shankar@danphe.org';
+
+    // 2. Component using DolphinCSS Polymorphic Tokens
+    function App() {
+      return h('div', { class: 'container' },
+
+        // Header Card
+        h('card', { class: 'filled primary md glow motion' },
+          h('h2', { style: 'margin:0 0 6px 0;' }, '🇳🇵 Danphe-Web Reactive Engine'),
+          h('p', { style: 'margin:0; opacity:0.85; font-size:14px;' },
+            'Zero-Virtual-DOM • Zero-Hooks • Built-in DolphinCSS Tokens'
+          )
+        ),
+
+        // Live Zero-Boilerplate Form Card
+        h('card', { class: 'filled neutral md' },
+          h('h3', { style: 'margin:0 0 16px 0; color:#38bdf8;' }, '📝 1-Line Reactive Form Handling'),
+
+          h('div', { class: 'form-group' },
+            h('label', {}, 'Full Name:'),
+            h('input', { class: 'filled primary md', rx: 'form::name', placeholder: 'Enter your name' })
+          ),
+
+          h('div', { class: 'form-group', style: 'margin-top:12px;' },
+            h('label', {}, 'Email Address:'),
+            h('input', { class: 'filled primary md', rx: 'form::email', placeholder: 'name@example.com' })
+          ),
+
+          h('div', { class: 'form-group', style: 'margin-top:12px;' },
+            h('label', {}, 'Password:'),
+            h('input', { type: 'password', class: 'filled primary md', rx: 'form::password', placeholder: '••••••••' })
+          ),
+
+          // Live Preview without component re-render!
+          h('div', { class: 'nested filled secondary sm', style: 'margin-top:20px;' },
+            h('div', { style: 'font-weight:bold; color:#cbd5e1; margin-bottom:4px;' }, '⚡ Live In-Memory State:'),
+            h('div', {}, () => `Name: ${form.name || '(empty)'}`),
+            h('div', {}, () => `Email: ${form.email || '(empty)'}`),
+            h('div', {}, () => `Password: ${form.password ? '••••••••' : '(empty)'}`)
+          ),
+
+          h('button', {
+            class: 'filled success md motion glow',
+            style: 'margin-top:20px; width:100%;',
+            onClick: () => {
+              alert(`Form Submitted Instantly!\n\n${JSON.stringify(form.$raw, null, 2)}`);
+            }
+          }, '🚀 Submit Instantly (0ms Latency)')
+        )
+      );
+    }
+
+    // Mount App
+    render(h(App), '#app');
+  </script>
+</body>
+</html>
