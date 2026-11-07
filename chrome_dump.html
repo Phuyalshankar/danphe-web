@@ -1,0 +1,1848 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danphe Native Live Web</title>
+    <meta name="description" content="Real-time Web App rendered by Danphe Native">
+    <meta name="keywords" content="dolphin-native, web, mobile, seo, nanostore">
+    <meta name="author" content="Dolphin Native Team">
+    
+    <!-- OpenGraph SEO Tags -->
+    <meta property="og:title" content="Danphe Native Live Web">
+    <meta property="og:description" content="Real-time Web App rendered by Danphe Native">
+    <meta property="og:type" content="website">
+    
+    
+
+    <!-- ≡ƒç│≡ƒç╡ Danphe UI Native Typography & Web Engine (100% Offline-First) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    
+    <!-- 100% Offline Local Assets & Icons Support -->
+    <link rel="stylesheet" href="/assets/icons/icons.css">
+    <link rel="stylesheet" href="/assets/cdn/fa-all.min.css">
+    <link rel="stylesheet" href="/dolphincss.css">
+    <link rel="stylesheet" href="/assets/cdn/dolphin-css.css">
+    <style>
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body {
+            width: 100%; height: 100%; min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #020617; color: #f8fafc;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Sleek Cyberpunk Scrollbar */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: #090d16; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; border: 2px solid #090d16; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+        /* Explicit Rounded Border Radii */
+        .rounded, .rounded-md { border-radius: 0.375rem !important; }
+        .rounded-6, .rounded-8 { border-radius: 8px !important; }
+        .rounded-lg, .rounded-10 { border-radius: 0.5rem !important; }
+        .rounded-xl, .rounded-12 { border-radius: 0.75rem !important; }
+        .rounded-14, .rounded-16, .rounded-2xl { border-radius: 1rem !important; }
+        .rounded-20, .rounded-24, .rounded-3xl { border-radius: 1.5rem !important; }
+        .rounded-32 { border-radius: 2rem !important; }
+        .rounded-full { border-radius: 9999px !important; }
+
+        /* Crisp Panel Border Rules */
+        .border { border: 1px solid #1e293b !important; }
+        .border-t { border-top: 1px solid #1e293b !important; }
+        .border-b { border-bottom: 1px solid #1e293b !important; }
+        .border-l { border-left: 1px solid #1e293b !important; }
+        .border-r { border-right: 1px solid #1e293b !important; }
+        .border-2 { border-width: 2px !important; }
+        .border-0 { border: none !important; }
+
+        .border-slate-700 { border-color: #334155 !important; }
+        .border-slate-800 { border-color: #1e293b !important; }
+        .border-slate-900 { border-color: #0f172a !important; }
+        .border-sky-500 { border-color: #0ea5e9 !important; }
+        .border-amber-500 { border-color: #f59e0b !important; }
+        .border-purple-500 { border-color: #a855f7 !important; }
+        .border-emerald-500 { border-color: #10b981 !important; }
+        .border-rose-500 { border-color: #f43f5e !important; }
+
+        /* Web Slide-Over Drawer Rules */
+        #dolphin-web-drawer { transform: translateX(-100%) !important; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important; }
+        #dolphin-web-drawer.drawer-open { transform: translateX(0) !important; }
+        #dolphin-web-drawer-backdrop { opacity: 0 !important; pointer-events: none !important; transition: opacity 0.3s ease !important; }
+        #dolphin-web-drawer-backdrop.drawer-open { opacity: 1 !important; pointer-events: auto !important; }
+
+        /* Glassmorphism Cards & Containers */
+        .bg-slate-900 {
+            background-color: rgba(15, 23, 42, 0.92) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(51, 65, 85, 0.6) !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        /* Responsive Images & Video Sizing */
+        img, video { max-width: 100% !important; height: auto; object-fit: cover; border-radius: 0.75rem; }
+        .max-w-xs { max-width: 20rem !important; }
+        .max-w-sm { max-width: 24rem !important; }
+        .max-w-md { max-width: 28rem !important; }
+        .max-w-lg { max-width: 32rem !important; }
+        .max-w-xl { max-width: 36rem !important; }
+        .max-w-2xl { max-width: 42rem !important; }
+        .max-w-3xl { max-width: 48rem !important; }
+        .max-w-4xl { max-width: 56rem !important; }
+        .max-w-5xl { max-width: 64rem !important; }
+        .max-w-6xl { max-width: 72rem !important; }
+        .max-w-7xl { max-width: 80rem !important; }
+        .mx-auto { margin-left: auto !important; margin-right: auto !important; }
+        .w-48 { width: 12rem !important; }
+        .w-64 { width: 16rem !important; }
+        .w-80 { width: 20rem !important; }
+        .w-96 { width: 24rem !important; }
+        .h-48 { height: 12rem !important; }
+        .h-64 { height: 16rem !important; }
+        .h-80 { height: 20rem !important; }
+        .h-96 { height: 24rem !important; }
+        
+        /* Floating Label & Form Styles */
+        .floatinglabel-input, .form-floating .form-control, .floatinglabel input {
+            width: 100% !important; min-height: 3.5rem !important; padding: 1.25rem 1rem 0.35rem 1rem !important; font-size: 1rem !important; border-radius: 0.75rem !important; box-sizing: border-box !important;
+        }
+        .floatinglabel-input.lg { min-height: 4rem !important; padding-top: 1.5rem !important; }
+        .floatinglabel-label, .form-floating label {
+            position: absolute !important; left: 0.85rem !important; top: 50% !important; transform: translateY(-50%) !important; pointer-events: none !important; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important; transform-origin: 0 0 !important; margin: 0 !important; padding: 0 4px !important; border-radius: 4px !important; line-height: 1 !important;
+        }
+
+        /* Layout Helpers */
+        .flex { display: flex; }
+        .flex-row { display: flex !important; flex-direction: row !important; }
+        .flex-col, .flex-column { display: flex !important; flex-direction: column !important; }
+        .flex-col-center { display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
+        .flex-row-center { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; }
+        .items-center { align-items: center !important; }
+        .justify-center { justify-content: center !important; }
+        .justify-between { justify-content: space-between !important; }
+        .flex-1 { flex: 1 1 0% !important; align-self: stretch !important; }
+        .w-full { width: 100% !important; align-self: stretch !important; }
+        .scrollable { overflow-y: auto !important; -webkit-overflow-scrolling: touch !important; }
+
+        /* Grid & Spacing */
+        .grid { display: grid !important; }
+        .grid-cols-1 { display: grid !important; grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+        .grid-cols-2 { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+        .grid-cols-3 { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+        .grid-cols-4 { display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+        .grid-cols-5 { display: grid !important; grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+        .grid-cols-6 { display: grid !important; grid-template-columns: repeat(6, minmax(0, 1fr)) !important; }
+        .grid-cols-12 { display: grid !important; grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+        .col-span-1 { grid-column: span 1 / span 1 !important; }
+        .col-span-2 { grid-column: span 2 / span 2 !important; }
+        .col-span-3 { grid-column: span 3 / span 3 !important; }
+        .col-span-4 { grid-column: span 4 / span 4 !important; }
+        .col-span-5 { grid-column: span 5 / span 5 !important; }
+        .col-span-6 { grid-column: span 6 / span 6 !important; }
+        .col-span-7 { grid-column: span 7 / span 7 !important; }
+        .col-span-8 { grid-column: span 8 / span 8 !important; }
+        .col-span-9 { grid-column: span 9 / span 9 !important; }
+        .col-span-10 { grid-column: span 10 / span 10 !important; }
+        .col-span-11 { grid-column: span 11 / span 11 !important; }
+        .col-span-12 { grid-column: span 12 / span 12 !important; }
+        .aspect-video { aspect-ratio: 16 / 9 !important; }
+        .aspect-square { aspect-ratio: 1 / 1 !important; }
+        .select-none { user-select: none !important; -webkit-user-select: none !important; }
+        .gap-1 { gap: 4px !important; }
+        .gap-1.5 { gap: 6px !important; }
+        .gap-2 { gap: 8px !important; }
+        .gap-2.5 { gap: 10px !important; }
+        .gap-3 { gap: 12px !important; }
+        .gap-4 { gap: 16px !important; }
+        .gap-6 { gap: 24px !important; }
+        .gap-8 { gap: 32px !important; }
+
+        /* ≡ƒÄ¼ ---- HIGH-VISIBILITY 60 FPS KEYFRAME ANIMATIONS ---- */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes ping { 75%, 100% { transform: scale(1.6); opacity: 0; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.03); } }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 20% { transform: scale(1.08); } 40% { transform: scale(0.96); } 60% { transform: scale(1.06); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+        @keyframes tada { 0% { transform: scale(1) rotate(0deg); } 10%, 20% { transform: scale(0.9) rotate(-4deg); } 30%, 50%, 70%, 90% { transform: scale(1.12) rotate(4deg); } 40%, 60%, 80% { transform: scale(1.12) rotate(-4deg); } 100% { transform: scale(1) rotate(0deg); } }
+        @keyframes headshake { 0% { transform: translateX(0); } 13% { transform: translateX(-10px) rotate(-3deg); } 37% { transform: translateX(8px) rotate(3deg); } 63% { transform: translateX(-5px) rotate(-2deg); } 87% { transform: translateX(3px) rotate(1deg); } 100% { transform: translateX(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideLeft { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideRight { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+        @keyframes rotateIn { from { opacity: 0; transform: rotate(-180deg) scale(0.5); } to { opacity: 1; transform: rotate(0) scale(1); } }
+        @keyframes flip { 0% { transform: perspective(600px) rotateY(0deg); } 50% { transform: perspective(600px) rotateY(180deg); } 100% { transform: perspective(600px) rotateY(360deg); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes breathe { 0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(217, 70, 239, 0.3); } 50% { transform: scale(1.02); box-shadow: 0 0 30px rgba(217, 70, 239, 0.9); } }
+
+        /* Animation Utility Class Rules */
+        .animate-spin { animation: spin 1s linear infinite !important; will-change: transform; }
+        .animate-ping { animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite !important; will-change: transform; }
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important; will-change: transform, opacity; }
+        .animate-heartbeat { animation: heartbeat 1.4s ease-in-out infinite !important; will-change: transform; }
+        .animate-bounce { animation: bounce 1.2s ease-in-out infinite !important; will-change: transform; }
+        .animate-tada { animation: tada 1.5s ease-in-out infinite !important; will-change: transform; }
+        .animate-headshake { animation: headshake 1.8s ease-in-out infinite !important; will-change: transform; }
+        .animate-slide-up, .slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; will-change: transform, opacity; }
+        .animate-slide-down, .slide-down { animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; will-change: transform, opacity; }
+        .animate-slide-left, .slide-left { animation: slideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; will-change: transform, opacity; }
+        .animate-slide-right, .slide-right { animation: slideRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; will-change: transform, opacity; }
+        .animate-zoom-in, .zoom-in { animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important; will-change: transform, opacity; }
+        .animate-rotate-in { animation: rotateIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important; will-change: transform, opacity; }
+        .animate-flip { animation: flip 3s linear infinite !important; will-change: transform; }
+        .animate-shimmer { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; animation: shimmer 2s infinite !important; }
+        .animate-float { animation: float 3s ease-in-out infinite !important; will-change: transform; }
+        .animate-breathe { animation: breathe 3s ease-in-out infinite !important; will-change: transform, box-shadow; }
+        .framer-spring { animation: zoomIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards !important; will-change: transform, opacity; }
+        .framer-bounce { animation: bounce 1.2s ease-in-out infinite !important; will-change: transform; }
+
+        /* Micro-Interactions & Hover Lift */
+        .transition, .transition-all { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+        .duration-200 { transition-duration: 200ms !important; }
+        .duration-300 { transition-duration: 300ms !important; }
+        .duration-500 { transition-duration: 500ms !important; }
+        button, a, [data-action] { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important; cursor: pointer; }
+        button:hover, a:hover, [data-action]:hover {
+            transform: translateY(-2px) scale(1.01) !important;
+            filter: brightness(1.15) !important;
+            box-shadow: 0 12px 24px -6px rgba(59, 130, 246, 0.35) !important;
+        }
+        button:active, a:active, [data-action]:active { transform: translateY(0) scale(0.97) !important; }
+
+        /* ≡ƒôÉ ---- AUTO-LAYOUT ENGINE & FLEX / GRID PRIMITIVES ---- */
+        .vstack, vstack { display: flex !important; flex-direction: column !important; width: 100%; box-sizing: border-box; }
+        .hstack, hstack { display: flex !important; flex-direction: row !important; align-items: center; width: 100%; box-sizing: border-box; }
+        .spacer, spacer { flex: 1 1 0% !important; align-self: stretch !important; min-width: 0; min-height: 0; }
+        .divider, divider { display: block !important; width: 100% !important; height: 1px !important; background: rgba(51, 65, 85, 0.6) !important; margin: 0.5rem 0 !important; border: none !important; }
+        .divider-v { display: inline-block !important; width: 1px !important; height: 100% !important; min-height: 1.5rem !important; background: rgba(51, 65, 85, 0.6) !important; margin: 0 0.5rem !important; border: none !important; }
+        .container, container, .container-center { width: 100% !important; max-width: 1280px !important; margin-left: auto !important; margin-right: auto !important; padding-left: 1rem !important; padding-right: 1rem !important; box-sizing: border-box; }
+        .auto-grid { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important; gap: 1rem !important; }
+        .auto-grid-sm { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important; gap: 0.75rem !important; }
+        .auto-grid-lg { display: grid !important; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)) !important; gap: 1.5rem !important; }
+
+        /* Alignment Utilities */
+        .items-start { align-items: flex-start !important; }
+        .items-end { align-items: flex-end !important; }
+        .items-center { align-items: center !important; }
+        .items-baseline { align-items: baseline !important; }
+        .items-stretch { align-items: stretch !important; }
+
+        .justify-start { justify-content: flex-start !important; }
+        .justify-end { justify-content: flex-end !important; }
+        .justify-center { justify-content: center !important; }
+        .justify-between { justify-content: space-between !important; }
+        .justify-around { justify-content: space-around !important; }
+        .justify-evenly { justify-content: space-evenly !important; }
+
+        .flex-wrap { flex-wrap: wrap !important; }
+        .flex-nowrap { flex-wrap: nowrap !important; }
+        .flex-grow { flex-grow: 1 !important; }
+        .flex-shrink-0 { flex-shrink: 0 !important; }
+
+        /* Sticky Navbars, Headers, and Fixed Bars */
+        .sticky-top, .sticky-header {
+            position: sticky !important; top: 0 !important; z-index: 50 !important;
+            backdrop-filter: blur(16px) !important; -webkit-backdrop-filter: blur(16px) !important;
+            background: rgba(2, 6, 23, 0.85) !important; border-bottom: 1px solid #1e293b !important;
+        }
+        .sticky-bottom {
+            position: sticky !important; bottom: 0 !important; z-index: 50 !important;
+            backdrop-filter: blur(16px) !important; -webkit-backdrop-filter: blur(16px) !important;
+            background: rgba(2, 6, 23, 0.85) !important; border-top: 1px solid #1e293b !important;
+        }
+        .sticky-sidebar {
+            position: sticky !important; top: 1rem !important; height: calc(100vh - 2rem) !important;
+            overflow-y: auto !important; -webkit-overflow-scrolling: touch !important;
+        }
+
+        /* ≡ƒô▒ ---- RESPONSIVE AUTO-LAYOUT BREAKPOINTS ---- */
+        /* Small devices (phones, 640px and up) */
+        @media (min-width: 640px) {
+            .sm:flex-row { display: flex !important; flex-direction: row !important; }
+            .sm:flex-col { display: flex !important; flex-direction: column !important; }
+            .sm:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            .sm:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            .sm:hidden { display: none !important; }
+            .sm:block { display: block !important; }
+            .sm:inline-block { display: inline-block !important; }
+        }
+
+        /* Medium devices (tablets, 768px and up) */
+        @media (min-width: 768px) {
+            .md:flex-row { display: flex !important; flex-direction: row !important; }
+            .md:flex-col { display: flex !important; flex-direction: column !important; }
+            .md:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+            .md:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            .md:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+            .md:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+            .md:p-8 { padding: 32px !important; }
+            .md:text-5xl { font-size: 48px !important; line-height: 1 !important; }
+            .md:hidden { display: none !important; }
+            .md:block { display: block !important; }
+            .md:inline-flex { display: inline-flex !important; }
+        }
+
+        /* Large devices (desktops, 1024px and up) */
+        @media (min-width: 1024px) {
+            .lg:flex-row { display: flex !important; flex-direction: row !important; }
+            .lg:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+            .lg:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+            .lg:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; }
+            .lg:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; }
+            .lg:block { display: block !important; }
+            .lg:hidden { display: none !important; }
+        }
+
+        /* Extra large devices (large desktops, 1280px and up) */
+        @media (min-width: 1280px) {
+            .xl:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+            .xl:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)) !important; }
+        }
+        
+        .titan-flipcard, flip-card { display: block; width: 100%; position: relative; }
+        .titan-flipcard > [data-target*="mirror"], .titan-flipcard > [data-target*="editable"],
+        .titan-flipcard > [target*="mirror"], .titan-flipcard > [target*="editable"],
+        flip-card > [data-target*="mirror"], flip-card > [data-target*="editable"],
+        flip-card > [target*="mirror"], flip-card > [target*="editable"] { display: none !important; }
+        .titan-flipcard.flipped > :first-child, flip-card.flipped > :first-child { display: none !important; }
+        .titan-flipcard.flipped > [data-target*="mirror"], .titan-flipcard.flipped > [data-target*="editable"],
+        .titan-flipcard.flipped > [target*="mirror"], .titan-flipcard.flipped > [target*="editable"],
+        flip-card.flipped > [data-target*="mirror"], flip-card.flipped > [data-target*="editable"],
+        flip-card.flipped > [target*="mirror"], flip-card.flipped > [target*="editable"] { display: flex !important; }
+    </style>
+
+    <!-- ≡ƒÉ¼ DANPHE-UI 256 FONTS SUITE & 256 120FPS GPU ANIMATIONS -->
+    
+    <style id="danphe-ui-animations">
+        
+    </style>
+    <style id="danphe-ui-fonts">
+        
+    </style>
+
+    <!-- ≡ƒÉ¼ TITAN-DOM High-Performance Zero-VDOM Engine -->
+    <script>
+    
+    </script>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.sticky{position:sticky}.top-0{top:0px}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.my-2{margin-top:0.5rem;margin-bottom:0.5rem}.mt-1{margin-top:0.25rem}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.h-10{height:2.5rem}.h-3{height:0.75rem}.h-8{height:2rem}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-3{width:0.75rem}.w-8{width:2rem}.w-fit{width:-moz-fit-content;width:fit-content}.w-full{width:100%}.max-w-4xl{max-width:56rem}.flex-1{flex:1 1 0%}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.rounded-full{border-radius:9999px}.rounded-xl{border-radius:0.75rem}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-slate-900{--tw-border-opacity:1;border-color:rgb(15 23 42 / var(--tw-border-opacity, 1))}.border-cyan-400{--tw-border-opacity:1;border-color:rgb(34 211 238 / var(--tw-border-opacity, 1))}.border-transparent{border-color:transparent}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-slate-950{--tw-bg-opacity:1;background-color:rgb(2 6 23 / var(--tw-bg-opacity, 1))}.bg-slate-950\/80{background-color:rgb(2 6 23 / 0.8)}.bg-cyan-500\/20{background-color:rgb(6 182 212 / 0.2)}.p-3{padding:0.75rem}.p-3\.5{padding:0.875rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-3\.5{padding-left:0.875rem;padding-right:0.875rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pb-3{padding-bottom:0.75rem}.pt-1{padding-top:0.25rem}.pt-2{padding-top:0.5rem}.pt-3{padding-top:0.75rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.font-sans{font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"}.text-5xl{font-size:3rem;line-height:1}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.uppercase{text-transform:uppercase}.tracking-tight{letter-spacing:-0.025em}.tracking-wide{letter-spacing:0.025em}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.text-sky-300{--tw-text-opacity:1;color:rgb(125 211 252 / var(--tw-text-opacity, 1))}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-cyan-300{--tw-text-opacity:1;color:rgb(103 232 249 / var(--tw-text-opacity, 1))}.placeholder-slate-500::placeholder{--tw-placeholder-opacity:1;color:rgb(100 116 139 / var(--tw-placeholder-opacity, 1))}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}@media (min-width: 640px){.sm\:p-6{padding:1.5rem}}</style></head>
+<body>
+    <div id="root"><div class="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col font-sans" style="min-height:100vh;width:100%;color:#f1f5f9;display:flex;flex-direction:column"><header class="w-full card glass sticky top-0 z-50 p-3 border-b border-slate-800" style="width:100%;position:sticky;top:0;z-index:50;padding:12px;border-bottom:1px solid #1e293b;border-color:#1e293b"><div class="max-w-4xl mx-auto px-2 flex items-center justify-between" style="padding-left:8px;padding-right:8px;display:flex;align-items:center;justify-content:space-between"><div class="flex items-center gap-3" style="display:flex;align-items:center;gap:12px"><div class="w-10 h-10 rounded-xl filled primary glow flex items-center justify-center text-white font-black text-xl" style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#ffffff"> ≡ƒªà </div><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-sm font-black tracking-tight text-white flex items-center gap-2" style="color:#ffffff;display:flex;align-items:center;gap:8px"> Danphe Web <span class="badge primary rounded-full text-[10px] px-2 py-0.5" style="border-radius:9999px;padding-left:8px;padding-right:8px;padding-top:2px;padding-bottom:2px"> v1.0 ΓÇó DolphinCSS </span></span><span class="text-[11px] text-slate-400" style="color:#94a3b8"> Pure Hardware-Mapped Web Architecture </span></div></div><nav class="flex items-center gap-2" style="display:flex;align-items:center;gap:8px"><button class="filled primary glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 active bg-cyan-500/20 border-cyan-400 text-cyan-300" tx="nav::home" data-tx="nav::home" data-action="nav::home" tb-on:click="action:nav::home" style="border-radius:12px;display:flex;align-items:center"><span>≡ƒÅá</span><span>αñùαÑâαñ╣αñ¬αÑâαñ╖αÑìαñá</span></button><button class="outlined primary btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 text-slate-400 border-transparent" tx="nav::settings" data-tx="nav::settings" data-action="nav::settings" tb-on:click="action:nav::settings" style="border-radius:12px;display:flex;align-items:center"><span>ΓÜÖ∩╕Å</span><span>αñ╕αÑçαñƒαñ┐αñÖ</span></button></nav></div></header><main class="flex-1 w-full max-w-4xl mx-auto p-4 sm:p-6 space-y-6" style="flex:1;min-height:0;min-width:0;width:100%;padding:16px"><div page="nav::home" data-page="nav::home" style="display: block;"><div class="w-full space-y-4" style="width:100%"><div class="w-full card glass glow p-4 flex items-center justify-between" style="width:100%;padding:16px;display:flex;align-items:center;justify-content:space-between"><div class="flex items-center gap-2" style="display:flex;align-items:center;gap:8px"><span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" style="width:12px;height:12px;border-radius:9999px;background-color:#34d399"></span><span class="text-xs font-bold text-white uppercase tracking-wider" style="color:#ffffff">αñ╕αñ┐αñ╕αÑìαñƒαñ« αñ╕αÑìαñƒαñ╛αñƒαñ╕ (System Status)</span></div><div class="flex items-center gap-2 font-mono text-xs" style="display:flex;align-items:center;gap:8px"><span class="badge success rounded-full px-2.5 py-1" style="border-radius:9999px;padding-left:10px;padding-right:10px;padding-top:4px;padding-bottom:4px"> ≡ƒöï <span rx="battery" data-rx="battery" data-bus="battery" tb-text="battery">100</span>% </span><span class="badge primary rounded-full px-2.5 py-1" style="border-radius:9999px;padding-left:10px;padding-right:10px;padding-top:4px;padding-bottom:4px"> ≡ƒô╢ <span rx="network" data-rx="network" data-bus="network" tb-text="network">αñàαñ¿αñ▓αñ╛αñçαñ¿</span></span></div></div><div class="w-full card glass glow space-y-4 p-5" style="width:100%;padding:20px"><div class="flex items-center justify-between border-b border-slate-800 pb-3" style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e293b;border-color:#1e293b;padding-bottom:12px"><div class="flex items-center gap-2.5" style="display:flex;align-items:center"><div class="w-8 h-8 rounded-xl filled primary flex items-center justify-center" style="width:32px;height:32px;border-radius:12px;display:flex;align-items:center;justify-content:center"><span class="text-base">≡ƒöó</span></div><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-xs font-black uppercase tracking-wider text-white" style="color:#ffffff">αñòαñ╛αñëαñ¿αÑìαñƒαñ░ (Counter)</span><span class="text-[10px] text-slate-400 font-mono" style="color:#94a3b8">DolphinCSS ΓÇó Zero VDOM Reactive</span></div></div><span class="badge primary rounded-full text-[10px] font-mono font-bold px-2.5 py-0.5" style="border-radius:9999px;padding-left:10px;padding-right:10px;padding-top:2px;padding-bottom:2px"> LIVE </span></div><div class="w-full card outlined flex flex-col items-center justify-center p-6 my-2" style="width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px"><span class="text-xs font-bold text-slate-400 uppercase tracking-widest" style="color:#94a3b8">αñ╣αñ╛αñ▓αñòαÑï αñòαñ╛αñëαñ¿αÑìαñƒαñ░ αñ«αñ╛αñ¿ (Value)</span><span class="text-5xl font-mono font-black glow my-2" rx="counter::value" data-rx="counter::value" data-bus="counter::value" tb-text="counter::value"> 0 </span><span class="badge success rounded-full text-xs font-bold px-3 py-1" state="counter_status" style="border-radius:9999px;padding-left:12px;padding-right:12px;padding-top:4px;padding-bottom:4px"> αññαñ»αñ╛αñ░ (Ready) </span></div><div class="grid grid-cols-3 gap-3 pt-2" style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:12px;padding-top:8px"><button class="filled primary glow btn-lg rounded-xl cursor-pointer flex flex-col items-center gap-1 py-3 text-slate-400 border-transparent" tx="counter::inc" data-tx="counter::inc" data-action="counter::inc" tb-on:click="action:counter::inc" style="border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:12px;padding-bottom:12px"><span class="text-lg">Γ₧ò</span><span class="font-bold text-xs">αñ¼αñóαñ╛αñëαñ¿αÑüαñ╣αÑïαñ╕αÑì (+1)</span></button><button class="filled secondary glow btn-lg rounded-xl cursor-pointer flex flex-col items-center gap-1 py-3 text-slate-400 border-transparent" tx="counter::dec" data-tx="counter::dec" data-action="counter::dec" tb-on:click="action:counter::dec" style="border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:12px;padding-bottom:12px"><span class="text-lg">Γ₧û</span><span class="font-bold text-xs">αñÿαñƒαñ╛αñëαñ¿αÑüαñ╣αÑïαñ╕αÑì (-1)</span></button><button class="filled danger glow btn-lg rounded-xl cursor-pointer flex flex-col items-center gap-1 py-3 text-slate-400 border-transparent" tx="counter::reset" data-tx="counter::reset" data-action="counter::reset" tb-on:click="action:counter::reset" style="border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:12px;padding-bottom:12px"><span class="text-lg">≡ƒöä</span><span class="font-bold text-xs">αñ░αñ┐αñ╕αÑçαñƒ (Reset)</span></button></div></div><div class="w-full card glass glow space-y-4 p-5" style="width:100%;padding:20px"><div class="flex items-center justify-between border-b border-slate-800 pb-3" style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e293b;border-color:#1e293b;padding-bottom:12px"><div class="flex items-center gap-2.5" style="display:flex;align-items:center"><div class="w-8 h-8 rounded-xl filled primary flex items-center justify-center" style="width:32px;height:32px;border-radius:12px;display:flex;align-items:center;justify-content:center"><span class="text-base">≡ƒùä∩╕Å</span></div><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-xs font-black uppercase tracking-wider text-white" style="color:#ffffff">αñíαÑçαñƒαñ╛ αñ¬αÑìαñ░αñ╡αñ┐αñ╖αÑìαñƒαñ┐ (Data Input)</span><span class="text-[10px] text-slate-400 font-mono" style="color:#94a3b8">Two-Way Reactive ΓÇó Zero Boilerplate</span></div></div><span class="badge primary rounded-full text-[10px] font-mono font-bold px-2.5 py-0.5" style="border-radius:9999px;padding-left:10px;padding-right:10px;padding-top:2px;padding-bottom:2px"> REACTIVE </span></div><div class="w-full space-y-3" style="width:100%"><span class="text-xs font-bold text-slate-300 uppercase tracking-wide" style="color:#cbd5e1"> αñíαñ╛αñƒαñ╛ αñ¬αÑìαñ░αñ╡αñ┐αñ╖αÑìαñƒαñ┐ (Input Field bound to note): </span><input class="w-full card outlined p-3.5 text-white text-xs font-sans placeholder-slate-500 rounded-xl focus:outline-none" rx="form::note" data-rx="form::note" data-bus="form::note" tb-text="form::note" placeholder="αñëαñªαñ╛αñ╣αñ░αñú: αñòαñ╛αñëαñ¿αÑìαñƒαñ░ αñ¿αÑïαñƒ / αñ¿αñ╛αñ« αñ¬αÑìαñ░αñ╡αñ┐αñ╖αÑìαñƒ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì..." name="note" type="text" style="pointer-events:auto;cursor:text;width:100%;padding:14px;color:#ffffff;border-radius:12px"><div class="flex items-center justify-between pt-1" style="display:flex;align-items:center;justify-content:space-between;padding-top:4px"><span class="text-[11px] text-slate-400 font-mono" state="db_status" style="color:#94a3b8"> αñíαñ╛αñƒαñ╛ αñ╕αÑçαñ¡ αñ╣αÑüαñ¿ αññαñ»αñ╛αñ░ </span><button class="filled success glow btn-md rounded-xl cursor-pointer flex items-center gap-2 px-4 py-2 text-slate-400 border-transparent" tx="form::save" data-tx="form::save" data-action="form::save" tb-on:click="action:form::save" style="border-radius:12px;display:flex;align-items:center;gap:8px;padding-left:16px;padding-right:16px;padding-top:8px;padding-bottom:8px"><span>≡ƒÆ╛</span><span class="font-bold text-xs">αñ╕αÑçαñ¡ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì</span></button></div></div><div class="pt-3 border-t border-slate-800 space-y-2" style="padding-top:12px;border-top:1px solid #1e293b;border-color:#1e293b"><span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest" style="color:#94a3b8"> αñ¬αÑìαñ░αññαÑìαñ»αñòαÑìαñ╖ αñ¬αÑéαñ░αÑìαñ╡αñ╛αñ╡αñ▓αÑïαñòαñ¿ (Live Note Preview): </span><div class="card outlined p-3.5 flex items-center justify-between rounded-xl" style="padding:14px;display:flex;align-items:center;justify-content:space-between;border-radius:12px"><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-sm font-bold text-white" rx="form::note" data-rx="form::note" data-bus="form::note" tb-text="form::note" style="color:#ffffff"> (αñƒαñ╛αñçαñ¬ αñùαñ░αÑìαñªαñ╛ αñ»αñ╣αñ╛αñü αññαÑüαñ░αÑüαñ¿αÑìαññαÑê αñªαÑçαñûαñ┐αñ¿αÑìαñ¢) </span><span class="text-[10px] text-slate-500 font-mono" style="color:#64748b"> αñàαñ╣αñ┐αñ▓αÑç αñ¡αñ░αÑìαñûαñ░αÑê </span></div><span class="badge success rounded-full text-[9px] px-2 py-0.5 font-bold uppercase" style="border-radius:9999px;padding-left:8px;padding-right:8px;padding-top:2px;padding-bottom:2px"> SYNCED </span></div></div></div></div></div><div page="nav::settings" data-page="nav::settings" style="display: none;"><div class="w-full space-y-4" style="width:100%"><div class="w-full card glass glow space-y-4 p-5" style="width:100%;padding:20px"><div class="flex items-center justify-between border-b border-slate-800 pb-3" style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e293b;border-color:#1e293b;padding-bottom:12px"><div class="flex items-center gap-2.5" style="display:flex;align-items:center"><div class="w-8 h-8 rounded-xl filled primary flex items-center justify-center" style="width:32px;height:32px;border-radius:12px;display:flex;align-items:center;justify-content:center"><span class="text-base">ΓÜÖ∩╕Å</span></div><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-xs font-black uppercase tracking-wider text-white" style="color:#ffffff"> αñ╕αñ┐αñ╕αÑìαñƒαñ« αñòαñ¿αÑìαñ½αñ┐αñùαñ░αÑçαñ╕αñ¿ (Settings) </span><span class="text-[10px] text-slate-400 font-mono" style="color:#94a3b8"> DolphinCSS ΓÇó Reactive Hardware Mapping </span></div></div><span class="badge success rounded-full text-[10px] font-mono font-bold px-2.5 py-0.5" style="border-radius:9999px;padding-left:10px;padding-right:10px;padding-top:2px;padding-bottom:2px"> ACTIVE </span></div><div class="w-full card outlined p-3.5 text-xs font-medium flex items-center gap-2 rounded-xl text-sky-300" rx="alert_msg" data-rx="alert_msg" data-bus="alert_msg" tb-text="alert_msg" style="width:100%;padding:14px;display:flex;align-items:center;gap:8px;border-radius:12px"><span>Γä╣∩╕Å</span><span>αñòαÑüαñ¿αÑê αñ¬αñ¿αñ┐ αñ¼αñƒαñ¿ αñÑαñ┐αñÜαÑçαñ░ αñ╕αÑçαñƒαñ┐αñÖ αñ¬αñ░αñ┐αñ╡αñ░αÑìαññαñ¿ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ</span></div><div class="space-y-3 pt-1" style="padding-top:4px"><div class="w-full card outlined p-3.5 flex items-center justify-between rounded-xl" style="width:100%;padding:14px;display:flex;align-items:center;justify-content:space-between;border-radius:12px"><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-xs font-bold text-white" style="color:#ffffff">αñ«αñ╛αñ╕αÑìαñƒαñ░ αñ¬αñ╛αñ╡αñ░ (System Power)</span><span class="badge success rounded-full text-[11px] font-mono font-bold mt-1 inline-block w-fit px-2 py-0.5" rx="power_status" data-rx="power_status" data-bus="power_status" tb-text="power_status" style="border-radius:9999px;margin-top:4px;padding-left:8px;padding-right:8px;padding-top:2px;padding-bottom:2px"> αñÜαñ╛αñ▓αÑé (ON) ΓÜí </span></div><button class="filled success glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2" tx="power:toggle" data-tx="power:toggle" data-action="power:toggle" tb-on:click="action:power:toggle" style="border-radius:12px;display:flex;align-items:center;padding-left:14px;padding-right:14px;padding-top:8px;padding-bottom:8px"><span>ΓÜí</span><span class="font-bold text-xs">αñ¬αñ╛αñ╡αñ░ αñƒαñùαñ▓</span></button></div><div class="w-full card outlined p-3.5 flex items-center justify-between rounded-xl" style="width:100%;padding:14px;display:flex;align-items:center;justify-content:space-between;border-radius:12px"><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-xs font-bold text-white" style="color:#ffffff">αñ»αÑüαñåαñê αñÑαñ┐αñ« (Theme Mode)</span><span class="badge primary rounded-full text-[11px] font-mono font-bold mt-1 inline-block w-fit px-2 py-0.5" rx="theme_label" data-rx="theme_label" data-bus="theme_label" tb-text="theme_label" style="border-radius:9999px;margin-top:4px;padding-left:8px;padding-right:8px;padding-top:2px;padding-bottom:2px"> αñùαñ╛αñóαñ╛ (Dark) ≡ƒîÖ </span></div><button class="filled primary glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2" tx="theme:toggle" data-tx="theme:toggle" data-action="theme:toggle" tb-on:click="action:theme:toggle" style="border-radius:12px;display:flex;align-items:center;padding-left:14px;padding-right:14px;padding-top:8px;padding-bottom:8px"><span>≡ƒîô</span><span class="font-bold text-xs">αñÑαñ┐αñ« αñ¼αñªαñ▓αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì</span></button></div><div class="w-full card outlined p-3.5 flex items-center justify-between rounded-xl" style="width:100%;padding:14px;display:flex;align-items:center;justify-content:space-between;border-radius:12px"><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-xs font-bold text-white" style="color:#ffffff">αñ¬αÑìαñ░αñúαñ╛αñ▓αÑÇ αñ╕αÑéαñÜαñ¿αñ╛ (Notification Test)</span><span class="text-[10px] text-slate-400 font-mono" style="color:#94a3b8">αñ╕αÑéαñÜαñ¿αñ╛ αñ¬αñáαñ╛αñÅαñ░ αñ¬αñ░αÑÇαñòαÑìαñ╖αñú αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì</span></div><button class="filled warning glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2" tx="alert:test" data-tx="alert:test" data-action="alert:test" tb-on:click="action:alert:test" style="border-radius:12px;display:flex;align-items:center;padding-left:14px;padding-right:14px;padding-top:8px;padding-bottom:8px"><span>≡ƒöö</span><span class="font-bold text-xs">αñ╕αÑéαñÜαñ¿αñ╛ αñ¬αñáαñ╛αñëαñ¿αÑüαñ╣αÑïαñ╕αÑì</span></button></div><div class="w-full card outlined p-3.5 flex items-center justify-between rounded-xl" style="width:100%;padding:14px;display:flex;align-items:center;justify-content:space-between;border-radius:12px"><div class="flex flex-col" style="display:flex;flex-direction:column"><span class="text-xs font-bold text-white" style="color:#ffffff">αñ╕αñ«αÑìαñ¬αÑéαñ░αÑìαñú αñíαñ╛αñƒαñ╛ αñ░αñ┐αñ╕αÑçαñƒ (Reset All)</span><span class="text-[10px] text-slate-400 font-mono" style="color:#94a3b8">αñòαñ╛αñëαñ¿αÑìαñƒαñ░ αñ░ αñ¿αÑïαñƒ αñ╢αÑéαñ¿αÑìαñ» αñ¼αñ¿αñ╛αñëαñ¿αÑüαñ╣αÑïαñ╕αÑì</span></div><button class="filled danger glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2" tx="data:reset" data-tx="data:reset" data-action="data:reset" tb-on:click="action:data:reset" style="border-radius:12px;display:flex;align-items:center;padding-left:14px;padding-right:14px;padding-top:8px;padding-bottom:8px"><span>≡ƒöä</span><span class="font-bold text-xs">αñ░αñ┐αñ╕αÑçαñƒ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì</span></button></div></div></div></div></div></main><footer class="w-full border-t border-slate-900 bg-slate-950/80 py-4 text-center text-xs text-slate-500" style="width:100%;border-top:1px solid #1e293b;border-color:#0f172a;padding-top:16px;padding-bottom:16px;color:#64748b"> Danphe Web Platform ΓÇó DolphinCSS Semantic Styling ΓÇó Zero Virtual DOM </footer></div></div>
+
+    
+    <!-- ≡ƒîÉ Web Slide-Over Navigation Drawer Overlay & Backdrop -->
+    <div id="dolphin-web-drawer-backdrop" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 99998;" onclick="window.closeWebDrawer &amp;&amp; window.closeWebDrawer()"></div>
+    <div id="dolphin-web-drawer" style="display:none;">
+        
+        <!-- Drawer Header -->
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #1e293b; flex-shrink: 0;">
+            <div style="display: flex; flex-direction: row; align-items: center; gap: 8px;">
+                <span style="font-size: 24px;">≡ƒÉ¼</span>
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 16px; font-weight: 800; color: #fff;">Dolphin Navigation</span>
+                    <span style="font-size: 10px; font-weight: 700; color: #38bdf8; font-family: monospace;">UNIVERSAL SUITE</span>
+                </div>
+            </div>
+            <button onclick="window.closeWebDrawer &amp;&amp; window.closeWebDrawer()" style="background: #1e293b; border: 1px solid #334155; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center;">Γ£ò</button>
+        </div>
+
+        <!-- Scrollable Navigation Items Container -->
+        <div style="display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; padding-right: 4px; padding-bottom: 30px; -webkit-overflow-scrolling: touch;">
+            <button onclick="window.DolphinWebNavigate('Home')" data-action="nav:Home" style="text-align: left; background: #1e293b; color: #fff; border: 1px solid #334155; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒÅá 1. Dashboard Overview</button>
+            <button onclick="window.DolphinWebNavigate('CameraTest')" data-action="nav:CameraTest" style="text-align: left; background: #881337; color: #fff; border: 1px solid #f43f5e; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒô╖ 2. Camera &amp; Media Hardware</button>
+            <button onclick="window.DolphinWebNavigate('AudioTest')" data-action="nav:AudioTest" style="text-align: left; background: #7c2d12; color: #fff; border: 1px solid #fb923c; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒÄÖ∩╕Å 3. Audio &amp; Mic Recorder</button>
+            <button onclick="window.DolphinWebNavigate('StoreTest')" data-action="nav:StoreTest" style="text-align: left; background: #78350f; color: #fff; border: 1px solid #f59e0b; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">ΓÜí 4. NanoStore State Suite</button>
+            <button onclick="window.DolphinWebNavigate('HardwareTest')" data-action="nav:HardwareTest" style="text-align: left; background: #1e1b4b; color: #fff; border: 1px solid #6366f1; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒöî 5. Hardware API Suite</button>
+            <button onclick="window.DolphinWebNavigate('CssTest')" data-action="nav:CssTest" style="text-align: left; background: #14532d; color: #fff; border: 1px solid #22c55e; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒÄ¿ 6. Comprehensive CSS Showcase</button>
+            <button onclick="window.DolphinWebNavigate('GradientTest')" data-action="nav:GradientTest" style="text-align: left; background: #064e3b; color: #fff; border: 1px solid #10b981; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒîê 7. Native Gradients &amp; Banners</button>
+            <button onclick="window.DolphinWebNavigate('AnimationTest')" data-action="nav:AnimationTest" style="text-align: left; background: #701a75; color: #fff; border: 1px solid #d946ef; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒÄ¼ 8. CSS Animations Showcase</button>
+            <button onclick="window.DolphinWebNavigate('GlassGlow')" data-action="nav:GlassGlow" style="text-align: left; background: #581c87; color: #fff; border: 1px solid #a855f7; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒö« 9. Glass &amp; Glow Showcase</button>
+            <button onclick="window.DolphinWebNavigate('PluginTest')" data-action="nav:PluginTest" style="text-align: left; background: #312e81; color: #fff; border: 1px solid #818cf8; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒöî 10. Kt Plugin Suite</button>
+            <button onclick="window.DolphinWebNavigate('MusicPlayer')" data-action="nav:MusicPlayer" style="text-align: left; background: #1e3a8a; color: #fff; border: 1px solid #3b82f6; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒÄ╡ 11. Music Player Suite</button>
+            <button onclick="window.DolphinWebNavigate('FormTest')" data-action="nav:FormTest" style="text-align: left; background: #065f46; color: #fff; border: 1px solid #10b981; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;">≡ƒô¥ 12. Form &amp; Input Suite</button>
+        </div>
+    </div>
+        
+    
+    <!-- ≡ƒîÉ Web Slide-Up Bottom Drawer / Bottom Sheet Overlay -->
+    <div id="dolphin-web-bottom-drawer-backdrop" style="position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 99998;" onclick="window.closeBottomDrawer &amp;&amp; window.closeBottomDrawer()"></div>
+    <div id="dolphin-web-bottom-drawer" style="position: fixed; bottom: 0; left: 50%; transform: translate(-50%, 100%); width: 100%; max-width: 480px; max-height: 60vh; overflow-y: auto; background: #0b0f19; border: 1px solid #1e293b; border-bottom: none; border-radius: 24px 24px 0 0; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); z-index: 99999; display: flex; flex-direction: column; padding: 20px 16px 28px 16px; box-shadow: 0 -20px 50px rgba(0,0,0,0.7);">
+        <!-- Drag Handle Indicator -->
+        <div style="width: 48px; height: 5px; background: #334155; border-radius: 999px; margin: 0 auto 16px auto; cursor: pointer;" onclick="window.closeBottomDrawer &amp;&amp; window.closeBottomDrawer()"></div>
+        <div id="dolphin-web-bottom-drawer-content" style="width: 100%;"></div>
+    </div>
+        
+
+    <!-- Pure Web-Native In-Browser State Engine & Action Router -->
+    <script>
+      (function() {
+        var state = {"gallery_media_url":"/assets/videos/12205.mp4","sys_picked_video_url":"/assets/videos/12205.mp4","gallery_media_type":"video"};
+        var initialState = JSON.parse(JSON.stringify(state));
+        var tempTimers = {};
+        var stateListeners = [];
+
+        // ≡ƒº¡ Universal HTML5 History & URL Path Synchronizer (Generic for any URL)
+        if (typeof window !== 'undefined' && window.location) {
+          var syncFromUrl = function() {
+            var rawPath = (window.location.pathname || '').toLowerCase();
+            while (rawPath.indexOf('/') === 0) rawPath = rawPath.substring(1);
+            while (rawPath.lastIndexOf('/') === rawPath.length - 1 && rawPath.length > 0) rawPath = rawPath.substring(0, rawPath.length - 1);
+            if (rawPath) {
+              var segments = rawPath.split('/').filter(Boolean);
+              if (segments[0]) {
+                state['nav'] = segments[0];
+                state['nav::current'] = segments[0];
+              }
+              if (segments[1]) {
+                state[segments[0]] = segments[1];
+                state[segments[0] + '::current'] = segments[1];
+              }
+            } else {
+              state['nav'] = 'home';
+              state['nav::current'] = 'home';
+            }
+            updateDOM();
+          };
+          syncFromUrl();
+          window.addEventListener('popstate', syncFromUrl);
+        }
+
+        // ≡ƒîƒ Seed Titan Register Store with Initial State
+        if (window.Titan && window.Titan.store) {
+          for (var k in state) {
+            window.Titan.write(k, state[k]);
+          }
+          window.Titan.store.on(-1, function(val, reg) {
+            state[reg] = val;
+          });
+        }
+
+        
+        window.openWebDrawer = function() {
+          var d = document.querySelector('[data-screen="MainDrawer"], [data-screen*="Drawer"], #dolphin-web-drawer');
+          var b = document.getElementById('dolphin-web-drawer-backdrop');
+          if (d) {
+            d.style.setProperty('display', 'flex', 'important');
+            d.style.setProperty('transform', 'translateX(0)', 'important');
+            d.classList.add('drawer-open');
+          }
+          if (b) {
+            b.style.setProperty('opacity', '1', 'important');
+            b.style.setProperty('pointer-events', 'auto', 'important');
+            b.classList.add('drawer-open');
+          }
+        };
+        window.closeWebDrawer = function() {
+          var d = document.querySelector('[data-screen="MainDrawer"], [data-screen*="Drawer"], #dolphin-web-drawer');
+          var b = document.getElementById('dolphin-web-drawer-backdrop');
+          if (d) {
+            d.style.setProperty('transform', 'translateX(-100%)', 'important');
+            d.classList.remove('drawer-open');
+          }
+          if (b) {
+            b.style.setProperty('opacity', '0', 'important');
+            b.style.setProperty('pointer-events', 'none', 'important');
+            b.classList.remove('drawer-open');
+          }
+        };
+        window.openBottomDrawer = function(screenName) {
+          var d = document.getElementById('dolphin-web-bottom-drawer');
+          var b = document.getElementById('dolphin-web-bottom-drawer-backdrop');
+          var c = document.getElementById('dolphin-web-bottom-drawer-content');
+          if (screenName && window.DolphinRenderScreenContent && c) {
+            window.DolphinRenderScreenContent(screenName, c);
+          }
+          if (d) {
+            d.style.setProperty('transform', 'translate(-50%, 0)', 'important');
+            d.classList.add('drawer-open');
+          }
+          if (b) {
+            b.style.setProperty('opacity', '1', 'important');
+            b.style.setProperty('pointer-events', 'auto', 'important');
+            b.classList.add('drawer-open');
+          }
+        };
+        window.closeBottomDrawer = function() {
+          var d = document.getElementById('dolphin-web-bottom-drawer');
+          var b = document.getElementById('dolphin-web-drawer-backdrop');
+          if (d) {
+            d.style.setProperty('transform', 'translate(-50%, 100%)', 'important');
+            d.classList.remove('drawer-open');
+          }
+          if (b) {
+            b.style.setProperty('opacity', '0', 'important');
+            b.style.setProperty('pointer-events', 'none', 'important');
+            b.classList.remove('drawer-open');
+          }
+        };
+        window.DolphinWebNavigate = function(screenTarget) {
+          if (!screenTarget) return;
+          if (window.closeWebDrawer) window.closeWebDrawer();
+          if (window.closeBottomDrawer) window.closeBottomDrawer();
+          var lowerTarget = String(screenTarget).toLowerCase().trim();
+          var targetFile = lowerTarget;
+          if (lowerTarget === 'home' || lowerTarget === 'homescreen') {
+            targetFile = 'index.html';
+          } else if (!lowerTarget.endsWith('screen') && lowerTarget !== 'index.html') {
+            targetFile = lowerTarget + 'screen.html';
+          } else if (!lowerTarget.endsWith('.html')) {
+            targetFile = lowerTarget + '.html';
+          }
+
+          if (window.location.protocol === 'file:' || window.location.pathname.endsWith('.html')) {
+            window.location.href = './' + targetFile;
+          } else {
+            var targetRoute = lowerTarget === 'home' ? '/' : '/' + lowerTarget;
+            window.location.href = targetRoute;
+          }
+        };
+        
+        
+        // ≡ƒÄÖ∩╕Å Web Voice Microphone Recording Handler
+        window.DolphinWebMic = {
+            mediaRecorder: null,
+            audioChunks: [],
+            recordedBlob: null,
+            recordedUrl: '',
+
+            start: function(state, updateDOM) {
+                var self = this;
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    self.fallbackAudioPicker(state, updateDOM);
+                    return;
+                }
+                navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+                    self.audioChunks = [];
+                    self.mediaRecorder = new MediaRecorder(stream);
+                    self.mediaRecorder.ondataavailable = function(e) {
+                        if (e.data.size > 0) self.audioChunks.push(e.data);
+                    };
+                    self.mediaRecorder.onstop = function() {
+                        self.recordedBlob = new Blob(self.audioChunks, { type: 'audio/webm' });
+                        self.recordedUrl = URL.createObjectURL(self.recordedBlob);
+                        state.sys_mic_status = 'Voice Recorded! ≡ƒÄÖ∩╕Å (Ready to play)';
+                        if (updateDOM) updateDOM();
+                    };
+                    self.mediaRecorder.start();
+                    state.sys_mic_status = 'Recording Voice... ≡ƒö┤';
+                    if (updateDOM) updateDOM();
+                }).catch(function(err) {
+                    // Graceful fallback for PCs without physical Mic Hardware
+                    state.sys_mic_status = 'Mic Hardware Not Detected ΓÇö Select Audio File ≡ƒÄÖ∩╕Å';
+                    if (updateDOM) updateDOM();
+                    self.fallbackAudioPicker(state, updateDOM);
+                });
+            },
+
+            fallbackAudioPicker: function(state, updateDOM) {
+                var self = this;
+                var input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'audio/*';
+                input.onchange = function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        self.recordedUrl = URL.createObjectURL(file);
+                        state.sys_mic_status = 'Selected Audio: ' + file.name + ' ≡ƒÄ╡';
+                        state.sys_picked_audio_name = file.name;
+                        state.sys_picked_audio_url = self.recordedUrl;
+                        if (updateDOM) updateDOM();
+                    }
+                };
+                input.click();
+            },
+
+            stop: function(state, updateDOM) {
+                if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+                    this.mediaRecorder.stop();
+                    this.mediaRecorder.stream.getTracks().forEach(function(track) { track.stop(); });
+                } else if (this.recordedUrl) {
+                    state.sys_mic_status = 'Audio File Ready to Play! ≡ƒÄÖ∩╕Å';
+                    if (updateDOM) updateDOM();
+                }
+            },
+
+            play: function(state, updateDOM) {
+                if (this.recordedUrl) {
+                    var a = new Audio(this.recordedUrl);
+                    a.play().catch(function() {});
+                    state.sys_mic_status = 'Playing Audio Stream... Γû╢∩╕Å';
+                    if (updateDOM) updateDOM();
+                } else {
+                    this.fallbackAudioPicker(state, updateDOM);
+                }
+            }
+        };
+
+        // ≡ƒô╖ Web Camera & File Picker Handler with Graceful Fallback
+        window.DolphinWebCamera = {
+            snapOrPick: function(acceptType, state, updateDOM, callback) {
+                var self = this;
+                self.pickFile(acceptType, state, updateDOM, callback);
+            },
+            pickFile: function(acceptType, state, updateDOM, callback) {
+                var input = document.createElement('input');
+                input.type = 'file';
+                input.accept = acceptType || '*/*';
+                input.onchange = function(e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        var url = URL.createObjectURL(file);
+                        if (callback) callback(file, url);
+                    }
+                };
+                input.click();
+            }
+        };
+
+        // ≡ƒÄ¿ 64-Channel HTML5 Canvas Video Engine for Web Browser Target (Opcode 0x61)
+        window.initTitanWebCanvas = function() {
+            var canvas = document.querySelector('canvas[data-nvr="true"]') || document.querySelector('canvas[type="0x61"]') || document.querySelector('[type="0x61"]');
+            if (!canvas || canvas.getAttribute('data-titan-inited') || canvas.getAttribute('data-nvr-ignore')) return;
+            canvas.setAttribute('data-titan-inited', 'true');
+
+            canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth || 1280 : 1280;
+            canvas.height = Math.round(canvas.width * (9 / 16));
+            var ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            var baseUrl = canvas.getAttribute('src') || canvas.getAttribute('data-src') || (window.location.protocol + '//' + window.location.hostname + ':9094');
+            if (baseUrl.endsWith('/')) baseUrl = baseUrl.slice(0, -1);
+
+            var columns = 8;
+            var rows = 8;
+            var images = {};
+            var selectedCam = -1;
+
+            function drawGrid() {
+                var w = canvas.width;
+                var h = canvas.height;
+                ctx.fillStyle = '#020817';
+                ctx.fillRect(0, 0, w, h);
+
+                if (selectedCam > 0) {
+                    // Fullscreen Zoom View
+                    var formattedId = selectedCam < 10 ? 'cam_0' + selectedCam : 'cam_' + selectedCam;
+                    var img = images[selectedCam];
+                    if (img && img.complete && img.naturalWidth !== 0) {
+                        ctx.drawImage(img, 0, 0, w, h);
+                    } else {
+                        ctx.fillStyle = '#0f172a';
+                        ctx.fillRect(0, 0, w, h);
+                    }
+                    ctx.strokeStyle = '#38bdf8';
+                    ctx.lineWidth = 4;
+                    ctx.strokeRect(0, 0, w, h);
+                    ctx.fillStyle = 'rgba(2, 6, 23, 0.75)';
+                    ctx.fillRect(10, 10, 260, 40);
+                    ctx.fillStyle = '#38bdf8';
+                    ctx.font = 'bold 18px sans-serif';
+                    ctx.fillText('≡ƒô╣ CH' + (selectedCam < 10 ? '0' + selectedCam : selectedCam) + ' - FULLSCREEN VIEW', 20, 36);
+                    return;
+                }
+
+                var cellW = w / columns;
+                var cellH = h / rows;
+
+                for (var r = 0; r < rows; r++) {
+                    for (var c = 0; c < columns; c++) {
+                        var camId = r * columns + c + 1;
+                        var x = c * cellW;
+                        var y = r * cellH;
+
+                        var img = images[camId];
+                        if (img && img.complete && img.naturalWidth !== 0) {
+                            ctx.drawImage(img, x, y, cellW, cellH);
+                        } else {
+                            ctx.fillStyle = '#0a0f1e';
+                            ctx.fillRect(x, y, cellW, cellH);
+                        }
+
+                        // OSD Grid Border
+                        ctx.strokeStyle = '#1e3a5f';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(x, y, cellW, cellH);
+
+                        // OSD Header
+                        ctx.fillStyle = 'rgba(2, 8, 23, 0.75)';
+                        ctx.fillRect(x + 2, y + 2, cellW - 4, 18);
+                        ctx.fillStyle = '#38bdf8';
+                        ctx.font = 'bold 10px monospace';
+                        ctx.fillText('CH' + (camId < 10 ? '0' + camId : camId), x + 6, y + 14);
+
+                        // REC Badge
+                        ctx.fillStyle = '#ef4444';
+                        ctx.beginPath();
+                        ctx.arc(x + cellW - 10, y + 10, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            }
+
+            function fetchSnapshots() {
+                for (var id = 1; id <= 64; id++) {
+                    (function(camId) {
+                        var formattedId = camId < 10 ? 'cam_0' + camId : 'cam_' + camId;
+                        var img = new Image();
+                        img.onload = function() {
+                            images[camId] = img;
+                            drawGrid();
+                        };
+                        img.src = baseUrl + '/nvr/snapshot/' + formattedId + '?t=' + Date.now();
+                    })(id);
+                }
+            }
+
+            canvas.addEventListener('click', function(e) {
+                var rect = canvas.getBoundingClientRect();
+                var clickX = e.clientX - rect.left;
+                var clickY = e.clientY - rect.top;
+                if (selectedCam > 0) {
+                    selectedCam = -1;
+                } else {
+                    var cellW = canvas.width / columns;
+                    var cellH = canvas.height / rows;
+                    var col = Math.floor(clickX / cellW);
+                    var row = Math.floor(clickY / cellH);
+                    selectedCam = row * columns + col + 1;
+                }
+                drawGrid();
+            });
+
+            drawGrid();
+            fetchSnapshots();
+            setInterval(fetchSnapshots, 2000);
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initTitanWebCanvas);
+        } else {
+            setTimeout(window.initTitanWebCanvas, 100);
+        }
+
+        // ≡ƒÄ¼ Titan Video Studio ΓÇö Bi-Directional Gizmo, Slider, Clip & SSE Sync Engine
+        window.initTitanVideoStudio = function() {
+            var video = document.querySelector('video') || document.getElementById('titanVideoPlayer');
+            var needle = document.getElementById('titanPlayheadNeedle');
+            var gizmo = document.getElementById('titanTransformGizmo');
+            var stage = document.getElementById('titanCinemaStage');
+            var slider = document.getElementById('titanStudioSlider') || document.querySelector('input[type="range"][data-state-key="sliderVal"]');
+            var clip = document.getElementById('titanActiveClip');
+            var handleL = document.getElementById('titanClipHandleLeft');
+            var handleR = document.getElementById('titanClipHandleRight');
+
+            if (!video) return;
+
+            // 1. Ensure video loads metadata and is unmuted on interaction
+            video.preload = 'auto';
+            video.playsInline = true;
+            if (video.paused) {
+                video.addEventListener('loadedmetadata', function() {
+                    if (video.currentTime === 0) video.currentTime = 0.05;
+                }, { once: true });
+            }
+
+            // 2. Play / Pause & Stage Tap
+            function togglePlayback() {
+                if (video.paused) {
+                    video.play().catch(function() {});
+                    if (window.DolphinWebStore) window.DolphinWebStore.set('isPlaying', true);
+                } else {
+                    video.pause();
+                    if (window.DolphinWebStore) window.DolphinWebStore.set('isPlaying', false);
+                }
+            }
+            if (stage) {
+                stage.addEventListener('click', function(e) {
+                    if (e.target.closest && (e.target.closest('.gizmo-handle') || e.target.closest('.gizmo-rotate-knob') || e.target.closest('.gizmo-delete-btn') || e.target.closest('button'))) return;
+                    togglePlayback();
+                });
+            }
+
+            // 3. Video timeupdate -> Move Playhead Needle & update timecode
+            video.addEventListener('timeupdate', function() {
+                var cur = video.currentTime || 0;
+                var dur = video.duration || 10;
+                var pct = Math.min(1, Math.max(0, cur / dur));
+
+                var mins = Math.floor(cur / 60);
+                var secs = Math.floor(cur % 60);
+                var ms = Math.floor((cur % 1) * 30);
+                var tc = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs + ':' + (ms < 10 ? '0' : '') + ms;
+
+                var tcElements = document.querySelectorAll('[data-state-key="currentTime"], [data-bus="1002"]');
+                tcElements.forEach(function(el) { el.textContent = tc; });
+
+                if (needle) {
+                    var timelineDeck = needle.parentElement || document.querySelector('.timeline-deck');
+                    var deckWidth = (timelineDeck ? timelineDeck.clientWidth - 50 : 280) || 280;
+                    var xPos = pct * deckWidth;
+                    needle.style.transform = 'translateX(' + xPos.toFixed(1) + 'px)';
+                }
+            });
+
+            // 4. Click Timeline to Seek Playhead
+            var timelineContainer = document.getElementById('titanTimelineTrackContainer') || document.querySelector('[action="app.selectVideoLane"]') || (needle && needle.parentElement);
+            if (timelineContainer) {
+                timelineContainer.addEventListener('click', function(e) {
+                    if (e.target.closest && e.target.closest('#titanActiveClip')) return;
+                    var rect = timelineContainer.getBoundingClientRect();
+                    var clickX = e.clientX - rect.left;
+                    var ratio = Math.max(0, Math.min(1, clickX / rect.width));
+                    if (video.duration) {
+                        video.currentTime = ratio * video.duration;
+                    }
+                });
+            }
+
+            // 5. Bi-directional Gizmo Interaction (Touch & Mouse Drag) with Re-entrancy Protection
+            var isApplyingTransform = false;
+            function applyTransform(z, r, px, py, isUserDrag) {
+                if (isApplyingTransform) return;
+                isApplyingTransform = true;
+                try {
+                    var scale = Math.max(0.2, z / 100);
+                    var tf = 'translate3d(' + px + 'px, ' + py + 'px, 0px) scale(' + scale.toFixed(3) + ') rotate(' + r.toFixed(1) + 'deg)';
+                    if (video) video.style.transform = tf;
+                    if (gizmo) gizmo.style.transform = tf;
+                    if (isUserDrag && window.DolphinWebStore && window.DolphinWebStore.state) {
+                        window.DolphinWebStore.state['zoom'] = Math.round(z);
+                        window.DolphinWebStore.state['rotation'] = Math.round(r);
+                        window.DolphinWebStore.state['canvasTransform'] = tf;
+                    }
+                } finally {
+                    isApplyingTransform = false;
+                }
+            }
+
+            if (gizmo) {
+                var isGizmoDragging = false;
+                var gizmoDragType = '';
+                var gStartX = 0, gStartY = 0;
+                var gStartZoom = 100, gStartRot = 0, gStartPanX = 0, gStartPanY = 0;
+
+                gizmo.addEventListener('pointerdown', function(e) {
+                    var target = e.target;
+                    if (target.classList && target.classList.contains('gizmo-handle')) {
+                        gizmoDragType = 'scale';
+                    } else if (target.classList && target.classList.contains('gizmo-rotate-knob')) {
+                        gizmoDragType = 'rotate';
+                    } else if (target.classList && target.classList.contains('gizmo-delete-btn')) {
+                        applyTransform(100, 0, 0, 0, true);
+                        fetch('/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'state:zoom:=100', value: '100' }) }).catch(function(){});
+                        return;
+                    } else {
+                        gizmoDragType = 'pan';
+                    }
+                    isGizmoDragging = true;
+                    gizmo.setPointerCapture(e.pointerId);
+                    gStartX = e.clientX;
+                    gStartY = e.clientY;
+                    gStartZoom = (window.DolphinWebStore && window.DolphinWebStore.get('zoom')) || 100;
+                    gStartRot = (window.DolphinWebStore && window.DolphinWebStore.get('rotation')) || 0;
+                    gStartPanX = (window.DolphinWebStore && window.DolphinWebStore.get('panX')) || 0;
+                    gStartPanY = (window.DolphinWebStore && window.DolphinWebStore.get('panY')) || 0;
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                gizmo.addEventListener('pointermove', function(e) {
+                    if (!isGizmoDragging) return;
+                    var dx = e.clientX - gStartX;
+                    var dy = e.clientY - gStartY;
+
+                    if (gizmoDragType === 'scale') {
+                        var delta = (dx + dy) * 0.5;
+                        var newZoom = Math.max(20, Math.min(400, gStartZoom + delta));
+                        applyTransform(newZoom, gStartRot, gStartPanX, gStartPanY, true);
+                    } else if (gizmoDragType === 'rotate') {
+                        var newRot = (gStartRot + dx * 0.8) % 360;
+                        applyTransform(gStartZoom, newRot, gStartPanX, gStartPanY, true);
+                    } else if (gizmoDragType === 'pan') {
+                        applyTransform(gStartZoom, gStartRot, gStartPanX + dx, gStartPanY + dy, true);
+                    }
+                });
+
+                gizmo.addEventListener('pointerup', function(e) {
+                    if (isGizmoDragging) {
+                        isGizmoDragging = false;
+                        try { gizmo.releasePointerCapture(e.pointerId); } catch(err) {}
+                        var curZ = Math.round((window.DolphinWebStore && window.DolphinWebStore.get('zoom')) || 100);
+                        var curR = Math.round((window.DolphinWebStore && window.DolphinWebStore.get('rotation')) || 0);
+                        fetch('/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'state:zoom:=' + curZ, value: String(curZ) }) }).catch(function(){});
+                        fetch('/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'state:rotation:=' + curR, value: String(curR) }) }).catch(function(){});
+                    }
+                });
+            }
+
+            // 6. Real Continuous Interactive Hardware Slider (60 FPS Bi-directional Sync)
+            if (slider) {
+                var sliderSendTimer = null;
+                slider.addEventListener('input', function(e) {
+                    var rawVal = Number(slider.value) || 0;
+                    var param = (window.DolphinWebStore && window.DolphinWebStore.get('sliderParam')) || 'Speed';
+                    var disp = '';
+
+                    if (param.includes('Speed')) {
+                        var mappedSpeed = Math.round(10 + (rawVal / 255) * 390);
+                        var rate = mappedSpeed / 100;
+                        video.playbackRate = Math.max(0.1, rate);
+                        disp = rate.toFixed(1) + 'x';
+                    } else if (param.includes('Zoom')) {
+                        var mappedZoom = Math.round(20 + (rawVal / 255) * 380);
+                        disp = mappedZoom + '%';
+                        var curR = (window.DolphinWebStore && window.DolphinWebStore.get('rotation')) || 0;
+                        applyTransform(mappedZoom, curR, 0, 0, false);
+                    } else if (param.includes('Rotate')) {
+                        var mappedRot = Math.round((rawVal / 255) * 360);
+                        disp = mappedRot + '┬░';
+                        var curZ = (window.DolphinWebStore && window.DolphinWebStore.get('zoom')) || 100;
+                        applyTransform(curZ, mappedRot, 0, 0, false);
+                    } else if (param.includes('Volume')) {
+                        var mappedVol = Math.round((rawVal / 255) * 200);
+                        disp = mappedVol === 0 ? 'Mute' : mappedVol + '%';
+                        video.volume = Math.max(0, Math.min(1, mappedVol / 100));
+                        video.muted = mappedVol === 0;
+                    } else if (param.includes('Opacity')) {
+                        var mappedOp = Math.round((rawVal / 255) * 100);
+                        disp = mappedOp + '%';
+                        video.style.opacity = (mappedOp / 100).toFixed(2);
+                    } else {
+                        disp = rawVal + '%';
+                    }
+
+                    if (window.DolphinWebStore && window.DolphinWebStore.state) {
+                        window.DolphinWebStore.state['sliderVal'] = rawVal;
+                        window.DolphinWebStore.state['sliderDisplayVal'] = disp;
+                    }
+
+                    document.querySelectorAll('[data-state-key="sliderDisplayVal"]').forEach(function(el) { el.textContent = disp; });
+                    document.querySelectorAll('[data-state-key="status"]').forEach(function(el) { el.textContent = 'ΓÜí ' + param + ': ' + disp; });
+
+                    clearTimeout(sliderSendTimer);
+                    sliderSendTimer = setTimeout(function() {
+                        fetch('/action', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ action: 'app.onSliderChange', value: String(rawVal) })
+                        }).catch(function(){});
+                    }, 60);
+                });
+            }
+
+            // 7. Media Lane Clip Drag & Drag-To-Grow Engine
+            if (clip) {
+                var isClipDragging = false;
+                var clipDragMode = 'move'; // 'move' | 'grow-right' | 'grow-left'
+                var cStartMouseX = 0;
+                var cStartLeft = Number(window.DolphinWebStore && window.DolphinWebStore.get('clipStart')) || 20;
+                var cStartWidth = Number(window.DolphinWebStore && window.DolphinWebStore.get('clipWidth')) || 140;
+
+                clip.style.left = cStartLeft + 'px';
+                clip.style.width = cStartWidth + 'px';
+
+                clip.addEventListener('pointerdown', function(e) {
+                    var target = e.target;
+                    if (target === handleR || (handleR && handleR.contains(target))) {
+                        clipDragMode = 'grow-right';
+                    } else if (target === handleL || (handleL && handleL.contains(target))) {
+                        clipDragMode = 'grow-left';
+                    } else {
+                        clipDragMode = 'move';
+                    }
+                    isClipDragging = true;
+                    clip.setPointerCapture(e.pointerId);
+                    cStartMouseX = e.clientX;
+                    cStartLeft = parseInt(clip.style.left, 10) || 20;
+                    cStartWidth = parseInt(clip.style.width, 10) || 140;
+                    e.stopPropagation();
+                    e.preventDefault();
+                });
+
+                clip.addEventListener('pointermove', function(e) {
+                    if (!isClipDragging) return;
+                    var dx = e.clientX - cStartMouseX;
+
+                    if (clipDragMode === 'move') {
+                        var newLeft = Math.max(0, Math.min(240, cStartLeft + dx));
+                        clip.style.left = newLeft + 'px';
+                    } else if (clipDragMode === 'grow-right') {
+                        var newWidth = Math.max(30, Math.min(270 - cStartLeft, cStartWidth + dx));
+                        clip.style.width = newWidth + 'px';
+                    } else if (clipDragMode === 'grow-left') {
+                        var newLeft = Math.max(0, Math.min(cStartLeft + cStartWidth - 30, cStartLeft + dx));
+                        var newWidth = cStartWidth - (newLeft - cStartLeft);
+                        clip.style.left = newLeft + 'px';
+                        clip.style.width = newWidth + 'px';
+                    }
+                });
+
+                clip.addEventListener('pointerup', function(e) {
+                    if (isClipDragging) {
+                        isClipDragging = false;
+                        try { clip.releasePointerCapture(e.pointerId); } catch(err) {}
+                        var curL = parseInt(clip.style.left, 10) || 20;
+                        var curW = parseInt(clip.style.width, 10) || 140;
+                        if (window.DolphinWebStore && window.DolphinWebStore.state) {
+                            window.DolphinWebStore.state['clipStart'] = curL;
+                            window.DolphinWebStore.state['clipWidth'] = curW;
+                        }
+                        fetch('/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'state:clipStart:=' + curL, value: String(curL) }) }).catch(function(){});
+                        fetch('/action', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'state:clipWidth:=' + curW, value: String(curW) }) }).catch(function(){});
+                    }
+                });
+            }
+
+            // 8. Universal Reactive State Patch Handlers (0ms SSE Stream Synchronizer)
+            window.onTitanStatePatch = function(key, value) {
+                if (!key) return;
+                var numVal = Number(value);
+
+                if (key === 'clipStart') {
+                    if (clip) clip.style.left = (numVal || 0) + 'px';
+                } else if (key === 'clipWidth') {
+                    if (clip) clip.style.width = (numVal || 140) + 'px';
+                } else if (key === 'sliderVal') {
+                    if (slider && document.activeElement !== slider) slider.value = value;
+                } else if (key === 'canvasTransform') {
+                    if (video) video.style.transform = value;
+                    if (gizmo) gizmo.style.transform = value;
+                } else if (key === 'zoom' || key === 'scale') {
+                    var curR = (window.DolphinWebStore && window.DolphinWebStore.get('rotation')) || 0;
+                    applyTransform(numVal || 100, curR, 0, 0, false);
+                } else if (key === 'rotation') {
+                    var curZ = (window.DolphinWebStore && window.DolphinWebStore.get('zoom')) || 100;
+                    applyTransform(curZ, numVal || 0, 0, 0, false);
+                } else if (key === 'isPlaying') {
+                    if (value === true || value === 'true' || value === 1) {
+                        video.play().catch(function(){});
+                    } else {
+                        video.pause();
+                    }
+                } else if (key === 'speed') {
+                    video.playbackRate = Math.max(0.1, (numVal || 100) / 100);
+                } else if (key === 'volume') {
+                    video.volume = Math.max(0, Math.min(1, (numVal || 100) / 100));
+                } else if (key === 'isMuted') {
+                    video.muted = (value === true || value === 'true' || value === 1);
+                } else if (key === 'opacity') {
+                    video.style.opacity = Math.max(0, Math.min(1, (numVal || 100) / 100));
+                } else if (key === 'activeClipName') {
+                    var clipLabel = clip ? clip.querySelector('span') : null;
+                    if (clipLabel) clipLabel.textContent = value;
+                } else if (key === 'sys_picked_video_url' || key === 'videoSrc') {
+                    if (video && value && video.src !== value) {
+                        video.src = value;
+                        video.load();
+                    }
+                }
+            };
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initTitanVideoStudio);
+        } else {
+            setTimeout(window.initTitanVideoStudio, 150);
+        }
+        
+
+                // ΓÜí TITAN-BUS MICRO ENGINE CLIENT (window.TitanBus & window.TitanBusClient)
+        // Provides 0ms in-memory reactivity and immediate 6-byte SISO packet bridge to DevServer
+        window.TitanBus = {
+          registers: new Int16Array(65536),
+          write: function(reg, val) {
+            var r = Number(reg) & 0xFFFF;
+            var v = Number(val);
+            if (isNaN(r) || isNaN(v)) return;
+            this.registers[r] = v;
+            state[r] = v;
+            state['bus:' + r] = v;
+            state['0x' + r.toString(16).toLowerCase()] = v;
+            state['bus:0x' + r.toString(16).toLowerCase()] = v;
+            updateDOM();
+            try {
+              fetch('/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'bus:write:' + r + ':' + v, value: v })
+              }).catch(function() {});
+            } catch (e) {}
+          },
+          read: function(reg) {
+            var r = Number(reg) & 0xFFFF;
+            return this.registers[r];
+          }
+        };
+        window.TitanBusClient = window.TitanBus;
+
+        if (!window.Titan) {
+          window.Titan = {
+            read: function(reg, def) {
+              var val = window.TitanBus.read(reg);
+              return val !== undefined && val !== 0 ? val : (def !== undefined ? def : state[reg]);
+            },
+            write: function(reg, val) {
+              window.TitanBus.write(reg, val);
+            },
+            call: {
+              dial: function(peerId, mode) {
+                window.TitanBus.write(100, 2);
+                try {
+                  fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'calldial', peerId: peerId, mode: mode || 'p2p_mesh' })
+                  }).catch(function() {});
+                } catch(e) {}
+              },
+              accept: function() {
+                window.TitanBus.write(100, 1);
+                try {
+                  fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'callanswer' })
+                  }).catch(function() {});
+                } catch(e) {}
+              },
+              hangup: function() {
+                window.TitanBus.write(100, 0);
+                try {
+                  fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'callhangup' })
+                  }).catch(function() {});
+                } catch(e) {}
+              }
+            },
+            stream: {
+              startBroadcast: function() { window.TitanBus.write(0x3071, 1); },
+              stopBroadcast: function() { window.TitanBus.write(0x3071, 0); },
+              setAudioVu: function(lvl) { window.TitanBus.write(0x3034, lvl); }
+            },
+            hoster: {
+              openTunnel: function() { window.TitanBus.write(0x3072, 1); },
+              closeTunnel: function() { window.TitanBus.write(0x3072, 0); },
+              getShareUrl: function() { return window.location.protocol + '//' + window.location.hostname + ':9090/live'; }
+            },
+            disk: {
+              saveFile: function() { window.TitanBus.write(0x3062, 1); },
+              fetchRemoteFile: function() { window.TitanBus.write(0x3063, 1); },
+              sync: function() { window.TitanBus.write(0x3075, 1); }
+            }
+          };
+        }
+
+        // ≡ƒîƒ Expose Universal Reactive Hooks & NanoStore to Browser Window
+        window.DolphinWebStore = {
+          state: state,
+          get: function(key) {
+            if (window.Titan && window.Titan.store) {
+              return window.Titan.read(key, state[key]);
+            }
+            return state[key];
+          },
+          set: function(key, val) {
+            state[key] = val;
+            if (window.Titan && window.Titan.store) {
+              window.Titan.write(key, val);
+            }
+            updateDOM();
+            stateListeners.forEach(function(l) { try { l(key, val); } catch (e) {} });
+          },
+          updateState: function(key, val) { this.set(key, val); },
+          subscribe: function(fn) {
+            stateListeners.push(fn);
+            return function() {
+              var idx = stateListeners.indexOf(fn);
+              if (idx >= 0) stateListeners.splice(idx, 1);
+            };
+          }
+        };
+
+        // ≡ƒîƒ Universal useTitan Hook (Works identically on Web, Android, and LVGL!)
+        window.useTitan = function(keyOrReg, initial) {
+          var reg = !isNaN(Number(keyOrReg)) ? Number(keyOrReg) : String(keyOrReg);
+          if (initial !== undefined && window.Titan && window.Titan.read(reg, null) === null) {
+            window.Titan.write(reg, initial);
+          }
+          var val = window.Titan ? window.Titan.read(reg, initial !== undefined ? initial : 0) : state[reg];
+          var setVal = function(newVal) {
+            var current = window.Titan ? window.Titan.read(reg) : state[reg];
+            var next = typeof newVal === 'function' ? newVal(current) : newVal;
+            if (window.Titan) window.Titan.write(reg, next);
+            else window.DolphinWebStore.set(reg, next);
+          };
+          return [val, setVal];
+        };
+
+        window.useState = function(initial) {
+          var hookKey = '_hook_' + Math.random().toString(36).substring(2, 9);
+          if (state[hookKey] === undefined) {
+            state[hookKey] = typeof initial === 'function' ? initial() : initial;
+          }
+          var setState = function(newVal) {
+            state[hookKey] = typeof newVal === 'function' ? newVal(state[hookKey]) : newVal;
+            updateDOM();
+          };
+          return [state[hookKey], setState];
+        };
+
+        window.useEffect = function(callback, deps) {
+          setTimeout(function() {
+            try { callback(); } catch (e) {}
+          }, 0);
+        };
+
+        window.useRef = function(initial) {
+          return { current: initial };
+        };
+
+        window.useNanoState = function(key, initial) {
+          if (state[key] === undefined && initial !== undefined) {
+            state[key] = initial;
+          }
+          var setNanoState = function(newVal) {
+            state[key] = typeof newVal === 'function' ? newVal(state[key]) : newVal;
+            updateDOM();
+            stateListeners.forEach(function(l) { try { l(key, state[key]); } catch (e) {} });
+          };
+          return [state[key] !== undefined ? state[key] : initial, setNanoState];
+        };
+
+        function updateDOM() {
+          // 1. Primitive State Elements (Guarded against Objects & Collections)
+          var stateElements = document.querySelectorAll('[data-state-key]');
+          stateElements.forEach(function(el) {
+            if (el.hasAttribute('collection') || el.hasAttribute('data-collection')) return;
+            var key = el.getAttribute('data-state-key');
+            if (key && state[key] !== undefined) {
+              var sVal = state[key];
+              if (typeof sVal === 'object') return; // ≡ƒ¢í∩╕Å GUARD: NEVER dump Object to textContent!
+              if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+                if (document.activeElement !== el) el.value = String(sVal);
+              } else {
+                el.textContent = String(sVal);
+              }
+            }
+          });
+
+          // 2. Direct Register Bus Elements (Guarded against Objects & Collections)
+          var busElements = document.querySelectorAll('[data-bus]');
+          busElements.forEach(function(el) {
+            if (el.hasAttribute('collection') || el.hasAttribute('data-collection')) return;
+            var busKey = el.getAttribute('data-bus');
+            if (busKey) {
+              var isNested = busKey.indexOf('.') >= 0;
+              var regId = isNested ? busKey.split('.')[0] : busKey;
+              var propPath = isNested ? busKey.split('.').slice(1) : [];
+
+              var val = state['bus:' + regId] !== undefined ? state['bus:' + regId] : (state[regId] !== undefined ? state[regId] : (state['bus:' + busKey] !== undefined ? state['bus:' + busKey] : state[busKey]));
+              if (isNested && val && typeof val === 'object') {
+                var cur = val;
+                for (var p = 0; p < propPath.length; p++) {
+                  if (cur && cur[propPath[p]] !== undefined) cur = cur[propPath[p]];
+                  else { cur = ''; break; }
+                }
+                val = cur;
+              }
+              if (val !== undefined && val !== null) {
+                if (typeof val === 'object') return; // ≡ƒ¢í∩╕Å GUARD: NEVER dump Object to textContent!
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+                  if (document.activeElement !== el) el.value = String(val);
+                } else {
+                  el.textContent = String(val);
+                }
+              }
+            }
+          });
+
+          // 3. ≡ƒôí Titan Carrier & Direct Hardware Register Binding (Guarded against Objects & Collections)
+          var rxElements = document.querySelectorAll('[data-rx], [rx]');
+          rxElements.forEach(function(el) {
+            if (el.hasAttribute('collection') || el.hasAttribute('data-collection')) return;
+            var rxVal = el.getAttribute('data-rx') || el.getAttribute('rx');
+            if (rxVal) {
+              // 1. Direct state key check (e.g. 'counter::value', 'power_status', 'theme_label', 'alert_msg')
+              var val = state[rxVal] !== undefined ? state[rxVal] : (state['bus:' + rxVal] !== undefined ? state['bus:' + rxVal] : undefined);
+
+              // 2. Numeric / Hex hardware fallback
+              if (val === undefined && (!isNaN(Number(rxVal)) || rxVal.startsWith('0x') || rxVal.startsWith('0X'))) {
+                var hexKey = (rxVal.startsWith('0x') || rxVal.startsWith('0X')) ? rxVal.toLowerCase() : '0x' + parseInt(rxVal, 10).toString(16);
+                var decKey = (rxVal.startsWith('0x') || rxVal.startsWith('0X')) ? String(parseInt(rxVal, 16)) : rxVal;
+                val = state[hexKey] !== undefined ? state[hexKey] : (state[decKey] !== undefined ? state[decKey] : (state['bus:' + hexKey] !== undefined ? state['bus:' + hexKey] : state['bus:' + decKey]));
+              }
+              
+              if (val !== undefined && val !== null) {
+                if (typeof val === 'object') return; // ≡ƒ¢í∩╕Å GUARD: NEVER dump Object to textContent!
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                  if (document.activeElement !== el) el.value = String(val);
+                } else {
+                  el.textContent = String(val);
+                }
+              }
+            }
+          });
+
+          // ≡ƒôï Dynamic Slot List & Collection Hydration (menu, rooms, orders)
+          var listContainers = document.querySelectorAll('[collection], [data-collection]');
+          listContainers.forEach(function(listEl) {
+            var colName = listEl.getAttribute('collection') || listEl.getAttribute('data-collection');
+            if (!colName) return;
+            var rxVal = listEl.getAttribute('data-rx') || '';
+            var rawData = state[colName] || state['hotel_' + colName] || (rxVal && state[rxVal]) || (rxVal && state['bus:' + rxVal]);
+            if (!rawData) return;
+            var items = null;
+            if (typeof rawData === 'string') {
+              try { items = JSON.parse(rawData); } catch(e) {}
+            } else if (Array.isArray(rawData)) {
+              items = rawData;
+            }
+            if (!items || !Array.isArray(items) || items.length === 0) return;
+
+            if (!listEl._titanTemplate) {
+              var firstChild = listEl.firstElementChild;
+              if (firstChild) {
+                listEl._titanTemplate = firstChild.cloneNode(true);
+              }
+            }
+            if (!listEl._titanTemplate) return;
+
+            var newIds = items.map(function(it) { return it._id || it.code || it.id || ''; }).join(',');
+            var currentRenderedIds = listEl.getAttribute('data-rendered-ids');
+            if (currentRenderedIds === newIds && listEl.children.length === items.length) {
+              return;
+            }
+
+            listEl.innerHTML = '';
+            listEl.setAttribute('data-rendered-ids', newIds);
+            var isRooms = false;
+            
+            items.forEach(function(item) {
+              var clone = listEl._titanTemplate.cloneNode(true);
+              var docId = String(item._id || item.code || item.id || '');
+              clone.setAttribute('data-id', docId);
+              clone.setAttribute('data-col', colName);
+
+              var slot1 = item.slot_1 || (isRooms ? ('Room ' + item.roomNumber) : item.name) || item.title || '';
+              var slot2 = item.slot_2 || (isRooms ? (item.guest || item.guestName || 'ΓÇö Vacant ΓÇö') : item.category) || '';
+              var slot3 = item.slot_3 || (isRooms ? (item.type || item.roomType || 'Standard') : item.category) || '';
+              var slot4 = item.slot_4 || (isRooms ? (item.status || 'VACANT') : (item.price !== undefined ? ('Rs. ' + item.price) : ''));
+              var slot5 = item.slot_5 || (isRooms ? ('Rs. ' + item.price) : (item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200'));
+              var slot6 = item.slot_6 !== undefined ? item.slot_6 : (item.price !== undefined ? item.price : '');
+              var slot7 = item.slot_7 || (isRooms ? (item.type || item.roomType || '') : (item.category || ''));
+              var slot8 = item.slot_8 || item.phone || item.mobile || '';
+
+              var slotElements = clone.querySelectorAll('[slot], [data-slot]');
+              slotElements.forEach(function(sEl) {
+                var sId = parseInt(sEl.getAttribute('slot') || sEl.getAttribute('data-slot'), 10);
+                var val = sId === 1 ? slot1 : (sId === 2 ? slot2 : (sId === 3 ? slot3 : (sId === 4 ? slot4 : (sId === 5 ? slot5 : (sId === 6 ? slot6 : (sId === 7 ? slot7 : (sId === 8 ? slot8 : '')))))));
+                if (val !== undefined && val !== null) {
+                  if (sEl.tagName === 'INPUT' || sEl.tagName === 'TEXTAREA') {
+                    sEl.value = String(val);
+                  } else if (sEl.tagName === 'IMG') {
+                    var sVal = String(val);
+                    if (sVal.startsWith('http') || sVal.startsWith('/') || sVal.startsWith('./') || sVal.startsWith('assets/')) {
+                      sEl.src = sVal;
+                    } else {
+                      sEl.src = isRooms ? 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=200' : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200';
+                    }
+                  } else {
+                    sEl.textContent = String(val);
+                    // ≡ƒîƒ High-Contrast Dynamic Badge Color Modulation
+                    if (isRooms && sId === 4) {
+                      var st = String(val).toUpperCase();
+                      if (st.includes('OCCUPIED') || st.includes('CALL') || st.includes('RING')) {
+                        sEl.style.backgroundColor = '#4c0519';
+                        sEl.style.color = '#fda4af';
+                        sEl.style.border = '1px solid rgba(244, 63, 94, 0.6)';
+                      } else {
+                        sEl.style.backgroundColor = '#064e3b';
+                        sEl.style.color = '#6ee7b7';
+                        sEl.style.border = '1px solid rgba(16, 185, 129, 0.6)';
+                      }
+                    }
+                  }
+                }
+              });
+              listEl.appendChild(clone);
+            });
+            listEl.setAttribute('data-rendered-ids', newIds);
+          });
+
+          // ≡ƒôæ Page Router & Role Viewport & Drawer
+          var activeNav = String(state['nav'] || state['nav::current'] || 'home').toLowerCase();
+          var pageMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4', 'about': '5', 'contact': '6' };
+
+          document.querySelectorAll('[data-page], [data-screen], [data-route-url], route, [page]').forEach(function(p) {
+            var pTarget = (p.getAttribute('page') || p.getAttribute('data-page') || p.getAttribute('data-screen') || p.getAttribute('data-route-url') || p.getAttribute('url') || '').trim();
+            if (!pTarget) return;
+
+            // 1. Drawer Screen Handler
+            if (pTarget.toLowerCase().includes('drawer')) {
+              var isDrawerOpen = state.drawerOpen === true || state['drawer'] === 'open' || state['drawer:open'] === true;
+              p.style.display = isDrawerOpen ? 'block' : 'none';
+              return;
+            }
+
+            // 2. Hardware Register Mapped Viewports (e.g. data-page="5:0")
+            if (pTarget.indexOf(':') > 0 && pTarget.indexOf('::') === -1) {
+              var parts = pTarget.split(':');
+              var reg = parts[0];
+              var expectedVal = parts[1];
+              var actualVal = String(state[reg] !== undefined ? state[reg] : (state['bus:' + reg] !== undefined ? state['bus:' + reg] : '0'));
+              p.style.display = (actualVal === expectedVal) ? 'block' : 'none';
+              return;
+            }
+
+            // 3. Universal Namespace-Slot Viewport Matching (page="namespace::slot" or page="slot")
+            if (pTarget.indexOf('::') !== -1) {
+              var nParts = pTarget.split('::');
+              var ns = nParts[0].trim().toLowerCase();
+              var slot = nParts[1].trim().toLowerCase();
+              var curSlot = String(state[ns] !== undefined ? state[ns] : (state[ns + '::current'] || (ns === 'nav' ? activeNav : ''))).toLowerCase();
+              p.style.display = (curSlot === slot) ? 'block' : 'none';
+              return;
+            }
+
+            // 4. Simple Route or Index match (page="home", page="settings", page="0", page="3")
+            var cleanTarget = pTarget.toLowerCase();
+            var isMatch = (cleanTarget === activeNav || 
+                           cleanTarget === pageMap[activeNav] ||
+                           (pageMap[cleanTarget] !== undefined && pageMap[cleanTarget] === pageMap[activeNav]));
+            p.style.display = isMatch ? 'block' : 'none';
+          });
+
+          // ≡ƒöÿ Universal Button Active State Highlighting (Generic for any tx="namespace::slot")
+          document.querySelectorAll('[data-tab], [tx*="::"], [action*="::"]').forEach(function(btn) {
+            var rawAct = (btn.getAttribute('tx') || btn.getAttribute('data-tab') || btn.getAttribute('action') || '').trim();
+            if (rawAct.indexOf('::') !== -1) {
+              var bParts = rawAct.split('::');
+              var bNs = bParts[0].trim().toLowerCase();
+              var bSlot = bParts[1].trim().toLowerCase();
+              var curActive = String(state[bNs] !== undefined ? state[bNs] : (state[bNs + '::current'] || (bNs === 'nav' ? activeNav : ''))).toLowerCase();
+              var isBtnActive = (bSlot === curActive);
+              btn.classList.toggle('active', isBtnActive);
+              if (isBtnActive) {
+                btn.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+                btn.classList.remove('text-slate-400', 'border-transparent');
+              } else {
+                btn.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+                btn.classList.add('text-slate-400', 'border-transparent');
+              }
+            }
+          });
+
+          // ΓÜí Dynamic Sub-Tab Active Highlight for Register 11 (ADMIN_SUB_TAB)
+          var curSubTab = String(state['11'] !== undefined ? state['11'] : (state['bus:11'] !== undefined ? state['bus:11'] : '0'));
+          document.querySelectorAll('[data-tx="11"]').forEach(function(btn) {
+            var btnVal = btn.getAttribute('data-tx-val') || btn.getAttribute('tx-value');
+            if (btnVal !== null && String(btnVal) === curSubTab) {
+              btn.classList.add('bg-indigo-600', 'text-white', 'shadow-lg');
+              btn.classList.remove('bg-slate-900', 'text-slate-300');
+            } else if (btnVal !== null) {
+              btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg');
+              btn.classList.add('bg-slate-900');
+            }
+          });
+
+          var imgElements = document.querySelectorAll('[data-state-img]');
+          imgElements.forEach(function(img) {
+            var imgKey = img.getAttribute('data-state-img');
+            if (imgKey && state[imgKey] !== undefined) {
+              var newSrc = String(state[imgKey]);
+              if (img.getAttribute('src') !== newSrc) {
+                img.setAttribute('src', newSrc);
+                if (img.tagName === 'VIDEO') { try { img.load(); img.play().catch(function() {}); } catch (_) {} }
+              }
+            }
+          });
+        }
+
+        // Live input binding for forms, carrier slots, and registers
+        document.addEventListener('input', function(e) {
+          var el = e.target;
+          if (!el) return;
+          var key = el.getAttribute('data-state-key') || el.getAttribute('name');
+          var rxAttr = el.getAttribute('data-rx') || el.getAttribute('rx');
+          var slotAttr = el.getAttribute('slot') || el.getAttribute('data-slot');
+          var val = el.value;
+
+          if (key) {
+            state[key] = val;
+            document.querySelectorAll('[data-state-key="' + key + '"], [name="' + key + '"]').forEach(function(t) {
+              if (t !== el && t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA') t.textContent = val;
+            });
+          }
+
+          if (rxAttr) {
+            state[rxAttr] = val;
+            state['bus:' + rxAttr] = val;
+            document.querySelectorAll('[data-rx="' + rxAttr + '"], [rx="' + rxAttr + '"], [tb-text="' + rxAttr + '"]').forEach(function(t) {
+              if (t !== el && t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA') t.textContent = val;
+            });
+          }
+
+          if (slotAttr) {
+            state['slot_' + slotAttr] = val;
+            document.querySelectorAll('[slot="' + slotAttr + '"], [data-slot="' + slotAttr + '"]').forEach(function(t) {
+              if (t !== el && t.tagName !== 'INPUT' && t.tagName !== 'TEXTAREA') t.textContent = val;
+            });
+          }
+        });
+
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.scrollTo(0, 0);
+        updateDOM();
+
+        // ΓÜí Sovereign External Route Commutator Auto-Runner
+        document.querySelectorAll('route[url], [data-external-route]').forEach(function(r) {
+          var url = r.getAttribute('url') || r.getAttribute('data-external-route');
+          if (!url || (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('/api/'))) return;
+          var interval = parseInt(r.getAttribute('interval') || '0', 10);
+
+          function runRouteFetch() {
+            fetch(url)
+              .then(function(res) { return res.text(); })
+              .then(function(data) {
+                var parsed = null;
+                try { parsed = JSON.parse(data); } catch(_) {}
+                if (parsed && typeof parsed === 'object') {
+                  Object.keys(parsed).forEach(function(key) {
+                    var val = typeof parsed[key] === 'object' ? JSON.stringify(parsed[key]) : String(parsed[key]);
+                    var targets = document.querySelectorAll('[data-rx], [rx], [data-bus], [tb-text]');
+                    targets.forEach(function(el) {
+                      var rxAttr = el.getAttribute('data-rx') || el.getAttribute('rx') || el.getAttribute('data-bus') || el.getAttribute('tb-text') || '';
+                      if (rxAttr === key || rxAttr.endsWith('::' + key) || rxAttr.endsWith('.' + key)) {
+                        if (el.tagName === 'IMG') {
+                          el.setAttribute('src', val);
+                          el.src = val;
+                        } else {
+                          el.textContent = val;
+                        }
+                      }
+                    });
+                  });
+                }
+              })
+              .catch(function(err) {
+                console.warn('[TitanRoute Web] Fetch error:', err);
+              });
+          }
+
+          runRouteFetch();
+          if (interval > 0) setInterval(runRouteFetch, interval);
+        });
+
+        // Handle Web Actions locally (0ms UI latency)
+        document.addEventListener('click', function(e) {
+          // Universal Target Actions (target="flip", target="save", target="delete")
+          var clickedCard = e.target.closest('.titan-flipcard, flip-card, [class*="flipcard"]');
+          if (clickedCard && !e.target.closest('button, input, textarea, a, select')) {
+            clickedCard.classList.toggle('flipped');
+          }
+          var targetTrigger = e.target.closest('[data-target], [target]');
+          if (targetTrigger) {
+            var tVal = (targetTrigger.getAttribute('data-target') || targetTrigger.getAttribute('target') || '').toLowerCase().trim();
+            if (tVal === 'flip' || tVal === 'save' || tVal === 'delete') {
+              var card = targetTrigger.closest('.titan-flipcard, flip-card, [class*="flip-card"]');
+              if (card) {
+                var col = card.getAttribute('data-col') || (card.parentElement && (card.parentElement.getAttribute('collection') || card.parentElement.getAttribute('data-collection'))) || 'menu';
+                var docId = card.getAttribute('data-id') || '';
+
+                if (tVal === 'flip') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  card.classList.toggle('flipped');
+                  return;
+                }
+
+                if (tVal === 'save') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  var inputs = card.querySelectorAll('[data-target*="mirror"] input, [data-target*="editable"] input, [target*="mirror"] input, [target*="editable"] input');
+                  var formValues = {};
+                  inputs.forEach(function(inp) {
+                    var sId = inp.getAttribute('slot') || inp.getAttribute('data-slot') || inp.getAttribute('name');
+                    if (sId) formValues['slot_' + sId] = inp.value;
+                  });
+                  card.classList.remove('flipped');
+                  try {
+                    fetch('/action', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ action: 'target:save:' + col + ':' + docId, value: docId, values: formValues })
+                    }).catch(function() {});
+                  } catch(e) {}
+                  return;
+                }
+
+                if (tVal === 'delete') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (confirm('Delete this item?')) {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.9)';
+                    setTimeout(function() { card.remove(); }, 300);
+                    try {
+                      fetch('/action', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'target:delete:' + col + ':' + docId, value: docId })
+                      }).catch(function() {});
+                    } catch(e) {}
+                  }
+                  return;
+                }
+              }
+            }
+          }
+
+          var btn = e.target.closest('[data-action], [action]');
+          if (!btn) return;
+          var fullAction = btn.getAttribute('data-action') || btn.getAttribute('action');
+          if (!fullAction) return;
+          e.preventDefault();
+
+          function executeSingleAction(action) {
+            if (!action) return;
+            var actionStr = String(action).trim();
+            var lowerAct = actionStr.toLowerCase();
+
+            // Semicolon separated composite actions
+            if (actionStr.includes(';')) {
+              var subs = actionStr.split(';').map(function(s) { return s.trim(); }).filter(Boolean);
+              subs.forEach(function(sub) { executeSingleAction(sub); });
+              return;
+            }
+
+            // 1. Counter Actions (Pure JS Web Logic)
+            if (lowerAct === 'counter::inc' || lowerAct === 'counter:increment' || lowerAct === 'counter.increment' || lowerAct === 'app.increment') {
+              var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state['512'] !== undefined ? state['512'] : (state.counter || 0)), 10);
+              var next = (isNaN(cur) ? 0 : cur) + 1;
+              state['counter::value'] = next;
+              state['512'] = next;
+              state['0x200'] = next;
+              state.counter = next;
+              updateDOM();
+            } else if (lowerAct === 'counter::dec' || lowerAct === 'counter:decrement' || lowerAct === 'counter.decrement' || lowerAct === 'app.decrement') {
+              var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state['512'] !== undefined ? state['512'] : (state.counter || 0)), 10);
+              var next = (isNaN(cur) || cur <= 0) ? 0 : cur - 1;
+              state['counter::value'] = next;
+              state['512'] = next;
+              state['0x200'] = next;
+              state.counter = next;
+              updateDOM();
+            } else if (lowerAct === 'counter::reset' || lowerAct === 'counter:reset' || lowerAct === 'app.resetall' || lowerAct === 'store.reset' || lowerAct === 'app.reset') {
+              state['counter::value'] = 0;
+              state['512'] = 0;
+              state['0x200'] = 0;
+              state.counter = 0;
+              updateDOM();
+            }
+
+            // 2. Universal Navigation and Slot Action Handler
+            if (lowerAct.startsWith('nav::') || lowerAct.startsWith('nav:') || lowerAct.startsWith('tab:') || lowerAct.startsWith('nav.to:') || lowerAct.startsWith('app:nav:')) {
+              var screenName = actionStr.indexOf('::') !== -1
+                ? actionStr.split('::').slice(1).join('::').trim()
+                : actionStr.split(':').slice(1).join(':').trim();
+              if (screenName) {
+                var screenMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4', 'about': '5', 'contact': '6' };
+                var routeVal = screenMap[screenName.toLowerCase()] !== undefined ? screenMap[screenName.toLowerCase()] : screenName;
+                state['10'] = routeVal;
+                state['bus:10'] = routeVal;
+                state['nav'] = screenName.toLowerCase();
+                state['nav::current'] = screenName.toLowerCase();
+                state['currentScreen'] = screenName;
+                state.activeNav = screenName;
+                state.activeTab = screenName;
+
+                // ≡ƒîÉ Two-Way HTML5 History URL Path Sync (/settings, /about, /home)
+                if (typeof window !== 'undefined' && window.history && window.history.pushState) {
+                  var targetUrl = screenName.toLowerCase() === 'home' ? '/' : '/' + screenName.toLowerCase();
+                  if (window.location.pathname !== targetUrl) {
+                    window.history.pushState(null, '', targetUrl);
+                  }
+                }
+
+                updateDOM();
+                try {
+                  fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: actionStr, value: '' })
+                  }).catch(function() {});
+                } catch(e) {}
+                return;
+              }
+            }
+
+            // 2b. Universal Nested Namespace Slot Selector (Generic for ANY namespace::slot)
+            if (actionStr.indexOf('::') !== -1 && !actionStr.includes('inc') && !actionStr.includes('dec') && !actionStr.includes('reset') && !actionStr.includes('save') && !actionStr.includes('toggle')) {
+              var nParts = actionStr.split('::');
+              var pName = nParts[0].trim().toLowerCase();
+              var subName = nParts[1].trim().toLowerCase();
+              if (pName && subName) {
+                state[pName] = subName;
+                state[pName + '::current'] = subName;
+
+                // Push Generic Nested Browser URL (/parent/sub)
+                if (typeof window !== 'undefined' && window.history && window.history.pushState) {
+                  var nestedUrl = '/' + pName + '/' + subName;
+                  if (window.location.pathname !== nestedUrl) {
+                    window.history.pushState(null, '', nestedUrl);
+                  }
+                }
+
+                updateDOM();
+                try {
+                  fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: actionStr, value: '' })
+                  }).catch(function() {});
+                } catch(e) {}
+                return;
+              }
+            }
+
+            // 3. Settings Actions
+            if (lowerAct === 'power:toggle' || lowerAct === 'power') {
+              var cur = state.power !== undefined ? state.power : 1;
+              var next = cur ? 0 : 1;
+              state.power = next;
+              state.power_status = next ? 'αñÜαñ╛αñ▓αÑé (ON) ΓÜí' : 'αñ¼αñ¿αÑìαñª (OFF) ≡ƒö┤';
+              state.alert_msg = next ? 'ΓÜí αñ«αñ╛αñ╕αÑìαñƒαñ░ αñ¬αñ╛αñ╡αñ░ αñÜαñ╛αñ▓αÑé αñùαñ░αñ┐αñ»αÑïαÑñ' : '≡ƒö┤ αñ«αñ╛αñ╕αÑìαñƒαñ░ αñ¬αñ╛αñ╡αñ░ αñ¼αñ¿αÑìαñª αñùαñ░αñ┐αñ»αÑïαÑñ';
+              updateDOM();
+            } else if (lowerAct === 'theme:toggle' || lowerAct === 'theme') {
+              var cur = state.theme === 'light' ? 'light' : 'dark';
+              var next = cur === 'dark' ? 'light' : 'dark';
+              state.theme = next;
+              state.theme_label = next === 'light' ? 'αñëαñ£αÑìαñ»αñ╛αñ▓αÑï (Light) ΓÿÇ∩╕Å' : 'αñùαñ╛αñóαñ╛ (Dark) ≡ƒîÖ';
+              state.alert_msg = next === 'light' ? 'ΓÿÇ∩╕Å αñëαñ£αÑìαñ»αñ╛αñ▓αÑï αñÑαñ┐αñ« αñ╕αñòαÑìαñ░αñ┐αñ» αñ¡αñ»αÑïαÑñ' : '≡ƒîÖ αñùαñ╛αñóαñ╛ αñÑαñ┐αñ« αñ╕αñòαÑìαñ░αñ┐αñ» αñ¡αñ»αÑïαÑñ';
+              document.documentElement.classList.toggle('dark', next === 'dark');
+              document.body.classList.toggle('dark', next === 'dark');
+              updateDOM();
+            } else if (lowerAct === 'alert:test' || lowerAct === 'app.showtoast') {
+              state.alert_msg = '≡ƒöö αñ¿αñ»αñ╛αñü αñ╕αÑéαñÜαñ¿αñ╛: αñ╕αÑçαñƒαñ┐αñÖ αñ╕αñ½αñ▓αññαñ╛αñ¬αÑéαñ░αÑìαñ╡αñò αñ¬αñ░αÑÇαñòαÑìαñ╖αñú αñùαñ░αñ┐αñ»αÑï (' + new Date().toLocaleTimeString() + ')';
+              updateDOM();
+            } else if (lowerAct === 'data:reset') {
+              state['counter::value'] = 0;
+              state['form::note'] = '';
+              state.alert_msg = '≡ƒöä αñ╕αñ«αÑìαñ¬αÑéαñ░αÑìαñú αñòαñ╛αñëαñ¿αÑìαñƒαñ░ αñ░ αñ¿αÑïαñƒ αñíαñ╛αñƒαñ╛ αñ╢αÑéαñ¿αÑìαñ»αñ«αñ╛ αñ░αñ┐αñ╕αÑçαñƒ αñùαñ░αñ┐αñ»αÑï!';
+              updateDOM();
+            }
+
+            // 4. Form Actions
+            if (lowerAct === 'form::save' || lowerAct === 'form:submit') {
+              state.db_status = 'Γ£à αñ╕αÑüαñ░αñòαÑìαñ╖αñ┐αññ αñ¡αñ»αÑï (' + new Date().toLocaleTimeString() + ')';
+              state.alert_msg = '≡ƒÆ╛ αñ¿αÑïαñƒ αñ╕αñ½αñ▓αññαñ╛αñ¬αÑéαñ░αÑìαñ╡αñò αñ╕αÑçαñ¡ αñùαñ░αñ┐αñ»αÑï!';
+              updateDOM();
+            }
+
+            // 6. Direct Hardware Bus Actions (legacy support)
+            if (lowerAct.startsWith('bus:') || !isNaN(Number(actionStr))) {
+              var parts = lowerAct.startsWith('bus:') ? actionStr.split(':') : ['bus', actionStr];
+              var regStr = parts[1] || '';
+              var reg = (regStr.startsWith('0x') || regStr.startsWith('0X')) ? parseInt(regStr, 16) : parseInt(regStr, 10);
+              if (!isNaN(reg)) {
+                if (reg === 513 || reg === 0x0201) {
+                  var cur = parseInt(state['counter::value'] || state['512'] || 0, 10);
+                  var next = cur + 1;
+                  state['counter::value'] = next;
+                  state['512'] = next;
+                } else if (reg === 514 || reg === 0x0202) {
+                  var cur = parseInt(state['counter::value'] || state['512'] || 0, 10);
+                  var next = Math.max(0, cur - 1);
+                  state['counter::value'] = next;
+                  state['512'] = next;
+                } else if (reg === 515 || reg === 0x0203) {
+                  state['counter::value'] = 0;
+                  state['512'] = 0;
+                } else {
+                  var cur = state[reg] !== undefined ? state[reg] : 0;
+                  state[reg] = cur == 0 ? 1 : 0;
+                }
+                updateDOM();
+              }
+            }
+
+            // Universal Action Forwarder to Backend Server (app.logic.js)
+            try {
+              fetch('/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: actionStr, value: '' })
+              }).catch(function() {});
+            } catch (e) {}
+          }
+
+          executeSingleAction(fullAction);
+        });
+
+        // Forward live search/text input events with action
+        document.addEventListener('input', function(e) {
+          var el = e.target;
+          if (!el) return;
+          var act = el.getAttribute('data-action') || el.getAttribute('action');
+          if (act) {
+            try {
+              fetch('/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: act, value: el.value })
+              }).catch(function() {});
+            } catch(e) {}
+          }
+        });
+
+        // ΓÜí Live SSE Reactive Subscriber (Real-Time Zero-Reload Register & State Updates)
+        if (typeof EventSource !== 'undefined') {
+          try {
+            var sse = new EventSource('/sse');
+            sse.onmessage = function(ev) {
+              try {
+                var msg = JSON.parse(ev.data);
+                if (msg.type === 'reload') {
+                  window.location.reload();
+                } else if (msg.type === 'register_update' || msg.type === 'register') {
+                  var reg = msg.reg !== undefined ? msg.reg : msg.register;
+                  var val = msg.value !== undefined ? msg.value : msg.val;
+                  state[reg] = val;
+                  state['bus:' + reg] = val;
+                  if (window.TitanBus && !isNaN(Number(reg))) {
+                    window.TitanBus.registers[Number(reg) & 0xFFFF] = Number(val);
+                  }
+                  if (typeof reg === 'number') {
+                    state['0x' + reg.toString(16).toLowerCase()] = val;
+                    state['bus:0x' + reg.toString(16).toLowerCase()] = val;
+                  }
+                  updateDOM();
+                } else if (msg.type === 'patch') {
+                  var key = msg.key;
+                  var val = msg.value;
+                  state[key] = val;
+                  state['bus:' + key] = val;
+                  updateDOM();
+                } else if (msg.type === 'slot_stream') {
+                  var reg = msg.reg;
+                  var items = msg.items || msg.value;
+                  state[reg] = items;
+                  state['bus:' + reg] = items;
+                  updateDOM();
+                }
+              } catch(e) {}
+            };
+          } catch(e) {}
+        }
+      })();
+    </script>
+
+</body></html>

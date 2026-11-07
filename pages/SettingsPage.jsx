@@ -1,11 +1,11 @@
 export default function SettingsPage() {
   return (
     <div className="w-full space-y-4">
-      <div className="w-full card glass glow space-y-4 p-5">
+      <div className="w-full card p-5 space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl filled primary flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl filled primary flex items-center justify-center">
               <span className="text-base">⚙️</span>
             </div>
             <div className="flex flex-col">
@@ -13,11 +13,11 @@ export default function SettingsPage() {
                 सिस्टम कन्फिगरेसन (Settings)
               </span>
               <span className="text-[10px] text-slate-400 font-mono">
-                DolphinCSS • Reactive Hardware Mapping
+                DolphinCSS 2.0 • Hardware Mapping
               </span>
             </div>
           </div>
-          <span className="badge success rounded-full text-[10px] font-mono font-bold px-2.5 py-0.5">
+          <span className="badge success font-mono font-bold">
             ACTIVE
           </span>
         </div>
@@ -33,13 +33,13 @@ export default function SettingsPage() {
           <div className="w-full card outlined p-3.5 flex items-center justify-between rounded-xl">
             <div className="flex flex-col">
               <span className="text-xs font-bold text-white">मास्टर पावर (System Power)</span>
-              <span rx="power_status" className="badge success rounded-full text-[11px] font-mono font-bold mt-1 inline-block w-fit px-2 py-0.5">
+              <span rx="power_status" className="badge success font-mono font-bold mt-1 inline-block w-fit">
                 चालू (ON) ⚡
               </span>
             </div>
             <button
               tx="power:toggle"
-              className="filled success glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2"
+              className="filled success sm glow cursor-pointer flex items-center gap-1.5"
             >
               <span>⚡</span>
               <span className="font-bold text-xs">पावर टगल</span>
@@ -50,13 +50,13 @@ export default function SettingsPage() {
           <div className="w-full card outlined p-3.5 flex items-center justify-between rounded-xl">
             <div className="flex flex-col">
               <span className="text-xs font-bold text-white">युआई थिम (Theme Mode)</span>
-              <span rx="theme_label" className="badge primary rounded-full text-[11px] font-mono font-bold mt-1 inline-block w-fit px-2 py-0.5">
+              <span rx="theme_label" className="badge primary font-mono font-bold mt-1 inline-block w-fit">
                 गाढा (Dark) 🌙
               </span>
             </div>
             <button
               tx="theme:toggle"
-              className="filled primary glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2"
+              className="filled primary sm glow cursor-pointer flex items-center gap-1.5"
             >
               <span>🌓</span>
               <span className="font-bold text-xs">थिम बदल्नुहोस्</span>
@@ -71,7 +71,7 @@ export default function SettingsPage() {
             </div>
             <button
               tx="alert:test"
-              className="filled warning glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2"
+              className="filled warning sm glow cursor-pointer flex items-center gap-1.5"
             >
               <span>🔔</span>
               <span className="font-bold text-xs">सूचना पठाउनुहोस्</span>
@@ -86,7 +86,7 @@ export default function SettingsPage() {
             </div>
             <button
               tx="data:reset"
-              className="filled danger glow btn-sm rounded-xl cursor-pointer flex items-center gap-1.5 px-3.5 py-2"
+              className="filled danger sm glow cursor-pointer flex items-center gap-1.5"
             >
               <span>🔄</span>
               <span className="font-bold text-xs">रिसेट गर्नुहोस्</span>

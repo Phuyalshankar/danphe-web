@@ -8,51 +8,157 @@ class WebCSS {
     static getBaseStyles() {
         return `
         :root {
-            --color-primary: #0284c7;
-            --color-secondary: #6366f1;
-            --color-success: #10b981;
-            --color-danger: #f43f5e;
-            --color-warning: #f59e0b;
-            --color-surface: rgba(15, 23, 42, 0.95);
+            --color-primary: oklch(0.5 0.14 220);
+            --color-secondary: oklch(0.58 0.1 180);
+            --color-success: oklch(0.67 0.22 145);
+            --color-danger: oklch(0.62 0.28 25);
+            --color-warning: oklch(0.84 0.18 80);
+            --color-surface: rgba(15, 23, 42, 0.75);
             --color-text: #f8fafc;
-            --theme-primary: #0284c7;
+            --theme-primary: oklch(0.5 0.14 220);
             --radius-xl: 12px;
-            --radius-2xl: 16px;
+            --radius-2xl: 20px;
         }
 
-        /* 🐬 DolphinCSS Semantic Additions & Refinements */
+        /* 🐬 DolphinCSS 2.0 Core Universal Tokens Engine */
+        html, body {
+            background-color: #090d16 !important;
+            color: #f8fafc !important;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.75) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 20px !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5) !important;
+        }
+
         .card.outlined {
-            border: 1px solid rgba(51, 65, 85, 0.6) !important;
-            background-color: rgba(2, 6, 23, 0.6) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            background: rgba(2, 6, 23, 0.7) !important;
         }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .badge.primary { background-color: rgba(2, 132, 199, 0.2); color: #38bdf8; border: 1px solid rgba(2, 132, 199, 0.4); }
-        .badge.success { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .badge.danger { background-color: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
-        .badge.warning { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
 
-        .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.75rem; font-weight: 700; }
-        .btn-md { padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 700; }
-        .btn-lg { padding: 0.75rem 1.25rem; font-size: 1rem; font-weight: 700; }
-        .outlined {
-            background-color: transparent !important;
-            border: 1px solid rgba(51, 65, 85, 0.8) !important;
-            color: #94a3b8 !important;
+        .filled {
+            border-radius: 12px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-weight: 700 !important;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            cursor: pointer !important;
+            border: 1px solid transparent !important;
+            text-decoration: none !important;
+            user-select: none !important;
         }
-        .outlined.primary {
-            border-color: rgba(2, 132, 199, 0.4) !important;
-            color: #38bdf8 !important;
+        .filled:active {
+            transform: scale(0.96) !important;
         }
-        .outlined:hover {
-            border-color: rgba(56, 189, 248, 0.8) !important;
+
+        .filled.primary {
+            background: oklch(0.5 0.14 220) !important;
             color: #ffffff !important;
         }
+        .filled.primary:hover {
+            background: oklch(0.55 0.15 220) !important;
+        }
+
+        .filled.secondary {
+            background: rgba(51, 65, 85, 0.9) !important;
+            color: #f8fafc !important;
+            border-color: rgba(71, 85, 105, 0.6) !important;
+        }
+        .filled.secondary:hover {
+            background: rgba(71, 85, 105, 0.9) !important;
+        }
+
+        .filled.success {
+            background: oklch(0.67 0.22 145) !important;
+            color: #022c22 !important;
+        }
+        .filled.success:hover {
+            background: oklch(0.72 0.22 145) !important;
+        }
+
+        .filled.danger {
+            background: oklch(0.62 0.28 25) !important;
+            color: #ffffff !important;
+        }
+        .filled.danger:hover {
+            background: oklch(0.68 0.28 25) !important;
+        }
+
+        .filled.warning {
+            background: oklch(0.84 0.18 80) !important;
+            color: #1c1917 !important;
+        }
+
+        .outlined {
+            background: transparent !important;
+            border-radius: 12px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            user-select: none !important;
+        }
+        .outlined.primary {
+            border: 2px solid oklch(0.5 0.14 220) !important;
+            color: #38bdf8 !important;
+        }
+        .outlined.primary:hover {
+            background: rgba(56, 189, 248, 0.15) !important;
+            color: #ffffff !important;
+        }
+        .outlined.success {
+            border: 2px solid oklch(0.67 0.22 145) !important;
+            color: #34d399 !important;
+        }
+
+        .sm, .btn-sm { padding: 6px 14px !important; font-size: 12px !important; }
+        .md, .btn-md { padding: 10px 18px !important; font-size: 14px !important; }
+        .lg, .btn-lg { padding: 14px 24px !important; font-size: 15px !important; }
+
+        .glow {
+            box-shadow: 0 0 15px 3px rgba(56, 189, 248, 0.35) !important;
+            transition: all 0.3s ease !important;
+        }
+        .glow:hover {
+            box-shadow: 0 0 25px 6px rgba(56, 189, 248, 0.6) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        .filled.danger.glow {
+            box-shadow: 0 0 15px 3px rgba(244, 63, 94, 0.35) !important;
+        }
+        .filled.danger.glow:hover {
+            box-shadow: 0 0 25px 6px rgba(244, 63, 94, 0.6) !important;
+        }
+
+        .filled.success.glow {
+            box-shadow: 0 0 15px 3px rgba(16, 185, 129, 0.35) !important;
+        }
+        .filled.success.glow:hover {
+            box-shadow: 0 0 25px 6px rgba(16, 185, 129, 0.6) !important;
+        }
+
+        .badge-pill, .badge {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            padding: 4px 10px !important;
+            border-radius: 9999px !important;
+            letter-spacing: 0.5px !important;
+        }
+        .badge.primary { background: rgba(56, 189, 248, 0.2) !important; color: #38bdf8 !important; border: 1px solid rgba(56, 189, 248, 0.4) !important; }
+        .badge.success { background: rgba(16, 185, 129, 0.2) !important; color: #34d399 !important; border: 1px solid rgba(16, 185, 129, 0.4) !important; }
+        .badge.danger { background: rgba(244, 63, 94, 0.2) !important; color: #fb7185 !important; border: 1px solid rgba(244, 63, 94, 0.4) !important; }
+        .badge.warning { background: rgba(245, 158, 11, 0.2) !important; color: #fbbf24 !important; border: 1px solid rgba(245, 158, 11, 0.4) !important; }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body {

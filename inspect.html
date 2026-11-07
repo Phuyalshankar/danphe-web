@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐬 DolphinCSS 2.0 (Pure UB JIT Core + Titan Opcode Bus)</title>
+  <link rel="stylesheet" href="file:///C:/Users/USER/Desktop/dolphincss/dolphincss/dolphin-css.css">
+  <style>
+    body {
+      background: #090d16;
+      color: #f8fafc;
+      padding: 2.5rem 1rem;
+      min-height: 100vh;
+    }
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .demo-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(20px);
+    }
+    .badge-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .log-box {
+      background: #020617;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 13px;
+      color: #38bdf8;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+
+    <!-- Header -->
+    <div class="flex-col-center mb-8 text-center" style="gap: 8px;">
+      <div class="flex-center" style="gap: 8px;">
+        <span class="badge-pill bg-danphe">TITAN-BUS READY</span>
+        <span class="badge-pill" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">DUAL SCALE: 0-255 & 50-900</span>
+        <span class="badge-pill" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">94% LIGHTER (20 KB)</span>
+      </div>
+      <h1 style="font-size: 2.75rem; font-weight: 800; margin: 0.5rem 0; background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        🐬 DolphinCSS 2.0 Pure UB Core
+      </h1>
+      <p style="color: #94a3b8; font-size: 1.1rem; max-width: 650px; margin: 0;">
+        Zero Static Bloat • Sub-nanosecond Titan-Bus 16-Bit Opcodes • One-Shot Forms • 100% Backward Compatible
+      </p>
+    </div>
+
+    <!-- 1. One-Shot Form Module -->
+    <div class="demo-card">
+      <div class="flex-between mb-4">
+        <div>
+          <h2 style="margin: 0; font-size: 1.5rem; font-weight: 700;">📝 1. One-Shot Form Input Module</h2>
+          <p style="margin: 4px 0 0; color: #94a3b8; font-size: 0.9rem;">
+            Declarative <code>&lt;input icon="mail" label="..." class="floating" /&gt;</code> expanded automatically
+          </p>
+        </div>
+        <span class="badge-pill" style="background: #1e293b; color: #cbd5e1;">Zero Boilerplate</span>
+      </div>
+
+      <div class="grid-col-2" style="gap: 1.5rem;">
+        <div>
+          <!-- One-shot email input with mail icon -->
+          <input icon="mail" label="Email Address" class="floating primary" placeholder="you@example.com" />
+        </div>
+        <div>
+          <!-- One-shot password with lock icon and eye toggle button -->
+          <input icon="lock" icon-right="eye" label="Secure Password" type="password" class="floating primary" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Composable Class Stacking (1-8 Layers) -->
+    <div class="demo-card">
+      <h2 style="margin: 0 0 8px; font-size: 1.5rem; font-weight: 700;">🧩 2. Composable 8-Layer Class Stacking</h2>
+      <p style="margin: 0 0 1.5rem; color: #94a3b8; font-size: 0.9rem;">
+        Stack up to 8 classes without collision: <code>card filled primary lg rounded-2xl glow shadow-2xl hover:scale-105</code>
+      </p>
+
+      <div class="flex-wrap" style="gap: 1rem;">
+        <button class="filled primary md glow" titan-write="20001:1" onclick="logTitan(20001, 1, 'Primary Filled Clicked')">
+          Primary Filled (Relay 1 ON)
+        </button>
+        <button class="outlined success md glow" titan-write="20002:1" onclick="logTitan(20002, 1, 'Success Outlined Clicked')">
+          Success Outlined (Relay 2 ON)
+        </button>
+        <button class="filled danger md glow pulse" titan-write="20001:0" onclick="logTitan(20001, 0, 'Danger Pulse Clicked')">
+          Danger Pulsing (Relay 1 OFF)
+        </button>
+        <button class="circle md filled warning glow wave" onclick="logTitan(30001, 85, 'Warning Circle Clicked')">
+          ⚡
+        </button>
+      </div>
+
+      <div style="margin-top: 1.5rem;">
+        <div style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 6px;">⚡ Live Titan-Bus SISO 6-Byte Serial Packet Monitor:</div>
+        <div class="log-box" id="titan-log">
+          [TITAN-BUS] Waiting for interaction or register event...
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Dual-Scale Shade & Sensor Mapping (0-255 vs 50-900) -->
+    <div class="demo-card">
+      <h2 style="margin: 0 0 8px; font-size: 1.5rem; font-weight: 700;">📊 3. Dual-Scale & IoT Sensor Mapping</h2>
+      <p style="margin: 0 0 1.5rem; color: #94a3b8; font-size: 0.9rem;">
+        Supports both Tailwind <code>50-900</code> and Hardware <code>0-255</code> byte scales with <code>map.sensor</code> & <code>map.dynamic</code>
+      </p>
+
+      <div class="grid-col-3" style="gap: 1.5rem;">
+        <!-- Temperature -->
+        <div style="background: rgba(2, 6, 23, 0.6); padding: 1.25rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="color: #94a3b8; font-size: 0.85rem; font-weight: 600;">🌡️ TEMPERATURE (map.sensor)</div>
+          <div id="temp-display" style="font-size: 2.25rem; font-weight: 800; margin: 8px 0; transition: color 0.3s;">25°C</div>
+          <input type="range" min="0" max="50" value="25" id="temp-slider" style="width: 100%; cursor: pointer;" />
+        </div>
+
+        <!-- Battery -->
+        <div style="background: rgba(2, 6, 23, 0.6); padding: 1.25rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="color: #94a3b8; font-size: 0.85rem; font-weight: 600;">🔋 BATTERY (map.dynamic 3-colors)</div>
+          <div id="battery-display" style="font-size: 2.25rem; font-weight: 800; margin: 8px 0; transition: color 0.3s;">75%</div>
+          <input type="range" min="0" max="100" value="75" id="battery-slider" style="width: 100%; cursor: pointer;" />
+        </div>
+
+        <!-- Speed Gauge -->
+        <div style="background: rgba(2, 6, 23, 0.6); padding: 1.25rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="color: #94a3b8; font-size: 0.85rem; font-weight: 600;">🏎️ SPEED (map.traffic reversed)</div>
+          <div id="speed-display" style="font-size: 2.25rem; font-weight: 800; margin: 8px 0; transition: color 0.3s;">60 km/h</div>
+          <input type="range" min="0" max="180" value="60" id="speed-slider" style="width: 100%; cursor: pointer;" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Nepali Himalayan Heritage Themes -->
+    <div class="demo-card">
+      <h2 style="margin: 0 0 8px; font-size: 1.5rem; font-weight: 700;">🇳🇵 4. Nepali Himalayan Heritage Themes</h2>
+      <p style="margin: 0 0 1.5rem; color: #94a3b8; font-size: 0.9rem;">
+        8 Iconic National Themes with native dynamic OKLCH color palettes:
+      </p>
+
+      <div class="grid-col-4" style="gap: 1rem;">
+        <div class="bg-sagarmatha p-4 rounded-xl text-center" style="font-weight: 700;">सगरमाथा (Sagarmatha)</div>
+        <div class="bg-danphe p-4 rounded-xl text-center" style="font-weight: 700;">डाँफे (Danphe)</div>
+        <div class="bg-munal p-4 rounded-xl text-center" style="font-weight: 700;">मुनाल (Munal)</div>
+        <div class="bg-laligurans p-4 rounded-xl text-center" style="font-weight: 700;">लालीगुराँस (Laligurans)</div>
+        <div class="bg-machhapuchhre p-4 rounded-xl text-center" style="font-weight: 700;">माछापुच्छ्रे (Machhapuchhre)</div>
+        <div class="bg-mustang p-4 rounded-xl text-center" style="font-weight: 700;">मुस्ताङ (Mustang)</div>
+        <div class="bg-tilicho p-4 rounded-xl text-center" style="font-weight: 700;">तिलिचो (Tilicho)</div>
+        <div class="bg-lumbini p-4 rounded-xl text-center" style="font-weight: 700;">लुम्बिनी (Lumbini)</div>
+      </div>
+    </div>
+
+    <!-- 5. FX Suite -->
+    <div class="demo-card">
+      <h2 style="margin: 0 0 8px; font-size: 1.5rem; font-weight: 700;">✨ 5. FX Suite (11 World-Class Visual Effects)</h2>
+      <p style="margin: 0 0 1.5rem; color: #94a3b8; font-size: 0.9rem;">
+        Hardware-accelerated visual filters with real-time blur and lighting:
+      </p>
+
+      <div class="grid-col-4" style="gap: 1rem;">
+        <div class="fx-crystal p-4 text-center" style="font-weight: 600;">fx-crystal</div>
+        <div class="fx-neon p-4 text-center" style="font-weight: 600;">fx-neon</div>
+        <div class="fx-aurora p-4 text-center" style="font-weight: 600;">fx-aurora</div>
+        <div class="fx-rainbow p-4 text-center" style="font-weight: 600;">fx-rainbow</div>
+        <div class="fx-metal p-4 text-center" style="font-weight: 600;">fx-metal</div>
+        <div class="fx-float p-4 text-center" style="font-weight: 600;">fx-float (Hover me)</div>
+        <div class="fx-aqua p-4 text-center" style="font-weight: 600;">fx-aqua</div>
+        <div class="fx-holo p-4 text-center" style="font-weight: 600;">fx-holo</div>
+      </div>
+    <!-- 6. World-Class Polished Components (Better Than Shadcn UI) -->
+    <div class="demo-card">
+      <div class="flex-between mb-4">
+        <div>
+          <h2 style="margin: 0; font-size: 1.5rem; font-weight: 700;">💎 6. Polished Modern Components (Better Than Shadcn UI)</h2>
+          <p style="margin: 4px 0 0; color: #94a3b8; font-size: 0.9rem;">
+            Tactile micro-physics (scale:0.97 press), inner top-light highlights, zero-boilerplate syntax & pure CSS spring dynamics
+          </p>
+        </div>
+        <span class="badge badge-primary"><span class="badge-dot"></span> Next-Gen Micro-Interactions</span>
+      </div>
+
+      <!-- A. Buttons Showcase -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 12px;">🔘 Tactile Spring Buttons with Top Bevel Lighting</h3>
+        <div class="flex-wrap" style="gap: 12px; align-items: center;">
+          <button class="btn btn-primary">Primary Action</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-outline">Outlined</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-danger">Danger</button>
+          <button class="btn btn-glow">Ambient Glow</button>
+          <button class="btn btn-primary btn-sm">Small</button>
+          <button class="btn btn-primary btn-lg">Large</button>
+        </div>
+      </div>
+
+      <!-- B. Cards Showcase -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 12px;">🃏 High-End Layered Elevation Cards</h3>
+        <div class="grid-col-2" style="gap: 1.5rem;">
+          <div class="card card-hover" style="background: rgba(15, 23, 42, 0.85); color: #f8fafc; border: 1px solid rgba(255,255,255,0.08);">
+            <div class="card-header">
+              <div class="card-title" style="color: #ffffff;">Analytics Overview</div>
+              <div class="card-description" style="color: #94a3b8;">Real-time metrics streaming via Titan-Bus</div>
+            </div>
+            <div class="card-content">
+              <div class="flex-between" style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <span style="color: #94a3b8;">Active Microcontrollers</span>
+                <span style="font-weight: 700; color: #38bdf8;">14 Nodes</span>
+              </div>
+              <div class="flex-between" style="padding: 10px 0;">
+                <span style="color: #94a3b8;">Bus Packet Throughput</span>
+                <span style="font-weight: 700; color: #10b981;">18,400 pkt/sec</span>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-ghost btn-sm" style="color: #cbd5e1;">Dismiss</button>
+              <button class="btn btn-primary btn-sm">Inspect</button>
+            </div>
+          </div>
+
+          <div class="card-glass" style="color: #f8fafc;">
+            <div class="card-header">
+              <div class="card-title" style="color: #ffffff;">Frosted Glass Surface</div>
+              <div class="card-description" style="color: #94a3b8;">Hardware-accelerated saturation & blur</div>
+            </div>
+            <div class="card-content">
+              <p style="color: #cbd5e1; font-size: 14px; margin: 0; line-height: 1.6;">
+                DolphinCSS gives you ultra-clean glass surfaces and tactile components without 30 lines of Radix UI or React hook dependencies.
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-glow btn-sm">Explore Effects</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C. Badges & Segmented Tabs -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 12px;">🏷️ Pill Badges & Segmented Tabs</h3>
+        <div class="flex-between flex-wrap" style="gap: 16px;">
+          <div class="flex-wrap" style="gap: 8px; align-items: center;">
+            <span class="badge badge-primary"><span class="badge-dot"></span> Active</span>
+            <span class="badge badge-success"><span class="badge-dot"></span> Synced</span>
+            <span class="badge badge-warning"><span class="badge-dot"></span> Calibrating</span>
+            <span class="badge badge-danger"><span class="badge-dot"></span> Fault Detected</span>
+            <span class="badge badge-outline">v2.0.4</span>
+          </div>
+
+          <!-- Segmented Tabs -->
+          <div class="tabs-list" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255,255,255,0.06);">
+            <div class="tab-item tab-active" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">Overview</div>
+            <div class="tab-item">Registers</div>
+            <div class="tab-item">Telemetry</div>
+            <div class="tab-item">Settings</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- D. Interactive Toast & Modal Trigger -->
+      <div>
+        <h3 style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 12px;">🔔 Dynamic Toast Notifications</h3>
+        <div class="flex-wrap" style="gap: 12px;">
+          <button class="btn btn-primary" onclick="showSampleToast('success', 'Relay Synced', 'Titan register 20001 confirmed state change in 0.04ms')">
+            Trigger Success Toast
+          </button>
+          <button class="btn btn-danger" onclick="showSampleToast('danger', 'Packet Anomaly', 'CRC check mismatch detected on port COM4')">
+            Trigger Danger Toast
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-root"></div>
+
+  </div>
+
+  <!-- Vanilla UB Engine Module -->
+  <script type="module">
+    import { ub, map, encodeSisoPacket, decodeSisoPacket, classToOpcode } from './src/ub-vanilla.js';
+
+    // Logger for Titan SISO packets
+    window.logTitan = function(reg, val, desc) {
+      const packet = encodeSisoPacket(reg, val);
+      const hexArr = Array.from(packet).map(b => '0x' + b.toString(16).padStart(2, '0')).join(', ');
+      const logEl = document.getElementById('titan-log');
+      logEl.innerHTML = `[TITAN SISO 6-BYTE PACKET] ['S','I'] Reg: ${reg} | Val: ${val} | Hex: [${hexArr}]\n» Action: ${desc}\n` + logEl.innerHTML;
+    };
+
+    // Sensor Mapping Handlers
+    const tempRanges = [
+      { min: 0, max: 18, color: 'blue', shade: 200 },
+      { min: 18, max: 28, color: 'green', shade: 200 },
+      { min: 28, max: 50, color: 'red', shade: 220 }
+    ];
+
+    const tempSlider = document.getElementById('temp-slider');
+    const tempDisplay = document.getElementById('temp-display');
+    tempSlider.addEventListener('input', (e) => {
+      const val = Number(e.target.value);
+      const colorCls = map.sensor(val, tempRanges);
+      tempDisplay.textContent = `${val}°C`;
+      tempDisplay.className = ub(colorCls);
+    });
+    tempSlider.dispatchEvent(new Event('input'));
+
+    const batterySlider = document.getElementById('battery-slider');
+    const batteryDisplay = document.getElementById('battery-display');
+    batterySlider.addEventListener('input', (e) => {
+      const val = Number(e.target.value);
+      const colorCls = map.dynamic(val, 0, 100, ['red', 'orange', 'green']);
+      batteryDisplay.textContent = `${val}%`;
+      batteryDisplay.className = ub(colorCls);
+    });
+    batterySlider.dispatchEvent(new Event('input'));
+
+    const speedSlider = document.getElementById('speed-slider');
+    const speedDisplay = document.getElementById('speed-display');
+    speedSlider.addEventListener('input', (e) => {
+      const val = Number(e.target.value);
+      const colorCls = map.traffic(val, 0, 180, true);
+      speedDisplay.textContent = `${val} km/h`;
+      speedDisplay.className = ub(colorCls);
+    });
+    speedSlider.dispatchEvent(new Event('input'));
+
+    // Dynamic Toast Notification Handler
+    window.showSampleToast = function(type, title, desc) {
+      const toastRoot = document.getElementById('toast-root');
+      const toast = document.createElement('div');
+      const icon = type === 'success' ? '✅' : '⚠️';
+      const borderClr = type === 'success' ? 'rgba(16, 185, 129, 0.4)' : 'rgba(239, 68, 68, 0.4)';
+      toast.className = 'toast';
+      toast.style.cssText = `border: 1px solid ${borderClr}; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px);`;
+      toast.innerHTML = `
+        <div class="toast-icon" style="font-size: 1.25rem;">${icon}</div>
+        <div style="flex: 1;">
+          <div class="toast-title" style="color: #ffffff;">${title}</div>
+          <div class="toast-desc" style="color: #94a3b8;">${desc}</div>
+        </div>
+      `;
+      toastRoot.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = 'opacity 0.3s, transform 0.3s';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    };
+
+    // Tab switcher interaction
+    document.querySelectorAll('.tab-item').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        document.querySelectorAll('.tab-item').forEach(t => {
+          t.classList.remove('tab-active');
+          t.style.background = '';
+          t.style.color = '';
+        });
+        tab.classList.add('tab-active');
+        tab.style.background = 'rgba(56, 189, 248, 0.2)';
+        tab.style.color = '#38bdf8';
+      });
+    });
+  </script>
+<div id="inspect-res"></div><script>
+    setTimeout(() => {
+      const b = document.querySelector("button.filled.primary");
+      if (!b) return;
+      const cs = window.getComputedStyle(b);
+      document.getElementById("inspect-res").textContent = JSON.stringify({
+        bg: cs.backgroundColor,
+        bi: cs.backgroundImage,
+        color: cs.color,
+        pad: cs.padding,
+        br: cs.borderRadius,
+        bs: cs.boxShadow,
+        display: cs.display
+      });
+    }, 500);
+  </script></body>
+</html>

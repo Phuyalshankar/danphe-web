@@ -583,7 +583,7 @@ class DolphinWebEngine {
         const bodyHTML = this.vnodeToHTML(pageVNode, mergedInitialState);
 
         return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme-mode="dark" data-theme="dolphin">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -599,16 +599,12 @@ class DolphinWebEngine {
     ${ogImage ? `<meta property="og:image" content="${this._escapeHTML(ogImage)}">` : ''}
     ${canonicalUrl ? `<link rel="canonical" href="${this._escapeHTML(canonicalUrl)}">` : ''}
 
-    <!-- 🇳🇵 Danphe UI Native Typography & Web Engine (100% Offline-First) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-    
-    <!-- 100% Offline Local Assets & Icons Support -->
-    <link rel="stylesheet" href="/assets/icons/icons.css" />
-    <link rel="stylesheet" href="/assets/cdn/fa-all.min.css" />
+    <!-- 🐬 DolphinCSS Native UI Engine (Offline-First) -->
     <link rel="stylesheet" href="/dolphincss.css" />
     <link rel="stylesheet" href="/assets/cdn/dolphin-css.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="/assets/icons/icons.css" />
+    <link rel="stylesheet" href="/assets/cdn/fa-all.min.css" />
     <style>
         ${WebCSS.getBaseStyles()}
         .titan-flipcard, flip-card { display: block; width: 100%; position: relative; }
