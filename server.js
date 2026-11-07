@@ -15,36 +15,12 @@ const devServer = new DevServer({
     watchDir: process.env.WATCH_DIR || __dirname
 });
 
-// ⚡ Auto-Wire Logic / Circuit Modules into DevServer for Zero-VDOM Web Reactivity
-// Supports both 'app.logic.js' / 'logics/' (Web Developer Model) and 'circuits/' (Hardware/Native Model)
+// ⚡ Pure JavaScript Logic Engine (Zero Circuits, Zero Hardware Bloat)
 try {
     let appLogic = {};
-
-    const candidates = [
-        path.join(__dirname, 'app.logic.js'),
-        path.join(__dirname, 'logics', 'main.logic.js'),
-        path.join(__dirname, 'circuits', 'main.circuit.js'),
-        path.join(__dirname, 'circuits', 'counter.circuit.js')
-    ];
-
-    for (const c of candidates) {
-        if (fs.existsSync(c)) {
-            try {
-                const mod = require(c);
-                appLogic = Object.assign(appLogic, mod);
-            } catch (_) {}
-        }
-    }
-
-    // Auto-discover all files in logics/ directory if present
-    const logicsDir = path.join(__dirname, 'logics');
-    if (fs.existsSync(logicsDir)) {
-        fs.readdirSync(logicsDir).filter(f => f.endsWith('.js')).forEach(f => {
-            try {
-                const subMod = require(path.join(logicsDir, f));
-                appLogic = Object.assign(appLogic, subMod);
-            } catch (_) {}
-        });
+    const logicPath = path.join(__dirname, 'app.logic.js');
+    if (fs.existsSync(logicPath)) {
+        appLogic = require(logicPath);
     }
 
     const registers = new Map();
@@ -61,41 +37,33 @@ try {
         return registers.has(numAddr) ? registers.get(numAddr) : 0;
     };
 
-    // Initialize initial logic state values
-    for (const [key, node] of Object.entries(appLogic)) {
-        if (node && node.address !== undefined && node.initialValue !== undefined) {
-            registers.set(node.address & 0xFFFF, node.initialValue);
-        }
-    }
-
+    // Attach Pure JS Action Handler
     devServer.attachApp((action, value, deviceId) => {
         if (!action) return;
-        let actionAddr = null;
+        let actionKey = null;
         if (typeof action === 'number') {
-            actionAddr = action & 0xFFFF;
+            actionKey = action & 0xFFFF;
         } else if (typeof action === 'string') {
             const clean = action.replace(/^bus:/i, '').trim();
             if (clean.startsWith('0x') || clean.startsWith('0X')) {
-                actionAddr = parseInt(clean, 16) & 0xFFFF;
+                actionKey = parseInt(clean, 16) & 0xFFFF;
             } else if (!isNaN(Number(clean))) {
-                actionAddr = parseInt(clean, 10) & 0xFFFF;
+                actionKey = parseInt(clean, 10) & 0xFFFF;
+            } else {
+                actionKey = clean;
             }
         }
 
-        if (actionAddr !== null) {
-            for (const [key, node] of Object.entries(appLogic)) {
-                if (node && (node.address & 0xFFFF) === actionAddr && typeof node.onReceive === 'function') {
-                    console.log(`⚡ [Logic Engine] Executing node "${key}" on address 0x${actionAddr.toString(16)} (${actionAddr})`);
-                    node.onReceive(value, { tx, rx, store: null });
-                    return;
-                }
-            }
+        const handler = appLogic[actionKey] || appLogic[action] || appLogic[String(actionKey)];
+        if (typeof handler === 'function') {
+            console.log(`⚡ [Pure JS Logic] Executing action: ${actionKey}`);
+            handler(value, { rx, tx, store: null });
         }
     });
 
-    console.log('⚡ [Danphe Web] Logic & Circuit Modules Successfully Mounted');
+    console.log('⚡ [Danphe Web] Pure JavaScript Logic Engine Successfully Mounted');
 } catch (e) {
-    console.warn('⚠️ [Server] Logic auto-wire skipped:', e.message);
+    console.warn('⚠️ [Server] Logic mount warning:', e.message);
 }
 
 devServer.start().catch((err) => {

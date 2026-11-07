@@ -7,7 +7,8 @@
  * Zero runtime dependencies.
  */
 
-const TitanCircuitEngine  = require('./TitanCircuitEngine');
+let TitanCircuitEngine = null;
+try { TitanCircuitEngine = require('./TitanCircuitEngine'); } catch (_) {}
 const TitanClockPulse     = require('./TitanClockPulse');
 const TitanDataStore      = require('./TitanDataStore');
 const TitanBuf            = require('./TitanBuf');
