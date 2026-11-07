@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "node tests/test_danphe_native_pipeline.js",
-    "dev": "node server.js 9090 9091",
-    "start": "node server.js 9090 9091"
+    "dev": "node server.js 7080 7081",
+    "start": "node server.js 7080 7081"
   },
   "dependencies": {},
   "keywords": [
