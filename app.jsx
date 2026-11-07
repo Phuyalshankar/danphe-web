@@ -8,8 +8,8 @@ export default function App() {
   return (
     <div id="app-root-container" className="min-h-screen w-full flex flex-col font-sans">
       
-      {/* 🐬 DolphinCSS Clean Responsive Web Navbar with Frosted Blur */}
-      <header className="w-full card sticky top-0 z-50 p-3" style={{ borderRadius: '0px 0px 20px 20px', borderTop: 'none' }}>
+      {/* 🐬 DolphinCSS Clean Responsive Web Navbar with Frosted Glass Blur */}
+      <header className="w-full card glass sticky top-0 z-50 p-3" style={{ borderRadius: '0px 0px 20px 20px', borderTop: 'none' }}>
         <div className="max-w-4xl mx-auto px-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl filled primary glow flex items-center justify-center text-white font-black text-xl">

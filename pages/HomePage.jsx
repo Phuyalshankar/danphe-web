@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <div className="w-full space-y-5">
       {/* 🐬 DolphinCSS Telemetry Status Strip */}
-      <div className="w-full card glow p-4 flex items-center justify-between">
+      <div className="w-full card glass glow p-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <span className="w-3 h-3 rounded-full bg-emerald-400" style={{ boxShadow: '0 0 10px #10b981' }}></span>
           <span className="text-xs font-black text-white uppercase tracking-wider">सिस्टम स्टाटस (System Status)</span>

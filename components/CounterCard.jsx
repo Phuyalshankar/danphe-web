@@ -1,6 +1,6 @@
 export default function CounterCard() {
   return (
-    <div className="w-full card p-5 space-y-4">
+    <div className="w-full card glass glow p-5 space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
         <div className="flex items-center gap-2.5">
