@@ -546,13 +546,11 @@ class DevServer extends EventEmitter {
         this._startWatcher();
 
         const localIP = this._getLocalIP();
-        console.log('\n🦚 DANPHE NATIVE DEV SERVER & OTA DOWNLOAD HUB');
+        console.log('\n🇳🇵 🐬 DANPHE-WEB REACTIVE DEV SERVER');
         console.log('─────────────────────────────────────────────────────────────────');
-        console.log(`📱 Web Dashboard:    http://${localIP}:${this.httpPort}/dashboard`);
-        console.log(`📦 APK WiFi Download: http://${localIP}:${this.httpPort}/download-apk`);
-        console.log(`⚡ LVGL/ThorVG C++:   http://${localIP}:${this.httpPort}/download-cpp`);
-        console.log(`🔌 TCP Binary Engine: ${localIP}:${this.port} (Connects from Android app)`);
-        console.log(`📡 UDP Auto-Discovery: Port 9092 (Phones find your PC automatically)`);
+        console.log(`🌐 Live Web App:      http://localhost:${this.httpPort}/`);
+        console.log(`📱 Network Access:    http://${localIP}:${this.httpPort}/`);
+        console.log(`🔌 TCP Binary Engine: ${localIP}:${this.port}`);
         console.log('─────────────────────────────────────────────────────────────────\n');
 
         this.emit('ready');
@@ -692,14 +690,24 @@ class DevServer extends EventEmitter {
             if (url.length > 1 && url.endsWith('/')) url = url.slice(0, -1);
 
             // 1. Dashboard & Admin UI
-            if (url === '' || url === '/' || url === '/dashboard' || url === '/admin') {
+            // 1. Direct Live Web App (Root: http://localhost:7080/)
+            if (url === '' || url === '/' || url === '/web' || url === '/app') {
+                const html = this._renderWebApp();
+                res.writeHead(200, {
+                    'Content-Type': 'text/html; charset=utf-8',
+                    'Content-Length': Buffer.byteLength(html)
+                });
+                res.end(html);
+                return;
+            }
+
+            // Optional Dashboard
+            if (url === '/dashboard' || url === '/admin') {
                 const html = this._renderDashboard();
                 res.writeHead(200, {
                     'Content-Type': 'text/html; charset=utf-8',
                     'Content-Length': Buffer.byteLength(html),
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
+                    'Cache-Control': 'no-cache, no-store, must-revalidate'
                 });
                 res.end(html);
                 return;
