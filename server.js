@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs');
 const { DevServer } = require('./src/runtime/DevServer');
 
 // Distinct Port for Danphe-Web (to prevent collision with Danphe-Native APK ports 9090/9091)
@@ -14,9 +15,38 @@ const devServer = new DevServer({
     watchDir: process.env.WATCH_DIR || __dirname
 });
 
-// ⚡ Auto-Wire Hardware Circuits into DevServer for Zero-VDOM Web Reactivity
+// ⚡ Auto-Wire Logic / Circuit Modules into DevServer for Zero-VDOM Web Reactivity
+// Supports both 'app.logic.js' / 'logics/' (Web Developer Model) and 'circuits/' (Hardware/Native Model)
 try {
-    const mainCircuit = require('./circuits/main.circuit');
+    let appLogic = {};
+
+    const candidates = [
+        path.join(__dirname, 'app.logic.js'),
+        path.join(__dirname, 'logics', 'main.logic.js'),
+        path.join(__dirname, 'circuits', 'main.circuit.js'),
+        path.join(__dirname, 'circuits', 'counter.circuit.js')
+    ];
+
+    for (const c of candidates) {
+        if (fs.existsSync(c)) {
+            try {
+                const mod = require(c);
+                appLogic = Object.assign(appLogic, mod);
+            } catch (_) {}
+        }
+    }
+
+    // Auto-discover all files in logics/ directory if present
+    const logicsDir = path.join(__dirname, 'logics');
+    if (fs.existsSync(logicsDir)) {
+        fs.readdirSync(logicsDir).filter(f => f.endsWith('.js')).forEach(f => {
+            try {
+                const subMod = require(path.join(logicsDir, f));
+                appLogic = Object.assign(appLogic, subMod);
+            } catch (_) {}
+        });
+    }
+
     const registers = new Map();
 
     const tx = (addr, val) => {
@@ -31,8 +61,8 @@ try {
         return registers.has(numAddr) ? registers.get(numAddr) : 0;
     };
 
-    // Initialize initial circuit state values
-    for (const [key, node] of Object.entries(mainCircuit)) {
+    // Initialize initial logic state values
+    for (const [key, node] of Object.entries(appLogic)) {
         if (node && node.address !== undefined && node.initialValue !== undefined) {
             registers.set(node.address & 0xFFFF, node.initialValue);
         }
@@ -53,9 +83,9 @@ try {
         }
 
         if (actionAddr !== null) {
-            for (const [key, node] of Object.entries(mainCircuit)) {
+            for (const [key, node] of Object.entries(appLogic)) {
                 if (node && (node.address & 0xFFFF) === actionAddr && typeof node.onReceive === 'function') {
-                    console.log(`⚡ [Circuit Engine] Executing node "${key}" on address 0x${actionAddr.toString(16)} (${actionAddr})`);
+                    console.log(`⚡ [Logic Engine] Executing node "${key}" on address 0x${actionAddr.toString(16)} (${actionAddr})`);
                     node.onReceive(value, { tx, rx, store: null });
                     return;
                 }
@@ -63,9 +93,9 @@ try {
         }
     });
 
-    console.log('⚡ [Danphe Web] Hardware Motherboard Circuits Successfully Mounted');
+    console.log('⚡ [Danphe Web] Logic & Circuit Modules Successfully Mounted');
 } catch (e) {
-    console.warn('⚠️ [Server] Circuit auto-wire skipped:', e.message);
+    console.warn('⚠️ [Server] Logic auto-wire skipped:', e.message);
 }
 
 devServer.start().catch((err) => {
