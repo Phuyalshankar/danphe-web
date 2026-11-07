@@ -1242,40 +1242,38 @@ class DolphinWebEngine {
               }
             }
 
-            // 3. Theme Toggle
-            if (lowerAct === 'theme:toggle' || lowerAct === 'app.toggletheme' || lowerAct === 'theme') {
-              state.theme = state.theme === 'dark' ? 'light' : 'dark';
-              document.documentElement.setAttribute('data-theme-mode', state.theme);
-              document.body.setAttribute('data-theme-mode', state.theme);
-              document.documentElement.classList.toggle('dark', state.theme === 'dark');
-              document.body.classList.toggle('dark', state.theme === 'dark');
+            // 3. Settings Actions
+            if (lowerAct === 'power:toggle' || lowerAct === 'power') {
+              var cur = state.power !== undefined ? state.power : 1;
+              var next = cur ? 0 : 1;
+              state.power = next;
+              state.power_status = next ? 'चालू (ON) ⚡' : 'बन्द (OFF) 🔴';
+              state.alert_msg = next ? '⚡ मास्टर पावर चालू गरियो।' : '🔴 मास्टर पावर बन्द गरियो।';
               updateDOM();
-            } else if (lowerAct === 'theme:dark') {
-              state.theme = 'dark';
-              document.documentElement.classList.add('dark');
-              document.body.classList.add('dark');
+            } else if (lowerAct === 'theme:toggle' || lowerAct === 'theme') {
+              var cur = state.theme === 'light' ? 'light' : 'dark';
+              var next = cur === 'dark' ? 'light' : 'dark';
+              state.theme = next;
+              state.theme_label = next === 'light' ? 'उज्यालो (Light) ☀️' : 'गाढा (Dark) 🌙';
+              state.alert_msg = next === 'light' ? '☀️ उज्यालो थिम सक्रिय भयो।' : '🌙 गाढा थिम सक्रिय भयो।';
+              document.documentElement.classList.toggle('dark', next === 'dark');
+              document.body.classList.toggle('dark', next === 'dark');
               updateDOM();
-            } else if (lowerAct === 'theme:light') {
-              state.theme = 'light';
-              document.documentElement.classList.remove('dark');
-              document.body.classList.remove('dark');
+            } else if (lowerAct === 'alert:test' || lowerAct === 'app.showtoast') {
+              state.alert_msg = '🔔 नयाँ सूचना: सेटिङ सफलतापूर्वक परीक्षण गरियो (' + new Date().toLocaleTimeString() + ')';
+              updateDOM();
+            } else if (lowerAct === 'data:reset') {
+              state['counter::value'] = 0;
+              state['form::note'] = '';
+              state.alert_msg = '🔄 सम्पूर्ण काउन्टर र नोट डाटा शून्यमा रिसेट गरियो!';
               updateDOM();
             }
 
             // 4. Form Actions
             if (lowerAct === 'form::save' || lowerAct === 'form:submit') {
               state.db_status = '✅ सुरक्षित भयो (' + new Date().toLocaleTimeString() + ')';
+              state.alert_msg = '💾 नोट सफलतापूर्वक सेभ गरियो!';
               updateDOM();
-            }
-
-            // 5. Toast & Notifications
-            if (lowerAct === 'app.showtoast' || lowerAct === 'toast') {
-              state.notification = '⏳ सूचना सक्रिय भयो (३ सेकेन्ड)';
-              updateDOM();
-              setTimeout(function() {
-                state.notification = '';
-                updateDOM();
-              }, 3000);
             }
 
             // 6. Direct Hardware Bus Actions (legacy support)

@@ -37,9 +37,43 @@ module.exports = {
     }
   },
 
-  // ── ३. प्रणाली सेटिङ लजिक (System Settings) ──────────────────────────────────
-  'power': ({ tx, value }) => {
-    console.log(`⚡ [App Logic] Master power toggled`);
-    if (tx) tx('power', value ? 1 : 0);
+  // ── ३. सेटिङ लजिक (Settings Actions) ─────────────────────────────────────────
+  'power:toggle': ({ rx, tx }) => {
+    const current = rx ? rx('power') : 1;
+    const next = current ? 0 : 1;
+    console.log(`⚡ [App Logic] Power toggled: ${next ? 'ON' : 'OFF'}`);
+    if (tx) {
+      tx('power', next);
+      tx('power_status', next ? 'चालू (ON) ⚡' : 'बन्द (OFF) 🔴');
+      tx('alert_msg', next ? '⚡ मास्टर पावर चालू गरियो।' : '🔴 मास्टर पावर बन्द गरियो।');
+    }
+  },
+
+  'theme:toggle': ({ rx, tx }) => {
+    const current = (rx ? rx('theme') : 'dark') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    console.log(`⚡ [App Logic] Theme toggled to: ${next}`);
+    if (tx) {
+      tx('theme', next);
+      tx('theme_label', next === 'light' ? 'उज्यालो (Light) ☀️' : 'गाढा (Dark) 🌙');
+      tx('alert_msg', next === 'light' ? '☀️ उज्यालो थिम सक्रिय भयो।' : '🌙 गाढा थिम सक्रिय भयो।');
+    }
+  },
+
+  'alert:test': ({ tx }) => {
+    const time = new Date().toLocaleTimeString();
+    console.log(`⚡ [App Logic] Alert tested at ${time}`);
+    if (tx) {
+      tx('alert_msg', `🔔 नयाँ सूचना: सेटिङ सफलतापूर्वक परीक्षण गरियो (${time})`);
+    }
+  },
+
+  'data:reset': ({ tx }) => {
+    console.log(`⚡ [App Logic] All data reset`);
+    if (tx) {
+      tx('counter::value', 0);
+      tx('form::note', '');
+      tx('alert_msg', '🔄 सम्पूर्ण काउन्टर र नोट डाटा शून्यमा रिसेट गरियो!');
+    }
   }
 };
