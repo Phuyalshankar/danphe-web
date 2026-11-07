@@ -390,6 +390,14 @@ class DolphinWebEngine {
             attrs.push(`page="${this._escapeHTML(pageStr)}"`);
             attrs.push(`data-page="${this._escapeHTML(pageStr)}"`);
         }
+
+        // 🧭 Nested Subpage Viewports (including settings.profile, settings.security)
+        if (props.subpage !== undefined || props['data-subpage'] !== undefined) {
+            const rawSub = props.subpage !== undefined ? props.subpage : props['data-subpage'];
+            const subStr = (rawSub && typeof rawSub === 'object' && rawSub.fullName) ? rawSub.fullName : String(rawSub);
+            attrs.push(`subpage="${this._escapeHTML(subStr)}"`);
+            attrs.push(`data-subpage="${this._escapeHTML(subStr)}"`);
+        }
         
         let extractedStateKey = props.statekey || props.stateKey || null;
         if (!extractedStateKey) {
@@ -641,6 +649,30 @@ class DolphinWebEngine {
         var initialState = JSON.parse(JSON.stringify(state));
         var tempTimers = {};
         var stateListeners = [];
+
+        // 🧭 Universal HTML5 History & URL Path Synchronizer (Generic for any URL)
+        if (typeof window !== 'undefined' && window.location) {
+          var syncFromUrl = function() {
+            var path = (window.location.pathname || '').replace(/^\/+|\/+$/g, '').toLowerCase();
+            if (path) {
+              var segments = path.split('/');
+              if (segments[0]) {
+                state['nav'] = segments[0];
+                state['nav::current'] = segments[0];
+              }
+              if (segments[1]) {
+                state[segments[0]] = segments[1];
+                state[segments[0] + '::current'] = segments[1];
+              }
+            } else {
+              state['nav'] = 'home';
+              state['nav::current'] = 'home';
+            }
+            updateDOM();
+          };
+          syncFromUrl();
+          window.addEventListener('popstate', syncFromUrl);
+        }
 
         // 🌟 Seed Titan Register Store with Initial State
         if (window.Titan && window.Titan.store) {
@@ -1013,7 +1045,17 @@ class DolphinWebEngine {
               return;
             }
 
-            // 3. Default Screen & Route Matching (Semantic nav:: or Register 10)
+            // 3. Universal Namespace-Slot Viewport Matching (page="namespace::slot")
+            if (pPage && pPage.indexOf('::') !== -1) {
+              var nParts = pPage.split('::');
+              var ns = nParts[0].trim().toLowerCase();
+              var slot = nParts[1].trim().toLowerCase();
+              var activeSlot = String(state[ns] !== undefined ? state[ns] : (state['nav'] || 'home')).toLowerCase();
+              p.style.display = (activeSlot === slot) ? 'block' : 'none';
+              return;
+            }
+
+            // Simple route match
             var isMatch = (pPage === curRoute || 
                            pPage === curIndex || 
                            (pageMap[pPage] !== undefined && pageMap[pPage] === curIndex) ||
@@ -1021,18 +1063,24 @@ class DolphinWebEngine {
                            (pRoute && (pRoute === curRoute || pRoute.toLowerCase() === curRoute || pageMap[pRoute.toLowerCase()] === curIndex)));
             p.style.display = isMatch ? 'block' : 'none';
           });
-          document.querySelectorAll('[data-tab], [tx^="nav::"], [action^="nav:"]').forEach(function(t) {
-            var tabId = (t.getAttribute('data-tab') || '').toLowerCase().replace(/^nav::/, '');
-            var tabTx = (t.getAttribute('tx') || '').toLowerCase().replace(/^nav::/, '');
-            var tabAction = (t.getAttribute('action') || '').toLowerCase().replace(/^nav:/, '');
-            var tKey = tabTx || tabId || tabAction;
-            var isTabActive = (tKey === curRoute || tKey === curIndex || pageMap[tKey] === curIndex);
-            if (isTabActive) {
-              t.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
-              t.classList.remove('text-slate-400', 'border-transparent');
-            } else {
-              t.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
-              t.classList.add('text-slate-400', 'border-transparent');
+
+          // 🔘 Universal Button Active State Highlighting (Generic for any tx="namespace::slot")
+          document.querySelectorAll('[data-tab], [tx*="::"], [action*="::"]').forEach(function(btn) {
+            var rawAct = (btn.getAttribute('tx') || btn.getAttribute('data-tab') || btn.getAttribute('action') || '').trim();
+            if (rawAct.indexOf('::') !== -1) {
+              var bParts = rawAct.split('::');
+              var bNs = bParts[0].trim().toLowerCase();
+              var bSlot = bParts[1].trim().toLowerCase();
+              var curActive = String(state[bNs] !== undefined ? state[bNs] : (state['nav'] || '')).toLowerCase();
+              var isBtnActive = (bSlot === curActive);
+              btn.classList.toggle('active', isBtnActive);
+              if (isBtnActive) {
+                btn.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+                btn.classList.remove('text-slate-400', 'border-transparent');
+              } else if (curActive) {
+                btn.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+                btn.classList.add('text-slate-400', 'border-transparent');
+              }
             }
           });
 
@@ -1245,7 +1293,7 @@ class DolphinWebEngine {
               updateDOM();
             }
 
-            // 2. Direct Navigation (Semantic nav::home, nav::about, or legacy nav:0)
+            // 2. Universal Navigation and Slot Action Handler
             if (lowerAct.startsWith('nav::') || lowerAct.startsWith('nav:') || lowerAct.startsWith('tab:') || lowerAct.startsWith('nav.to:') || lowerAct.startsWith('app:nav:')) {
               var screenName = actionStr.indexOf('::') !== -1
                 ? actionStr.split('::').slice(1).join('::').trim()
@@ -1255,11 +1303,57 @@ class DolphinWebEngine {
                 var routeVal = screenMap[screenName.toLowerCase()] !== undefined ? screenMap[screenName.toLowerCase()] : screenName;
                 state['10'] = routeVal;
                 state['bus:10'] = routeVal;
+                state['nav'] = screenName.toLowerCase();
                 state['nav::current'] = screenName.toLowerCase();
                 state['currentScreen'] = screenName;
                 state.activeNav = screenName;
                 state.activeTab = screenName;
+
+                // 🌐 Two-Way HTML5 History URL Path Sync (/settings, /about, /home)
+                if (typeof window !== 'undefined' && window.history && window.history.pushState) {
+                  var targetUrl = screenName.toLowerCase() === 'home' ? '/' : '/' + screenName.toLowerCase();
+                  if (window.location.pathname !== targetUrl) {
+                    window.history.pushState(null, '', targetUrl);
+                  }
+                }
+
                 updateDOM();
+                try {
+                  fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: actionStr, value: '' })
+                  }).catch(function() {});
+                } catch(e) {}
+                return;
+              }
+            }
+
+            // 2b. Universal Nested Namespace Slot Selector (Generic for ANY namespace::slot)
+            if (actionStr.indexOf('::') !== -1 && !actionStr.includes('inc') && !actionStr.includes('dec') && !actionStr.includes('reset') && !actionStr.includes('save') && !actionStr.includes('toggle')) {
+              var nParts = actionStr.split('::');
+              var pName = nParts[0].trim().toLowerCase();
+              var subName = nParts[1].trim().toLowerCase();
+              if (pName && subName) {
+                state[pName] = subName;
+                state[pName + '::current'] = subName;
+
+                // Push Generic Nested Browser URL (/parent/sub)
+                if (typeof window !== 'undefined' && window.history && window.history.pushState) {
+                  var nestedUrl = '/' + pName + '/' + subName;
+                  if (window.location.pathname !== nestedUrl) {
+                    window.history.pushState(null, '', nestedUrl);
+                  }
+                }
+
+                updateDOM();
+                try {
+                  fetch('/action', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: actionStr, value: '' })
+                  }).catch(function() {});
+                } catch(e) {}
                 return;
               }
             }
