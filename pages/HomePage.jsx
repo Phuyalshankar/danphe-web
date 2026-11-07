@@ -4,21 +4,19 @@ import InputCarrierCard from '../components/InputCarrierCard';
 export default function HomePage() {
   return (
     <div className="w-full space-y-4">
-      {/* Telemetry Status Strip */}
-      <div className="w-full p-3 rounded-2xl bg-gradient-to-r from-purple-950/80 to-slate-900 border border-purple-500/30 flex items-center justify-between shadow-lg">
+      {/* 🐬 DolphinCSS Telemetry Status Strip */}
+      <div className="w-full card glass glow p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
           <span className="text-xs font-bold text-white uppercase tracking-wider">सिस्टम स्टाटस (System Status)</span>
         </div>
-        <div className="flex items-center gap-3 font-mono text-xs">
-          <div className="flex items-center gap-1 text-emerald-400">
-            <span>🔋</span>
-            <span rx="battery">100</span>%
-          </div>
-          <div className="flex items-center gap-1 text-cyan-400">
-            <span>📶</span>
-            <span rx="network">अनलाइन</span>
-          </div>
+        <div className="flex items-center gap-2 font-mono text-xs">
+          <span className="badge success rounded-full px-2.5 py-1">
+            🔋 <span rx="battery">100</span>%
+          </span>
+          <span className="badge primary rounded-full px-2.5 py-1">
+            📶 <span rx="network">अनलाइन</span>
+          </span>
         </div>
       </div>
 

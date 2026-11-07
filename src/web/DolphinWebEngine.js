@@ -1069,11 +1069,11 @@ class DolphinWebEngine {
               var isBtnActive = (bSlot === curActive);
               btn.classList.toggle('active', isBtnActive);
               if (isBtnActive) {
-                btn.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
-                btn.classList.remove('text-slate-400', 'border-transparent');
+                btn.classList.add('filled', 'primary', 'glow');
+                btn.classList.remove('outlined');
               } else {
-                btn.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
-                btn.classList.add('text-slate-400', 'border-transparent');
+                btn.classList.remove('filled', 'glow');
+                btn.classList.add('outlined');
               }
             }
           });

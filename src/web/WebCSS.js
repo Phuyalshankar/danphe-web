@@ -7,6 +7,53 @@
 class WebCSS {
     static getBaseStyles() {
         return `
+        :root {
+            --color-primary: #0284c7;
+            --color-secondary: #6366f1;
+            --color-success: #10b981;
+            --color-danger: #f43f5e;
+            --color-warning: #f59e0b;
+            --color-surface: rgba(15, 23, 42, 0.95);
+            --color-text: #f8fafc;
+            --theme-primary: #0284c7;
+            --radius-xl: 12px;
+            --radius-2xl: 16px;
+        }
+
+        /* 🐬 DolphinCSS Semantic Additions & Refinements */
+        .card.outlined {
+            border: 1px solid rgba(51, 65, 85, 0.6) !important;
+            background-color: rgba(2, 6, 23, 0.6) !important;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .badge.primary { background-color: rgba(2, 132, 199, 0.2); color: #38bdf8; border: 1px solid rgba(2, 132, 199, 0.4); }
+        .badge.success { background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .badge.danger { background-color: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+        .badge.warning { background-color: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+        .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.75rem; font-weight: 700; }
+        .btn-md { padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 700; }
+        .btn-lg { padding: 0.75rem 1.25rem; font-size: 1rem; font-weight: 700; }
+        .outlined {
+            background-color: transparent !important;
+            border: 1px solid rgba(51, 65, 85, 0.8) !important;
+            color: #94a3b8 !important;
+        }
+        .outlined.primary {
+            border-color: rgba(2, 132, 199, 0.4) !important;
+            color: #38bdf8 !important;
+        }
+        .outlined:hover {
+            border-color: rgba(56, 189, 248, 0.8) !important;
+            color: #ffffff !important;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body {
             width: 100%; height: 100%; min-height: 100vh;

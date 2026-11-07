@@ -1,57 +1,57 @@
 export default function CounterCard() {
   return (
-    <div className="w-full p-4 rounded-3xl bg-slate-900 border border-indigo-500/30 shadow-xl space-y-3">
+    <div className="w-full card glass glow space-y-4 p-5">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-indigo-500/20 pb-2">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center">
-            <span className="text-sm">🔢</span>
+      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl filled primary flex items-center justify-center">
+            <span className="text-base">🔢</span>
           </div>
           <div className="flex flex-col">
             <span className="text-xs font-black uppercase tracking-wider text-white">काउन्टर (Counter)</span>
-            <span className="text-[10px] text-slate-400 font-mono">Pure Reactive • Zero VDOM</span>
+            <span className="text-[10px] text-slate-400 font-mono">DolphinCSS • Zero VDOM Reactive</span>
           </div>
         </div>
-        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded-full border border-cyan-500/40 font-bold">
+        <span className="badge primary rounded-full text-[10px] font-mono font-bold px-2.5 py-0.5">
           LIVE
         </span>
       </div>
 
       {/* Counter Value Display */}
-      <div className="w-full p-4 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center">
+      <div className="w-full card outlined flex flex-col items-center justify-center p-6 my-2">
         <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">हालको काउन्टर मान (Value)</span>
-        <span rx="counter::value" className="text-4xl font-mono font-black text-cyan-300 my-1">
+        <span rx="counter::value" className="text-5xl font-mono font-black glow my-2">
           0
         </span>
-        <span state="counter_status" className="text-[11px] text-emerald-400 font-bold">
+        <span state="counter_status" className="badge success rounded-full text-xs font-bold px-3 py-1">
           तयार (Ready)
         </span>
       </div>
 
-      {/* Three Action Buttons */}
-      <div className="grid grid-cols-3 gap-2 pt-1">
+      {/* Three Action Buttons via DolphinCSS */}
+      <div className="grid grid-cols-3 gap-3 pt-2">
         <button
           tx="counter::inc"
-          className="py-3 px-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-black text-xs shadow-lg active:scale-95 cursor-pointer flex flex-col items-center gap-1"
+          className="filled primary glow btn-lg rounded-xl cursor-pointer flex flex-col items-center gap-1 py-3"
         >
-          <span className="text-base">➕</span>
-          <span>बढाउनुहोस् (+1)</span>
+          <span className="text-lg">➕</span>
+          <span className="font-bold text-xs">बढाउनुहोस् (+1)</span>
         </button>
 
         <button
           tx="counter::dec"
-          className="py-3 px-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-black text-xs border border-slate-700 shadow-lg active:scale-95 cursor-pointer flex flex-col items-center gap-1"
+          className="filled secondary glow btn-lg rounded-xl cursor-pointer flex flex-col items-center gap-1 py-3"
         >
-          <span className="text-base">➖</span>
-          <span>घटाउनुहोस् (-1)</span>
+          <span className="text-lg">➖</span>
+          <span className="font-bold text-xs">घटाउनुहोस् (-1)</span>
         </button>
 
         <button
           tx="counter::reset"
-          className="py-3 px-2 rounded-xl bg-rose-950 hover:bg-rose-900 text-rose-300 font-black text-xs border border-rose-500/40 shadow-lg active:scale-95 cursor-pointer flex flex-col items-center gap-1"
+          className="filled danger glow btn-lg rounded-xl cursor-pointer flex flex-col items-center gap-1 py-3"
         >
-          <span className="text-base">🔄</span>
-          <span>रिसेट (Reset)</span>
+          <span className="text-lg">🔄</span>
+          <span className="font-bold text-xs">रिसेट (Reset)</span>
         </button>
       </div>
     </div>
