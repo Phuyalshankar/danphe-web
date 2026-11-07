@@ -1121,7 +1121,6 @@ class DolphinWebEngine {
         // Handle Web Actions locally (0ms UI latency)
         document.addEventListener('click', function(e) {
           // Universal Target Actions (target="flip", target="save", target="delete")
-          /* Auto 3D Card Flip on Click */
           var clickedCard = e.target.closest('.titan-flipcard, flip-card, [class*="flipcard"]');
           if (clickedCard && !e.target.closest('button, input, textarea, a, select')) {
             clickedCard.classList.toggle('flipped');
@@ -1151,16 +1150,6 @@ class DolphinWebEngine {
                     var sId = inp.getAttribute('slot') || inp.getAttribute('data-slot') || inp.getAttribute('name');
                     if (sId) formValues['slot_' + sId] = inp.value;
                   });
-                  var slot1Inp = card.querySelector('input[slot="1"], input[data-slot="1"]');
-                  var slot4Inp = card.querySelector('input[slot="6"], input[data-slot="6"]');
-                  if (slot1Inp) {
-                    var f1 = card.querySelector('[slot="1"], [data-slot="1"]');
-                    if (f1 && f1 !== slot1Inp) f1.textContent = slot1Inp.value;
-                  }
-                  if (slot4Inp) {
-                    var f4 = card.querySelector('[slot="4"], [data-slot="4"]');
-                    if (f4) f4.textContent = 'Rs. ' + slot4Inp.value;
-                  }
                   card.classList.remove('flipped');
                   try {
                     fetch('/action', {
@@ -1194,9 +1183,9 @@ class DolphinWebEngine {
             }
           }
 
-          var btn = e.target.closest('[data-action]');
+          var btn = e.target.closest('[data-action], [action]');
           if (!btn) return;
-          var fullAction = btn.getAttribute('data-action');
+          var fullAction = btn.getAttribute('data-action') || btn.getAttribute('action');
           if (!fullAction) return;
           e.preventDefault();
 
@@ -1212,125 +1201,35 @@ class DolphinWebEngine {
               return;
             }
 
-            // 1. Everest / Titan Bus Actions (bus:write:reg:val, bus:key:X, bus:dial, bus:reg:val, etc.)
-            if (lowerAct.startsWith('bus:') || !isNaN(Number(actionStr))) {
-              var parts = lowerAct.startsWith('bus:') ? actionStr.split(':') : ['bus', actionStr];
-              var verb = parts[1] ? parts[1].toLowerCase() : '';
-              if (verb === 'key') {
-                var key = parts[2] || '';
-                var cur = String(state['1000'] || state['bus:1000'] || state['dial_input'] || '');
-                var updated = cur + key;
-                state['1000'] = updated;
-                state['bus:1000'] = updated;
-                state['dial_input'] = updated;
-              } else if (verb === 'backspace') {
-                var cur = String(state['1000'] || state['bus:1000'] || state['dial_input'] || '');
-                var updated = cur.length > 0 ? cur.slice(0, -1) : '';
-                state['1000'] = updated;
-                state['bus:1000'] = updated;
-                state['dial_input'] = updated;
-              } else if (verb === 'dial') {
-                state['10'] = 'ActiveCall';
-                state['bus:10'] = 'ActiveCall';
-                state['currentScreen'] = 'ActiveCall';
-              } else if (verb === 'write') {
-                var regStr = parts[2] || '';
-                var valStr = parts.slice(3).join(':');
-                var regNum = (!isNaN(Number(regStr))) ? parseInt(regStr, 10) : ((regStr.startsWith('0x') || regStr.startsWith('0X')) ? parseInt(regStr, 16) : null);
-                var valNum = !isNaN(Number(valStr)) ? parseInt(valStr, 10) : valStr;
-                state[regStr] = valNum;
-                state['bus:' + regStr] = valNum;
-                if (regNum !== null) {
-                  state[regNum] = valNum;
-                  state['bus:' + regNum] = valNum;
-                  state['0x' + regNum.toString(16).toLowerCase()] = valNum;
-                  state['bus:0x' + regNum.toString(16).toLowerCase()] = valNum;
-                  if (window.TitanBusClient && window.TitanBusClient.write && !isNaN(valNum)) {
-                    window.TitanBusClient.write(regNum, valNum);
-                  }
-                }
-              } else if (verb === 'relay') {
-                var rId = parts[2];
-                var rSt = parts[3] === 'on' || parts[3] === '1' ? 1 : 0;
-                state['2000' + rId] = rSt;
-                state['bus:2000' + rId] = rSt;
-              } else if (verb === 'screen') {
-                var target = parts[2];
-                state['10'] = target;
-                state['bus:10'] = target;
-                state['currentScreen'] = target;
-              } else {
-                // Direct register toggle, circuit action, or write
-                var regStr = parts[1] || '';
-                var reg = (regStr.startsWith('0x') || regStr.startsWith('0X')) ? parseInt(regStr, 16) : parseInt(regStr, 10);
-                if (!isNaN(reg)) {
-                  // 16-Bit Counter Circuit Actions (0x0201: INC, 0x0202: DEC, 0x0203: RESET)
-                  if (reg === 513 || reg === 0x0201) {
-                    var cur = parseInt(state['512'] !== undefined ? state['512'] : (state['0x200'] !== undefined ? state['0x200'] : 0), 10);
-                    var next = (isNaN(cur) ? 0 : cur) + 1;
-                    state['512'] = next;
-                    state['0x200'] = next;
-                    state['bus:512'] = next;
-                    state['bus:0x200'] = next;
-                  } else if (reg === 514 || reg === 0x0202) {
-                    var cur = parseInt(state['512'] !== undefined ? state['512'] : (state['0x200'] !== undefined ? state['0x200'] : 0), 10);
-                    var next = (isNaN(cur) || cur <= 0) ? 0 : cur - 1;
-                    state['512'] = next;
-                    state['0x200'] = next;
-                    state['bus:512'] = next;
-                    state['bus:0x200'] = next;
-                  } else if (reg === 515 || reg === 0x0203) {
-                    state['512'] = 0;
-                    state['0x200'] = 0;
-                    state['bus:512'] = 0;
-                    state['bus:0x200'] = 0;
-                  } else {
-                    var cur = state[reg] !== undefined ? state[reg] : (state['0x' + reg.toString(16)] !== undefined ? state['0x' + reg.toString(16)] : 0);
-                    var val = parts.length > 2 ? parseInt(parts[2], 10) : (cur == 0 ? 1 : 0);
-                    state[reg] = val;
-                    state['bus:' + reg] = val;
-                    state['0x' + reg.toString(16).toLowerCase()] = val;
-                    state['bus:0x' + reg.toString(16).toLowerCase()] = val;
-                  }
-                  if (window.TitanBusClient && window.TitanBusClient.write) {
-                    window.TitanBusClient.write(reg, state[reg] || 0);
-                  }
-                }
-              }
-              // Always forward action to backend server circuit engine
-              try {
-                fetch('/action', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ action: actionStr, value: '' })
-                }).catch(function() {});
-              } catch (_) {}
+            // 1. Counter Actions (Pure JS Web Logic)
+            if (lowerAct === 'counter::inc' || lowerAct === 'counter:increment' || lowerAct === 'counter.increment' || lowerAct === 'app.increment') {
+              var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state['512'] !== undefined ? state['512'] : (state.counter || 0)), 10);
+              var next = (isNaN(cur) ? 0 : cur) + 1;
+              state['counter::value'] = next;
+              state['512'] = next;
+              state['0x200'] = next;
+              state.counter = next;
               updateDOM();
-              return;
+            } else if (lowerAct === 'counter::dec' || lowerAct === 'counter:decrement' || lowerAct === 'counter.decrement' || lowerAct === 'app.decrement') {
+              var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state['512'] !== undefined ? state['512'] : (state.counter || 0)), 10);
+              var next = (isNaN(cur) || cur <= 0) ? 0 : cur - 1;
+              state['counter::value'] = next;
+              state['512'] = next;
+              state['0x200'] = next;
+              state.counter = next;
+              updateDOM();
+            } else if (lowerAct === 'counter::reset' || lowerAct === 'counter:reset' || lowerAct === 'app.resetall' || lowerAct === 'store.reset' || lowerAct === 'app.reset') {
+              state['counter::value'] = 0;
+              state['512'] = 0;
+              state['0x200'] = 0;
+              state.counter = 0;
+              updateDOM();
             }
 
-            // 2. Direct URL Navigation (url:/print.html, open:/room.html, link:..., href:...)
-            if (lowerAct.startsWith('url:') || lowerAct.startsWith('open:') || lowerAct.startsWith('link:') || lowerAct.startsWith('href:')) {
-              var targetUrl = actionStr.split(':').slice(1).join(':').trim();
-              if (targetUrl) {
-                window.location.href = targetUrl;
-                return;
-              }
-            }
-
-            // 3. Page Navigation (nav:Home, tab:rooms, nav.to:..., app:nav:...)
+            // 2. Direct Navigation
             if (lowerAct.startsWith('nav:') || lowerAct.startsWith('tab:') || lowerAct.startsWith('nav.to:') || lowerAct.startsWith('app:nav:')) {
               var screenName = actionStr.split(':').slice(1).join(':').trim();
               if (screenName) {
-                if (window.closeWebDrawer) window.closeWebDrawer();
-
-                // 1. Direct URL or HTML page navigation (e.g. print.html)
-                if (screenName.includes('.html') || screenName.startsWith('/') || screenName.startsWith('http')) {
-                  window.location.href = screenName;
-                  return;
-                }
-
-                // 2. Hardware / Bus Route register sync (Register 10: SYS_ROUTE)
                 var screenMap = { 'home': '0', 'telemetry': '1', 'controls': '2', 'settings': '3', 'icons': '4' };
                 var routeVal = screenMap[screenName.toLowerCase()] !== undefined ? screenMap[screenName.toLowerCase()] : screenName;
                 state['10'] = routeVal;
@@ -1338,334 +1237,85 @@ class DolphinWebEngine {
                 state['currentScreen'] = screenName;
                 state.activeNav = screenName;
                 state.activeTab = screenName;
-
-                if (window.TitanBusClient && window.TitanBusClient.write && !isNaN(parseInt(routeVal, 10))) {
-                  window.TitanBusClient.write(10, parseInt(routeVal, 10));
-                }
-
                 updateDOM();
-
-                // 3. Pure SPA history update WITHOUT reloading browser!
-                var lowerTarget = screenName.toLowerCase();
-                var targetRoute = lowerTarget === 'home' ? '/' : '/' + lowerTarget;
-                if (window.history && window.history.pushState && window.location.pathname !== targetRoute) {
-                  try { window.history.pushState({ screen: screenName }, '', targetRoute); } catch(_) {}
-                }
                 return;
               }
             }
 
-            // 4. Drawer Actions for Web
-            if (lowerAct === 'drawer:open' || lowerAct === 'drawer:toggle' || lowerAct === 'app:drawer:open' || lowerAct === 'app.drawer.open') {
-              state.drawerOpen = (lowerAct === 'drawer:toggle') ? !state.drawerOpen : true;
-              if (window.openWebDrawer) window.openWebDrawer();
+            // 3. Theme Toggle
+            if (lowerAct === 'theme:toggle' || lowerAct === 'app.toggletheme' || lowerAct === 'theme') {
+              state.theme = state.theme === 'dark' ? 'light' : 'dark';
+              document.documentElement.setAttribute('data-theme-mode', state.theme);
+              document.body.setAttribute('data-theme-mode', state.theme);
+              document.documentElement.classList.toggle('dark', state.theme === 'dark');
+              document.body.classList.toggle('dark', state.theme === 'dark');
               updateDOM();
-              return;
-            }
-            if (lowerAct === 'drawer:close' || lowerAct === 'app:drawer:close' || lowerAct === 'app.drawer.close' || lowerAct === 'app:back') {
-              state.drawerOpen = false;
-              if (window.closeWebDrawer) window.closeWebDrawer();
+            } else if (lowerAct === 'theme:dark') {
+              state.theme = 'dark';
+              document.documentElement.classList.add('dark');
+              document.body.classList.add('dark');
               updateDOM();
-              return;
+            } else if (lowerAct === 'theme:light') {
+              state.theme = 'light';
+              document.documentElement.classList.remove('dark');
+              document.body.classList.remove('dark');
+              updateDOM();
             }
+
+            // 4. Form Actions
+            if (lowerAct === 'form::save' || lowerAct === 'form:submit') {
+              state.db_status = '✅ सुरक्षित भयो (' + new Date().toLocaleTimeString() + ')';
+              updateDOM();
+            }
+
+            // 5. Toast & Notifications
+            if (lowerAct === 'app.showtoast' || lowerAct === 'toast') {
+              state.notification = '⏳ सूचना सक्रिय भयो (३ सेकेन्ड)';
+              updateDOM();
+              setTimeout(function() {
+                state.notification = '';
+                updateDOM();
+              }, 3000);
+            }
+
+            // 6. Direct Hardware Bus Actions (legacy support)
+            if (lowerAct.startsWith('bus:') || !isNaN(Number(actionStr))) {
+              var parts = lowerAct.startsWith('bus:') ? actionStr.split(':') : ['bus', actionStr];
+              var regStr = parts[1] || '';
+              var reg = (regStr.startsWith('0x') || regStr.startsWith('0X')) ? parseInt(regStr, 16) : parseInt(regStr, 10);
+              if (!isNaN(reg)) {
+                if (reg === 513 || reg === 0x0201) {
+                  var cur = parseInt(state['counter::value'] || state['512'] || 0, 10);
+                  var next = cur + 1;
+                  state['counter::value'] = next;
+                  state['512'] = next;
+                } else if (reg === 514 || reg === 0x0202) {
+                  var cur = parseInt(state['counter::value'] || state['512'] || 0, 10);
+                  var next = Math.max(0, cur - 1);
+                  state['counter::value'] = next;
+                  state['512'] = next;
+                } else if (reg === 515 || reg === 0x0203) {
+                  state['counter::value'] = 0;
+                  state['512'] = 0;
+                } else {
+                  var cur = state[reg] !== undefined ? state[reg] : 0;
+                  state[reg] = cur == 0 ? 1 : 0;
+                }
+                updateDOM();
+              }
+            }
+
+            // Universal Action Forwarder to Backend Server (app.logic.js)
+            try {
+              fetch('/action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: actionStr, value: '' })
+              }).catch(function() {});
+            } catch (e) {}
           }
 
           executeSingleAction(fullAction);
-
-          // Drawer Actions for Web
-          if (lowerAct === 'drawer:open' || lowerAct === 'drawer:toggle' || lowerAct === 'app:drawer:open' || lowerAct === 'app.drawer.open') {
-            state.drawerOpen = (lowerAct === 'drawer:toggle') ? !state.drawerOpen : true;
-            if (window.openWebDrawer) window.openWebDrawer();
-            updateDOM();
-            return;
-          }
-          if (lowerAct === 'drawer:close' || lowerAct === 'app:drawer:close' || lowerAct === 'app.drawer.close' || lowerAct === 'app:back') {
-            state.drawerOpen = false;
-            if (window.closeWebDrawer) window.closeWebDrawer();
-            updateDOM();
-            return;
-          }
-
-          // Bottom Drawer / Bottom Sheet Actions for Web
-          if (lowerAct.startsWith('bottom_drawer:open') || lowerAct.startsWith('bottom_sheet:open') ||
-              lowerAct.startsWith('sheet:open') || lowerAct === 'bottom_drawer:toggle' || lowerAct === 'bottom_drawer:show') {
-            var targetDrawer = action.includes(':') && action.split(':').length > 2 ? action.split(':').pop().trim() : 'Keypad';
-            if (window.openBottomDrawer) window.openBottomDrawer(targetDrawer);
-            return;
-          }
-          if (lowerAct === 'bottom_drawer:close' || lowerAct === 'bottom_sheet:close' || lowerAct === 'sheet:close') {
-            if (window.closeBottomDrawer) window.closeBottomDrawer();
-            return;
-          }
-
-          // Interactive Animation Trigger Actions for Web (Matches Mobile APK View Property Animator)
-          if (lowerAct.startsWith('anim:')) {
-            var animName = action.split(':').pop().trim().toLowerCase();
-            // Target ONLY the exact clicked button element to match Mobile APK behavior 100%
-            var targetEl = btn;
-            if (targetEl) {
-              var animClass = 'animate-' + (animName === 'zoom' ? 'zoom-in' : (animName === 'slideup' ? 'slide-up' : (animName === 'slidedown' ? 'slide-down' : (animName === 'rotatein' ? 'rotate-in' : animName))));
-              targetEl.classList.remove('animate-bounce', 'animate-tada', 'animate-pulse', 'animate-heartbeat', 'animate-headshake', 'animate-flip', 'animate-zoom-in', 'animate-slide-up', 'animate-slide-down', 'animate-rotate-in');
-              void targetEl.offsetWidth;
-              targetEl.classList.add(animClass);
-              setTimeout(function() {
-                targetEl.classList.remove(animClass);
-              }, 1800);
-            }
-            return;
-          }
-
-
-          // Generic State Mutators (state:key:val, state:key_append:val, state:key:backspace)
-          if (lowerAct.startsWith('state:')) {
-            var parts = action.split(':');
-            var keyOrOp = parts[1] || '';
-            var val = parts.slice(2).join(':');
-            if (keyOrOp.endsWith('_append')) {
-              var realKey = keyOrOp.replace(/_append$/, '');
-              state[realKey] = (state[realKey] !== undefined ? String(state[realKey]) : '') + val;
-            } else if (keyOrOp === 'dial_input_backspace' || keyOrOp.endsWith('_backspace') || val === 'backspace') {
-              var realKey = keyOrOp === 'dial_input_backspace' ? 'dial_input' : keyOrOp.replace(/_backspace$/, '');
-              state[realKey] = state[realKey] ? String(state[realKey]).slice(0, -1) : '';
-            } else if (keyOrOp.endsWith('_clear') || val === 'clear') {
-              var realKey = keyOrOp.replace(/_clear$/, '');
-              state[realKey] = '';
-            } else if (val !== undefined && val !== '') {
-              state[keyOrOp] = val;
-            }
-            updateDOM();
-          }
-
-          // Named App Actions
-          if (lowerAct.startsWith('action:')) {
-            var actName = action.replace(/^action:/i, '');
-            if (actName === 'unlock_door') {
-              state.gate_status = '🔓 Gate Unlocked (10s)';
-              updateDOM();
-              setTimeout(function() { state.gate_status = '🔒 Gate Locked'; updateDOM(); }, 10000);
-            } else if (actName === 'toggle_mute') {
-              state.mic_muted = (state.mic_muted === 'true') ? 'false' : 'true';
-              updateDOM();
-            } else if (actName === 'toggle_speaker') {
-              state.speaker_on = (state.speaker_on === 'true') ? 'false' : 'true';
-              updateDOM();
-            }
-            updateDOM();
-          }
-
-          // Hardware & Multimedia Actions for Web
-          if (lowerAct.startsWith('hw:battery')) {
-            if (navigator.getBattery) {
-              navigator.getBattery().then(function(b) {
-                state.sys_battery_level = Math.round(b.level * 100) + '%';
-                state.sys_battery_charging = b.charging ? 'Charging ⚡' : 'Discharging (Battery)';
-                updateDOM();
-              });
-            } else {
-              state.sys_battery_level = '98%';
-              state.sys_battery_charging = 'Web Battery Telemetry Active';
-              updateDOM();
-            }
-            return;
-          }
-          if (lowerAct.startsWith('hw:gps')) {
-            state.sys_gps_lat = 'Acquiring GPS...';
-            state.sys_gps_lng = 'Acquiring GPS...';
-            state.sys_gps_acc = 'Searching...';
-            state.sys_gps_name = 'Requesting Real GPS Permission... 📍';
-            updateDOM();
-
-            if (navigator.geolocation) {
-              navigator.geolocation.getCurrentPosition(function(pos) {
-                var lat = pos.coords.latitude;
-                var lng = pos.coords.longitude;
-                state.sys_gps_lat = lat.toFixed(6);
-                state.sys_gps_lng = lng.toFixed(6);
-                state.sys_gps_acc = pos.coords.accuracy.toFixed(1) + ' m';
-                state.sys_gps_name = 'Resolving Location Address... 📍';
-                updateDOM();
-
-                fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
-                  .then(function(r) { return r.json(); })
-                  .then(function(data) {
-                    if (data && data.address) {
-                      var area = data.address.suburb || data.address.neighbourhood || data.address.quarter || data.address.residential || '';
-                      var city = data.address.city || data.address.town || data.address.village || data.address.county || 'Real Location';
-                      var country = data.address.country || 'Nepal';
-                      var fullName = (area ? area + ', ' : '') + city + ', ' + country;
-                      state.sys_gps_name = fullName + ' 📍';
-                    } else {
-                      state.sys_gps_name = 'Real GPS Fix Acquired';
-                    }
-                    updateDOM();
-                  })
-                  .catch(function() {
-                    state.sys_gps_name = 'Real GPS Coordinates Acquired';
-                    updateDOM();
-                  });
-              }, function(err) {
-                state.sys_gps_lat = 'Permission Needed';
-                state.sys_gps_lng = 'Allow Location in Browser';
-                state.sys_gps_acc = 'Denied';
-                state.sys_gps_name = 'Tap "Allow Location" in Chrome URL Bar 🔒';
-                updateDOM();
-              }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
-            } else {
-              state.sys_gps_name = 'Geolocation not supported in browser';
-              updateDOM();
-            }
-            return;
-          }
-          if (lowerAct.startsWith('hw:sensor')) {
-            if (window.DeviceOrientationEvent) {
-              window.addEventListener('deviceorientation', function(ev) {
-                state.sys_sensor_x = (ev.gamma || 0).toFixed(2);
-                state.sys_sensor_y = (ev.beta || 0).toFixed(2);
-                state.sys_sensor_z = (ev.alpha || 0).toFixed(2);
-                updateDOM();
-              }, { once: true });
-            }
-            state.sys_sensor_x = (Math.random() * 2 - 1).toFixed(2);
-            state.sys_sensor_y = (Math.random() * 2 - 1).toFixed(2);
-            state.sys_sensor_z = (9.8 + Math.random() * 0.2).toFixed(2);
-            updateDOM();
-            return;
-          }
-          if (lowerAct.startsWith('hw:ringtone')) {
-            try {
-              var ctx = new (window.AudioContext || window.webkitAudioContext)();
-              var osc = ctx.createOscillator();
-              var gain = ctx.createGain();
-              osc.type = lowerAct.includes('dial') ? 'sine' : 'triangle';
-              osc.frequency.setValueAtTime(lowerAct.includes('dial') ? 440 : 880, ctx.currentTime);
-              osc.connect(gain);
-              gain.connect(ctx.destination);
-              osc.start();
-              gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.8);
-              osc.stop(ctx.currentTime + 0.8);
-              state.sys_ringtone_status = lowerAct.includes('dial') ? 'Playing Dial Tone Beep 📞' : 'Ringtone Chime Playing 🔔';
-              updateDOM();
-            } catch (e) {
-              state.sys_ringtone_status = 'Web Audio Chime Active 🔔';
-              updateDOM();
-            }
-            return;
-          }
-          if (lowerAct.startsWith('hw:vibrate')) {
-            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-            state.notification = 'Web Device Vibrating... 📳';
-            updateDOM();
-            return;
-          }
-          if (lowerAct.startsWith('hw:bluetooth')) {
-            if (navigator.bluetooth) {
-              navigator.bluetooth.requestDevice({ acceptAllDevices: true }).then(function(dev) {
-                state.notification = 'Bluetooth Connected: ' + dev.name;
-                updateDOM();
-              }).catch(function(err) {
-                state.notification = 'Web Bluetooth: ' + err.message;
-                updateDOM();
-              });
-            } else {
-              state.notification = 'Web Bluetooth requires HTTPS or localhost.';
-              updateDOM();
-            }
-            return;
-          }
-          if (lowerAct.startsWith('hw:mic:start') || lowerAct === 'mic:start') {
-            if (window.DolphinWebMic) window.DolphinWebMic.start(state, updateDOM);
-            return;
-          }
-          if (lowerAct.startsWith('hw:mic:stop') || lowerAct === 'mic:stop') {
-            if (window.DolphinWebMic) window.DolphinWebMic.stop(state, updateDOM);
-            return;
-          }
-          if (lowerAct.startsWith('hw:mic:play') || lowerAct === 'mic:play') {
-            if (window.DolphinWebMic) window.DolphinWebMic.play(state, updateDOM);
-            return;
-          }
-          if (lowerAct.startsWith('hw:camera:snap') || lowerAct.startsWith('hw:storage:pick') || lowerAct === 'camera:snap' || lowerAct === 'storage:pick') {
-            var acceptType = lowerAct.includes('storage') ? 'audio/*,video/*,image/*' : 'image/*';
-            if (window.DolphinWebCamera) {
-              window.DolphinWebCamera.pickFile(acceptType, state, updateDOM, function(file, url) {
-                state.sys_picked_audio_name = file.name;
-                state.sys_picked_audio_url = url;
-                state.sys_picked_video_url = url;
-                state.notification = 'File Picked in Web: ' + file.name;
-                updateDOM();
-              });
-            }
-            return;
-          }
-
-          // Standard & Custom Web Actions
-          if (action === 'app.toggleTheme' || action === 'theme:toggle' || action === 'app:toggleTheme' || action === 'theme') {
-            state.theme = state.theme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme-mode', state.theme);
-            document.body.setAttribute('data-theme-mode', state.theme);
-            document.documentElement.classList.toggle('dark', state.theme === 'dark');
-            document.body.classList.toggle('dark', state.theme === 'dark');
-            updateDOM();
-          } else if (action === 'counter:increment' || action === 'counter.increment' || action === 'app.increment' || action === 'counter::inc') {
-            var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state.counter || 0), 10);
-            var next = (isNaN(cur) ? 0 : cur) + 1;
-            state['counter::value'] = next;
-            state.counter = next;
-            updateDOM();
-          } else if (action === 'counter:decrement' || action === 'counter.decrement' || action === 'app.decrement' || action === 'counter::dec') {
-            var cur = parseInt(state['counter::value'] !== undefined ? state['counter::value'] : (state.counter || 0), 10);
-            var next = (isNaN(cur) || cur <= 0) ? 0 : cur - 1;
-            state['counter::value'] = next;
-            state.counter = next;
-            updateDOM();
-          } else if (action === 'counter::reset' || action === 'counter:reset' || action === 'app.resetAll' || action === 'store.reset' || action === 'store:reset' || action === 'app:resetAll' || action === 'app.reset') {
-            state['counter::value'] = 0;
-            state.counter = 0;
-            state.isLoggedIn = false;
-            state.userStatus = 'Guest User (Reset Completed 🔄)';
-            state.notification = 'NanoStore State Reset Completed! ⚡';
-            if (tempTimers.notification) clearTimeout(tempTimers.notification);
-            updateDOM();
-          } else if (action === 'app.submitForm' || action === 'form:submit') {
-            state.form_status = 'Form Submitted Successfully! ✅ (' + new Date().toLocaleTimeString() + ')';
-            state.notification = 'Form Data Validated & Hydrated into NanoStore! ⚡';
-            updateDOM();
-          } else if (action === 'app.resetForm' || action === 'form:reset') {
-            state.form_name = 'Shankar Phuyal';
-            state.form_email = 'shankar@dolphin.dev';
-            state.form_role = 'Industrial HMI Architect ⚙️';
-            state.form_freq = '500';
-            state.form_status = 'Form Reset Completed 🔄';
-            updateDOM();
-          } else if (action === 'app.toggleLogin') {
-            state.isLoggedIn = !state.isLoggedIn;
-            state.userStatus = state.isLoggedIn ? 'Logged In (Shankar Phuyal) 🔑' : 'Guest User (Logged Out)';
-            updateDOM();
-          } else if (action === 'app.showToast') {
-            if (tempTimers.notification) clearTimeout(tempTimers.notification);
-            state.notification = '⏳ Temporary Toast Active (Auto-reverts in 3s)';
-            tempTimers.notification = setTimeout(function() {
-              state.notification = initialState.notification || 'Welcome to test-apk NanoStore!';
-              updateDOM();
-            }, 3000);
-            updateDOM();
-          }
-
-          // Universal Action Forwarder to Backend Server (Syncs with Node/Kotlin Core)
-          try {
-            fetch('/action', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ action: action, value: '' })
-            }).catch(function() {});
-          } catch (e) {}
-
-          // 🐬 Delegate to Titan Engine (Registers & Directives)
-          if (window.Titan && window.Titan.engine) {
-            try {
-              window.Titan.engine.executeDirective("action:" + action, e, btn);
-            } catch (err) {}
-          }
         });
 
         // Forward live search/text input events with action

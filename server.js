@@ -26,24 +26,26 @@ try {
     const stateMap = new Map();
 
     const tx = (addr, val) => {
-        stateMap.set(String(addr), val);
+        const key = String(addr);
+        stateMap.set(key, val);
+        console.log(`📡 [State TX] ${key} = ${val}`);
         if (typeof addr === 'number' || (!isNaN(Number(addr)) && !String(addr).includes(':'))) {
             const numAddr = Number(addr) & 0xFFFF;
             const numVal = typeof val === 'number' ? val : (parseInt(val, 10) || 0);
             devServer.broadcastRegister(numAddr, numVal);
-        } else {
-            // String key patch over SSE to all browser tabs
-            if (devServer.sseClients && devServer.sseClients.length > 0) {
-                const sseData = JSON.stringify({ type: 'patch', key: String(addr), value: val });
-                devServer.sseClients.forEach(client => {
-                    try { client.write(`data: ${sseData}\n\n`); } catch(e) {}
-                });
-            }
+        }
+        // Broadcast SSE patch to all browser clients
+        if (devServer.sseClients && devServer.sseClients.length > 0) {
+            const sseData = JSON.stringify({ type: 'patch', key: key, value: val });
+            devServer.sseClients.forEach(client => {
+                try { client.write(`data: ${sseData}\n\n`); } catch(e) {}
+            });
         }
     };
 
     const rx = (addr) => {
-        return stateMap.get(String(addr)) || 0;
+        const key = String(addr);
+        return stateMap.has(key) ? stateMap.get(key) : 0;
     };
 
     // Attach Pure JS Action Handler
@@ -56,7 +58,7 @@ try {
             const clean = action.replace(/^bus:/i, '').trim();
             if (clean.startsWith('0x') || clean.startsWith('0X')) {
                 actionKey = parseInt(clean, 16) & 0xFFFF;
-            } else if (!isNaN(Number(clean))) {
+            } else if (!isNaN(Number(clean)) && !clean.includes(':')) {
                 actionKey = parseInt(clean, 10) & 0xFFFF;
             } else {
                 actionKey = clean;
@@ -66,7 +68,12 @@ try {
         const handler = appLogic[actionKey] || appLogic[action] || appLogic[String(actionKey)];
         if (typeof handler === 'function') {
             console.log(`⚡ [Pure JS Logic] Executing action: ${actionKey}`);
-            handler(value, { rx, tx, store: null });
+            try {
+                const ctx = { rx, tx, store: null, value, data: value };
+                handler(ctx, ctx);
+            } catch (err) {
+                console.error(`❌ [Logic Error] ${actionKey}:`, err.message);
+            }
         }
     });
 
