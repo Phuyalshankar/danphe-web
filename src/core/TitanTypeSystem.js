@@ -16,7 +16,8 @@ const TITAN_TYPE = Object.freeze({
   UINT16:   0x05, // 16-Bit Unsigned Word (0 to 65535) [ADC, Timecode ms, Frame Index]
   STRING:   0x06, // Variable Length UTF-8 Text [Usernames, Keypad, JSON error, Routes]
   STREAM:   0x07, // Multi-Record Collection Stream [Data streams, Lists]
-  ACTION:   0x08  // Action / Pulse Event [Save, Delete, Flip, Dial, Call]
+  ACTION:   0x08, // Action / Pulse Event [Save, Delete, Flip, Dial, Call]
+  FLOAT32:  0x09  // 32-Bit IEEE 754 Floating Point [Currency, GPS, Temperatures, Ratings]
 });
 
 class TitanTypeSystem {
@@ -32,7 +33,9 @@ class TitanTypeSystem {
       t = TITAN_TYPE[s] || (s === 'INT' ? TITAN_TYPE.INT16 :
                             s === 'TEXT' ? TITAN_TYPE.STRING :
                             s === 'ANALOG' ? TITAN_TYPE.UINT8 :
-                            s === 'BOOLEAN' ? TITAN_TYPE.BOOL : TITAN_TYPE.INT16);
+                            s === 'BOOLEAN' ? TITAN_TYPE.BOOL :
+                            (s === 'FLOAT' || s === 'F32' || s === 'DECIMAL' || s === 'CURRENCY') ? TITAN_TYPE.FLOAT32 :
+                            TITAN_TYPE.INT16);
     }
     this.typeMap.set(r, t);
     return t;
@@ -88,6 +91,12 @@ class TitanTypeSystem {
         const n = Number(value);
         if (isNaN(n)) return 0;
         return Math.max(-32768, Math.min(32767, Math.trunc(n)));
+      }
+
+      case TITAN_TYPE.FLOAT32: {
+        const n = Number(value);
+        if (isNaN(n)) return 0.0;
+        return Math.fround(n);
       }
 
       case TITAN_TYPE.STRING:
