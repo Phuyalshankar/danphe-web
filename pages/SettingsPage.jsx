@@ -37,7 +37,7 @@ export default function SettingsPage() {
           <p className="text-[11px] text-slate-300">
             कुनै पनि थिम चयन गर्दा सम्पूर्ण पृष्ठभूमि तुरुन्तै परिवर्तन हुन्छ:
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 pt-1">
             <button
               tx="theme::danphe"
               className="p-3 rounded-xl cursor-pointer text-xs font-black shadow-lg transition-transform active:scale-95 flex flex-col items-center gap-1 border border-white/20"
@@ -62,7 +62,16 @@ export default function SettingsPage() {
               style={{ background: 'linear-gradient(135deg, #0f172a 0%, #0369a1 50%, #38bdf8 100%)', color: '#ffffff' }}
             >
               <span className="text-base">🏔️</span>
-              <span>सगरमाथा (Sagarmatha)</span>
+              <span>सगरमाथा (Gradient)</span>
+            </button>
+
+            <button
+              tx="theme::everest"
+              className="p-3 rounded-xl cursor-pointer text-xs font-black shadow-lg transition-transform active:scale-95 flex flex-col items-center gap-1 border border-sky-400"
+              style={{ background: 'linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url("/assets/sagarmatha.jpg") center/cover', color: '#ffffff' }}
+            >
+              <span className="text-base">📸</span>
+              <span>सगरमाथा (Photo)</span>
             </button>
 
             <button

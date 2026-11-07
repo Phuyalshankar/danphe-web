@@ -55,6 +55,13 @@ class WebCSS {
             color: #ffffff !important;
         }
 
+        /* 🏔️ Majestic Mount Everest (Sagarmatha) Real High-Res Photography Wallpaper */
+        body.bg-sagarmatha-photo, .bg-sagarmatha-photo, body.bg-everest, .bg-everest {
+            background: linear-gradient(rgba(8, 14, 28, 0.40), rgba(8, 14, 28, 0.50)), url('/assets/sagarmatha.jpg') no-repeat center center fixed !important;
+            background-size: cover !important;
+            color: #ffffff !important;
+        }
+
         /* ☀️ Authentic Himalayan Morning Light Mode (Ice-White Glassmorphism) */
         body.bg-light, .bg-light, .theme-light, [data-theme-mode="light"] {
             background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 40%, #f1f5f9 100%) fixed !important;

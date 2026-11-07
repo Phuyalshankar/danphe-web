@@ -51,14 +51,14 @@ module.exports = {
 
   'theme:toggle': ({ rx, tx }) => {
     const current = (rx ? rx('theme::current') : 'danphe') || 'danphe';
-    const next = current === 'danphe' ? 'laligurans' : (current === 'laligurans' ? 'sagarmatha' : (current === 'sagarmatha' ? 'light' : 'danphe'));
+    const next = current === 'danphe' ? 'laligurans' : (current === 'laligurans' ? 'sagarmatha' : (current === 'sagarmatha' ? 'everest' : (current === 'everest' ? 'light' : 'danphe')));
     console.log(`⚡ [App Logic] Theme toggled to: ${next}`);
     if (tx) {
       tx('theme::current', next);
       tx('theme', next);
-      const label = next === 'light' ? 'उज्यालो (Light) ☀️' : (next === 'laligurans' ? 'लालीगुराँस (Laligurans) 🌺' : (next === 'sagarmatha' ? 'सगरमाथा (Sagarmatha) 🏔️' : 'डाँफे (Danphe) 🦅'));
+      const label = next === 'everest' ? 'सगरमाथा फोटो (Everest Photo) 🏔️' : (next === 'light' ? 'उज्यालो (Light) ☀️' : (next === 'laligurans' ? 'लालीगुराँस (Laligurans) 🌺' : (next === 'sagarmatha' ? 'सगरमाथा (Sagarmatha) 🏔️' : 'डाँफे (Danphe) 🦅')));
       tx('theme_label', label);
-      tx('alert_msg', next === 'light' ? '☀️ उज्यालो आइस-ग्लास (Ice-White Glass) थिम सक्रिय भयो!' : `🎨 ${next.toUpperCase()} हिमालयन थिम सक्रिय भयो!`);
+      tx('alert_msg', next === 'everest' ? '🏔️ सगरमाथा वास्तविक हिमाल फोटो (Everest Photo Wallpaper) सक्रिय भयो!' : (next === 'light' ? '☀️ उज्यालो आइस-ग्लास थिम सक्रिय भयो!' : `🎨 ${next.toUpperCase()} हिमालयन थिम सक्रिय भयो!`));
     }
   },
 
@@ -86,6 +86,15 @@ module.exports = {
       tx('theme', 'sagarmatha');
       tx('theme_label', 'सगरमाथा (Sagarmatha) 🏔️');
       tx('alert_msg', '🏔️ सगरमाथा सर्वोच्च शिखर थिम सक्रिय भयो!');
+    }
+  },
+
+  'theme::everest': ({ tx }) => {
+    if (tx) {
+      tx('theme::current', 'everest');
+      tx('theme', 'everest');
+      tx('theme_label', 'सगरमाथा फोटो (Everest Photo) 🏔️');
+      tx('alert_msg', '🏔️ सगरमाथा वास्तविक हिमाल फोटो (Real Photo Wallpaper) सक्रिय भयो!');
     }
   },
 
