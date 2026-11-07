@@ -22,17 +22,46 @@ class WebCSS {
 
         /* 🐬 DolphinCSS 2.0 Core Universal Tokens Engine */
         html, body {
-            background-color: #090d16 !important;
+            min-height: 100vh;
             color: #f8fafc !important;
+            background-color: #090d16;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        /* 🇳🇵 Authentic Nepali Himalayan Heritage Gradients */
+        body.bg-danphe, .bg-danphe {
+            background: linear-gradient(45deg, #10b981 0%, #3b82f6 25%, #8b5cf6 50%, #f97316 75%, #ef4444 100%) !important;
+            color: #ffffff !important;
+        }
+        body.bg-laligurans, .bg-laligurans {
+            background: linear-gradient(135deg, #be123c 0%, #e11d48 50%, #fbcfe8 100%) !important;
+            color: #ffffff !important;
+        }
+        body.bg-sagarmatha, .bg-sagarmatha {
+            background: linear-gradient(135deg, #0f172a 0%, #0369a1 50%, #38bdf8 100%) !important;
+            color: #ffffff !important;
+        }
+        body.bg-tilicho, .bg-tilicho {
+            background: linear-gradient(135deg, #042f2e 0%, #0d9488 50%, #5eead4 100%) !important;
+            color: #ffffff !important;
+        }
+        body.bg-munal, .bg-munal {
+            background: linear-gradient(135deg, #2e1065 0%, #6b21a8 50%, #f59e0b 100%) !important;
+            color: #ffffff !important;
+        }
+        body.bg-mustang, .bg-mustang {
+            background: linear-gradient(135deg, #451a03 0%, #9a3412 50%, #fbbf24 100%) !important;
+            color: #ffffff !important;
         }
 
         .card {
-            background: rgba(15, 23, 42, 0.75) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: rgba(15, 23, 42, 0.88) !important;
+            border: 1px solid rgba(255, 255, 255, 0.16) !important;
             border-radius: 20px !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5) !important;
+            backdrop-filter: blur(24px) !important;
+            -webkit-backdrop-filter: blur(24px) !important;
+            box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.6) !important;
         }
 
         .card.outlined {

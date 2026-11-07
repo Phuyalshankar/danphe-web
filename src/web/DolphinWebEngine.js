@@ -633,7 +633,7 @@ class DolphinWebEngine {
     ${titanDomBundle}
     </script>
 </head>
-<body>
+<body class="bg-danphe">
     <div id="root">${bodyHTML}</div>
 
     ${WebNavigation.getDrawerHTML()}
@@ -1053,6 +1053,18 @@ class DolphinWebEngine {
                            (pageMap[cleanTarget] !== undefined && pageMap[cleanTarget] === pageMap[activeNav]));
             p.style.display = isMatch ? 'block' : 'none';
           });
+
+          // 🎨 Dynamic Himalayan Theme Background Synchronizer (bg-danphe, bg-laligurans, etc.)
+          var activeTheme = String(state['theme::current'] || state['theme'] || localStorage.getItem('danphe_theme') || 'danphe').toLowerCase();
+          if (activeTheme.startsWith('bg-')) activeTheme = activeTheme.replace(/^bg-/, '');
+          var expectedBodyClass = 'bg-' + activeTheme;
+          if (document.body && !document.body.classList.contains(expectedBodyClass)) {
+            document.body.className = expectedBodyClass;
+          }
+          var appCont = document.getElementById('app-root-container');
+          if (appCont && !appCont.classList.contains(expectedBodyClass)) {
+            appCont.className = 'min-h-screen w-full flex flex-col font-sans ' + expectedBodyClass;
+          }
 
           // 🔘 Universal Button Active State Highlighting (Generic for any tx="namespace::slot")
           document.querySelectorAll('[data-tab], [tx*="::"], [action*="::"]').forEach(function(btn) {

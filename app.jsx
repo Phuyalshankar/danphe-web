@@ -6,9 +6,9 @@ export const nav = reg('nav:: home, settings');
 
 export default function App() {
   return (
-    <div className="min-h-screen w-full flex flex-col font-sans" style={{ background: '#090d16', color: '#f8fafc' }}>
+    <div id="app-root-container" className="min-h-screen w-full flex flex-col font-sans">
       
-      {/* 🐬 DolphinCSS Clean Responsive Web Navbar */}
+      {/* 🐬 DolphinCSS Clean Responsive Web Navbar with Frosted Blur */}
       <header className="w-full card sticky top-0 z-50 p-3" style={{ borderRadius: '0px 0px 20px 20px', borderTop: 'none' }}>
         <div className="max-w-4xl mx-auto px-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -19,10 +19,10 @@ export default function App() {
               <span className="text-sm font-black tracking-tight text-white flex items-center gap-2">
                 Danphe Web
                 <span className="badge primary">
-                  DolphinCSS 2.0
+                  DolphinCSS 2.0 • bg-danphe
                 </span>
               </span>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-slate-300">
                 Pure Hardware-Mapped Web Architecture
               </span>
             </div>
@@ -59,8 +59,8 @@ export default function App() {
       </main>
 
       {/* 🦶 Clean Web Footer */}
-      <footer className="w-full py-6 text-center text-xs text-slate-500">
-        Danphe Web Platform • DolphinCSS 2.0 Universal Engine • Zero Virtual DOM
+      <footer className="w-full py-6 text-center text-xs text-white/80 font-medium">
+        Danphe Web Platform • DolphinCSS 2.0 Himalayan Gradient • Zero Virtual DOM
       </footer>
 
     </div>

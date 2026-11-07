@@ -50,13 +50,50 @@ module.exports = {
   },
 
   'theme:toggle': ({ rx, tx }) => {
-    const current = (rx ? rx('theme') : 'dark') || 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
+    const current = (rx ? rx('theme::current') : 'danphe') || 'danphe';
+    const next = current === 'danphe' ? 'laligurans' : (current === 'laligurans' ? 'sagarmatha' : 'danphe');
     console.log(`⚡ [App Logic] Theme toggled to: ${next}`);
     if (tx) {
+      tx('theme::current', next);
       tx('theme', next);
-      tx('theme_label', next === 'light' ? 'उज्यालो (Light) ☀️' : 'गाढा (Dark) 🌙');
-      tx('alert_msg', next === 'light' ? '☀️ उज्यालो थिम सक्रिय भयो।' : '🌙 गाढा थिम सक्रिय भयो।');
+      tx('theme_label', next === 'laligurans' ? 'लालीगुराँस (Laligurans) 🌺' : (next === 'sagarmatha' ? 'सगरमाथा (Sagarmatha) 🏔️' : 'डाँफे (Danphe) 🦅'));
+      tx('alert_msg', `🎨 ${next.toUpperCase()} हिमालयन थिम सक्रिय भयो!`);
+    }
+  },
+
+  'theme::danphe': ({ tx }) => {
+    if (tx) {
+      tx('theme::current', 'danphe');
+      tx('theme', 'danphe');
+      tx('theme_label', 'डाँफे (Danphe) 🦅');
+      tx('alert_msg', '🦅 डाँफे राष्ट्रिय रङ थिम सक्रिय भयो!');
+    }
+  },
+
+  'theme::laligurans': ({ tx }) => {
+    if (tx) {
+      tx('theme::current', 'laligurans');
+      tx('theme', 'laligurans');
+      tx('theme_label', 'लालीगुराँस (Laligurans) 🌺');
+      tx('alert_msg', '🌺 लालीगुराँस राष्ट्रिय फूल थिम सक्रिय भयो!');
+    }
+  },
+
+  'theme::sagarmatha': ({ tx }) => {
+    if (tx) {
+      tx('theme::current', 'sagarmatha');
+      tx('theme', 'sagarmatha');
+      tx('theme_label', 'सगरमाथा (Sagarmatha) 🏔️');
+      tx('alert_msg', '🏔️ सगरमाथा सर्वोच्च शिखर थिम सक्रिय भयो!');
+    }
+  },
+
+  'theme::tilicho': ({ tx }) => {
+    if (tx) {
+      tx('theme::current', 'tilicho');
+      tx('theme', 'tilicho');
+      tx('theme_label', 'तिलिचो (Tilicho) 🌊');
+      tx('alert_msg', '🌊 तिलिचो ताल थिम सक्रिय भयो!');
     }
   },
 
