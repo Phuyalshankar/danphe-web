@@ -60,24 +60,24 @@ class WebCSS {
             transition: all 0.3s ease !important;
         }
 
-        /* 🧊 DolphinCSS Authentic Translucent Glass Engine with Gradient Reflection */
+        /* 🧊 DolphinCSS Authentic Translucent Glass Engine with Rich Darker Opacity */
         .glass, .card.glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(15, 23, 42, 0.65) !important;
-            backdrop-filter: blur(24px) !important;
-            -webkit-backdrop-filter: blur(24px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3) !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(10, 16, 32, 0.82) !important;
+            backdrop-filter: blur(28px) !important;
+            -webkit-backdrop-filter: blur(28px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.18) !important;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3) !important;
         }
 
         .glass.glow, .card.glass.glow {
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35), 0 0 25px 2px rgba(56, 189, 248, 0.25) !important;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35), 0 0 25px 2px rgba(56, 189, 248, 0.25) !important;
         }
 
         .card.outlined {
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            background: rgba(2, 6, 23, 0.55) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.14) !important;
+            background: rgba(5, 10, 22, 0.78) !important;
+            backdrop-filter: blur(18px) !important;
+            -webkit-backdrop-filter: blur(18px) !important;
         }
 
         .filled {
