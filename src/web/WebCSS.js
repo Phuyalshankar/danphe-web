@@ -73,6 +73,133 @@ class WebCSS {
             box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35), 0 0 25px 2px rgba(56, 189, 248, 0.25) !important;
         }
 
+        /* 🔮 ---- DOLPHINCSS 2.0 SPECIAL VARIANT FX ENGINE ---- */
+        .fx-crystal, .crystal-glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 100%), rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(24px) !important;
+            -webkit-backdrop-filter: blur(24px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.45) !important;
+            box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+            color: #ffffff !important;
+        }
+        .fx-crystal:hover, .crystal-glass:hover {
+            border-color: rgba(255, 255, 255, 0.75) !important;
+            box-shadow: 0 12px 36px 0 rgba(255, 255, 255, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .fx-neon, .neon-flow {
+            background: rgba(10, 16, 30, 0.85) !important;
+            border: 1px solid #38bdf8 !important;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.6), inset 0 0 10px rgba(56, 189, 248, 0.25) !important;
+            color: #ffffff !important;
+            text-shadow: 0 0 8px rgba(56, 189, 248, 0.8) !important;
+        }
+        .fx-neon:hover, .neon-flow:hover {
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.9), inset 0 0 15px rgba(56, 189, 248, 0.4) !important;
+        }
+
+        .fx-aurora, .frosted-aurora {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(59, 130, 246, 0.4) 50%, rgba(147, 51, 234, 0.4) 100%), rgba(10, 16, 32, 0.8) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(52, 211, 153, 0.5) !important;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+            color: #ffffff !important;
+        }
+        .fx-aurora:hover, .frosted-aurora:hover {
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .fx-cyber, .cyber-neon {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.35) 0%, rgba(168, 85, 247, 0.35) 100%), rgba(15, 23, 42, 0.88) !important;
+            border: 1px solid rgba(56, 189, 248, 0.7) !important;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.45), inset 0 0 12px rgba(56, 189, 248, 0.25) !important;
+            color: #ffffff !important;
+        }
+        .fx-cyber:hover, .cyber-neon:hover {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.7), inset 0 0 16px rgba(56, 189, 248, 0.4) !important;
+        }
+
+        .fx-holo, .holo-matrix {
+            background: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.45) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.45) 0%, transparent 50%), rgba(15, 23, 42, 0.85) !important;
+            border: 1px solid rgba(236, 72, 153, 0.5) !important;
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.35), 0 0 10px rgba(56, 189, 248, 0.3) !important;
+            color: #ffffff !important;
+        }
+        .fx-holo:hover, .holo-matrix:hover {
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.6), 0 0 15px rgba(56, 189, 248, 0.5) !important;
+        }
+
+        .fx-flare, .solar-flare {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(245, 158, 11, 0.4) 100%), rgba(15, 23, 42, 0.88) !important;
+            border: 1px solid rgba(245, 158, 11, 0.6) !important;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.45), inset 0 0 10px rgba(239, 68, 68, 0.25) !important;
+            color: #ffffff !important;
+        }
+        .fx-flare:hover, .solar-flare:hover {
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.7), inset 0 0 15px rgba(239, 68, 68, 0.4) !important;
+        }
+
+        .fx-aqua, .aqua-depth {
+            background: linear-gradient(160deg, rgba(6, 182, 212, 0.4) 0%, rgba(14, 116, 144, 0.45) 100%), rgba(4, 20, 35, 0.88) !important;
+            border: 1px solid rgba(6, 182, 212, 0.6) !important;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25) !important;
+            color: #ffffff !important;
+        }
+        .fx-aqua:hover, .aqua-depth:hover {
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.7) !important;
+        }
+
+        .fx-nebula, .galactic-nebula {
+            background: radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.5) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.5) 0%, transparent 60%), rgba(10, 8, 28, 0.88) !important;
+            border: 1px solid rgba(139, 92, 246, 0.6) !important;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.45) !important;
+            color: #ffffff !important;
+        }
+        .fx-nebula:hover, .galactic-nebula:hover {
+            box-shadow: 0 0 35px rgba(139, 92, 246, 0.75) !important;
+        }
+
+        .fx-metal, .liquid-mercury {
+            background: linear-gradient(135deg, rgba(148, 163, 184, 0.45) 0%, rgba(71, 85, 105, 0.45) 50%, rgba(203, 213, 225, 0.4) 100%), rgba(15, 23, 42, 0.88) !important;
+            border: 1px solid rgba(203, 213, 225, 0.6) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+            color: #ffffff !important;
+        }
+        .fx-metal:hover, .liquid-mercury:hover {
+            border-color: rgba(255, 255, 255, 0.8) !important;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6), inset 0 1px 3px rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .fx-rainbow, .psychedelic-dream {
+            background: linear-gradient(45deg, rgba(239, 68, 68, 0.35) 0%, rgba(245, 158, 11, 0.35) 25%, rgba(16, 185, 129, 0.35) 50%, rgba(59, 130, 246, 0.35) 75%, rgba(168, 85, 247, 0.35) 100%), rgba(10, 16, 32, 0.88) !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3) !important;
+            color: #ffffff !important;
+        }
+        .fx-rainbow:hover, .psychedelic-dream:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .fx-glass, .glass-wave {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(10, 16, 32, 0.82) !important;
+            backdrop-filter: blur(28px) !important;
+            -webkit-backdrop-filter: blur(28px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.3) !important;
+            color: #ffffff !important;
+        }
+
+        .fx-float, .quantum-float {
+            box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.25) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease !important;
+        }
+        .fx-float:hover, .quantum-float:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.45) !important;
+        }
+
         .card.outlined {
             border: 1px solid rgba(255, 255, 255, 0.14) !important;
             background: rgba(5, 10, 22, 0.78) !important;

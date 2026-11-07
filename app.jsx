@@ -12,14 +12,14 @@ export default function App() {
       <header className="w-full card glass sticky top-0 z-50 p-3" style={{ borderRadius: '0px 0px 20px 20px', borderTop: 'none' }}>
         <div className="max-w-4xl mx-auto px-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl filled primary glow flex items-center justify-center text-white font-black text-xl">
+            <div className="w-10 h-10 rounded-xl filled fx-crystal glow flex items-center justify-center text-white font-black text-xl">
               🦅
             </div>
             <div className="flex flex-col">
               <span className="text-sm font-black tracking-tight text-white flex items-center gap-2">
                 Danphe Web
-                <span className="badge primary">
-                  DolphinCSS 2.0 • bg-danphe
+                <span className="badge fx-holo">
+                  DolphinCSS 2.0 • Special FX
                 </span>
               </span>
               <span className="text-[11px] text-slate-300">
@@ -32,14 +32,14 @@ export default function App() {
           <nav className="flex items-center gap-2">
             <button
               tx={nav.home}
-              className="filled primary sm glow cursor-pointer flex items-center gap-1.5"
+              className="filled fx-neon sm glow cursor-pointer flex items-center gap-1.5"
             >
               <span>🏠</span>
               <span>गृहपृष्ठ</span>
             </button>
             <button
               tx={nav.settings}
-              className="outlined primary sm cursor-pointer flex items-center gap-1.5"
+              className="filled fx-aurora sm glow cursor-pointer flex items-center gap-1.5"
             >
               <span>⚙️</span>
               <span>सेटिङ</span>

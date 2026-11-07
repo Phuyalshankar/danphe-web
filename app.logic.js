@@ -114,6 +114,20 @@ module.exports = {
     }
   },
 
+  // ── ३.५. DolphinCSS स्पेशल FX भेरियन्ट ह्यान्डलर (Special FX Handlers) ───────
+  'fx::crystal': ({ tx }) => { tx && tx('alert_msg', '🔮 Fx-Crystal (Prismatic Refraction Glass) सक्रिय!'); },
+  'fx::neon': ({ tx }) => { tx && tx('alert_msg', '⚡ Fx-Neon (Cyberpunk Luminous Glow) सक्रिय!'); },
+  'fx::aurora': ({ tx }) => { tx && tx('alert_msg', '🌌 Fx-Aurora (Boreal Frosted Glow) सक्रिय!'); },
+  'fx::cyber': ({ tx }) => { tx && tx('alert_msg', '🌐 Fx-Cyber (Cybernetic Circuit Grid) सक्रिय!'); },
+  'fx::holo': ({ tx }) => { tx && tx('alert_msg', '💿 Fx-Holo (Dual Holographic Matrix) सक्रिय!'); },
+  'fx::flare': ({ tx }) => { tx && tx('alert_msg', '☀️ Fx-Flare (Solar High-Energy Flare) सक्रिय!'); },
+  'fx::aqua': ({ tx }) => { tx && tx('alert_msg', '🌊 Fx-Aqua (Oceanic Deep Abyssal Glow) सक्रिय!'); },
+  'fx::nebula': ({ tx }) => { tx && tx('alert_msg', '✨ Fx-Nebula (Galactic Cosmic Stardust) सक्रिय!'); },
+  'fx::metal': ({ tx }) => { tx && tx('alert_msg', '🛡️ Fx-Metal (Brushed Titanium Chrome) सक्रिय!'); },
+  'fx::rainbow': ({ tx }) => { tx && tx('alert_msg', '🌈 Fx-Rainbow (Full Spectrum Prismatic Wave) सक्रिय!'); },
+  'fx::glass': ({ tx }) => { tx && tx('alert_msg', '🧊 Fx-Glass (Frosted Glassmorphism Blur) सक्रिय!'); },
+  'fx::float': ({ tx }) => { tx && tx('alert_msg', '🛸 Fx-Float (Quantum Levitation Hover) सक्रिय!'); },
+
   // ── ४. नेभिगेसन स्लट लजिक (Unified Navigation Actions) ──────────────────────
   'nav::home': ({ tx }) => {
     console.log(`🧭 [App Logic] Navigated to Home (Slot 1)`);

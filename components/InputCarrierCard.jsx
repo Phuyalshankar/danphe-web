@@ -4,15 +4,15 @@ export default function InputCarrierCard() {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl filled primary flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl filled fx-cyber flex items-center justify-center">
             <span className="text-base">🗄️</span>
           </div>
           <div className="flex flex-col">
             <span className="text-xs font-black uppercase tracking-wider text-white">डेटा प्रविष्टि (Data Input)</span>
-            <span className="text-[10px] text-slate-400 font-mono">Two-Way Reactive • Zero Boilerplate</span>
+            <span className="text-[10px] text-slate-400 font-mono">Two-Way Reactive • fx-crystal & fx-holo</span>
           </div>
         </div>
-        <span className="badge primary font-mono font-bold">
+        <span className="badge fx-holo font-mono font-bold">
           REACTIVE
         </span>
       </div>
@@ -26,15 +26,15 @@ export default function InputCarrierCard() {
           name="note"
           rx="form::note"
           placeholder="उदाहरण: काउन्टर नोट / नाम प्रविष्ट गर्नुहोस्..."
-          className="w-full card outlined p-3.5 text-white text-xs font-sans placeholder-slate-500 rounded-xl focus:outline-none"
+          className="w-full card outlined fx-glass p-3.5 text-white text-xs font-sans placeholder-slate-400 rounded-xl focus:outline-none"
         />
         <div className="flex items-center justify-between pt-1">
-          <span state="db_status" className="text-[11px] text-slate-400 font-mono">
+          <span state="db_status" className="text-[11px] text-slate-300 font-mono">
             डाटा सेभ हुन तयार
           </span>
           <button
             tx="form::save"
-            className="filled success sm glow cursor-pointer flex items-center gap-2"
+            className="filled fx-crystal md glow cursor-pointer flex items-center gap-2 text-white"
           >
             <span>💾</span>
             <span className="font-bold text-xs">सेभ गर्नुहोस्</span>
@@ -42,21 +42,21 @@ export default function InputCarrierCard() {
         </div>
       </div>
 
-      {/* Live Preview Display */}
+      {/* Live Preview Display with fx-float */}
       <div className="pt-3 border-t border-slate-800 space-y-2">
-        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">
+        <span className="text-[10px] font-mono text-slate-300 uppercase tracking-widest">
           प्रत्यक्ष पूर्वावलोकन (Live Note Preview):
         </span>
-        <div className="card outlined p-3.5 flex items-center justify-between rounded-xl">
+        <div className="card outlined fx-float p-3.5 flex items-center justify-between rounded-xl">
           <div className="flex flex-col">
             <span rx="form::note" className="text-sm font-bold text-white">
               (टाइप गर्दा यहाँ तुरुन्तै देखिन्छ)
             </span>
-            <span className="text-[10px] text-slate-500 font-mono">
+            <span className="text-[10px] text-slate-400 font-mono">
               अहिले भर्खरै
             </span>
           </div>
-          <span className="badge success font-bold uppercase">
+          <span className="badge fx-aurora font-bold uppercase">
             SYNCED
           </span>
         </div>
