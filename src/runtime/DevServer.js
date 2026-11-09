@@ -1069,7 +1069,8 @@ class DevServer extends EventEmitter {
         });
 
         this.httpServer.listen(this.httpPort, this.host, () => {
-            console.log(`✅ HTTP Dashboard listening on http://${this.host}:${this.httpPort}`);
+            const displayHost = (this.host === '0.0.0.0' || this.host === '::') ? 'localhost' : this.host;
+            console.log(`✅ HTTP Dashboard listening on http://${displayHost}:${this.httpPort}`);
         });
     }
 
