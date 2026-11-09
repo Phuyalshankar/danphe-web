@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "bin": {
     "danphe": "./bin/danphe.js",
-    "dolphin": "./bin/danphe.js"
+    "danphe-web": "./bin/danphe.js"
   },
   "repository": {
     "type": "git",
