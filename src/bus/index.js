@@ -7,6 +7,7 @@
  */
 
 const TitanCoreBus = require('../core/TitanMicroBus');
+const { TitanCommunicatorServer } = require('../runtime/TitanCommunicatorServer');
 
 const REG = {
   // Core & Page Navigation (0 - 999)
@@ -51,5 +52,6 @@ const REG = {
 
 module.exports = {
   ...TitanCoreBus,
+  TitanCommunicatorServer,
   REG
 };

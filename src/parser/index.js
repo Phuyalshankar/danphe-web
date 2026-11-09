@@ -7,6 +7,7 @@
 
 const { DanpheLexer, TokenType, Token } = require('./DanpheLexer');
 const { DanpheParser } = require('./DanpheParser');
+const { DanpheCodeGenerator } = require('./DanpheCodeGenerator');
 const { StyleTokenizer, PALETTE_MAP, FONT_SIZE_MAP, RADIUS_MAP, parseUnits, resolveColorAndShade } = require('./StyleTokenizer');
 const ASTNodes = require('./ASTNodes');
 
@@ -26,6 +27,7 @@ function tokenizeStyles(className) {
 module.exports = {
   DanpheLexer,
   DanpheParser,
+  DanpheCodeGenerator,
   StyleTokenizer,
   TokenType,
   Token,

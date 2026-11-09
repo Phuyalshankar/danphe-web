@@ -76,9 +76,18 @@ class TitanTcpRelay extends EventEmitter {
 
   stop() {
     return new Promise((resolve) => {
+      for (const [peerId, peer] of this.activePeers) {
+        try { peer.socket.destroy(); } catch (_) {}
+      }
+      for (const [waiterId, waiter] of this.waitQueue) {
+        try { waiter.socket.destroy(); } catch (_) {}
+      }
+      this.activePeers.clear();
+      this.waitQueue.clear();
+      this.activeSessions.clear();
+
       if (this.tcpServer) {
         this.tcpServer.close(() => {
-          this.activePeers.clear();
           resolve();
         });
       } else {
@@ -198,7 +207,11 @@ class TitanTcpRelay extends EventEmitter {
     socketA.on('data', (chunk) => { totalBytes += chunk.length; socketB.write(chunk); });
     socketB.on('data', (chunk) => { totalBytes += chunk.length; socketA.write(chunk); });
 
+    let ended = false;
     const onEnd = () => {
+      if (ended) return;
+      ended = true;
+      this.activeSessions.delete(sessionId);
       const durationSec = Math.round((Date.now() - startTime) / 1000);
       this._recordAuditLog({
         sessionId,
@@ -244,6 +257,7 @@ class TitanTcpRelay extends EventEmitter {
   _cleanupSocket(socket) {
     if (socket.__peerId) {
       this.activePeers.delete(socket.__peerId);
+      this.waitQueue.delete(socket.__peerId);
       this.emit('peer_disconnected', { peerId: socket.__peerId });
     }
   }

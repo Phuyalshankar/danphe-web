@@ -4,9 +4,17 @@
   "description": "Pure Clean Reactive Web Framework: Zero-VDOM JSX, DolphinCSS, Circuits, and Titan-Bus",
   "main": "src/index.js",
   "bin": {
-    "danphe": "bin/dolphin.js",
-    "dolphin": "bin/dolphin.js"
+    "danphe": "./bin/danphe.js",
+    "dolphin": "./bin/danphe.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Phuyalshankar/danphe-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Phuyalshankar/danphe-web/issues"
+  },
+  "homepage": "https://github.com/Phuyalshankar/danphe-web#readme",
   "scripts": {
     "test": "node tests/test_danphe_native_pipeline.js",
     "dev": "node server.js 7080 7081",
@@ -22,8 +30,9 @@
     "zero-vdom",
     "circuits",
     "dolphincss",
-    "reactive"
+    "reactive",
+    "nepali"
   ],
-  "author": "Danphe / Titan Team",
+  "author": "Shankar Phuyal / Danphe Team",
   "license": "MIT"
 }

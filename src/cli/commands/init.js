@@ -33,35 +33,18 @@ function cmdInit(appName) {
 
     console.log(`\n🏔️  Scaffolding Unified Titan-Bus & Danphe-Native Project: ${appName} ...`);
 
-    // ── 1. Create Core Folders ───────────────────────────────────
+    // ── 1. Create Core Folders (Zero Circuits, Zero Hardware Registers Bloat) ──
     const folders = [
-        'circuits',
-        'registers',
-        'database',
-        'diodes',
         'components',
         'pages',
-        'backend',
         'assets',
         'dist'
     ];
     fs.mkdirSync(dir, { recursive: true });
     folders.forEach(f => fs.mkdirSync(path.join(dir, f), { recursive: true }));
 
-    // ── 2. registers/ (Master 300+ 16-Bit Register Map + Unified Schema) ──
-    const masterRegDir = path.resolve(__dirname, '../../registers');
-    const targetRegDir = path.join(dir, 'registers');
-    if (fs.existsSync(masterRegDir)) {
-        ['TitanRegisters.js', 'TitanRegisterSheet.js', 'TitanSlots.js', 'schema.js', 'registers.dolphin', 'registers.json', 'index.js'].forEach(f => {
-            const src = path.join(masterRegDir, f);
-            if (fs.existsSync(src)) {
-                fs.copyFileSync(src, path.join(targetRegDir, f));
-            }
-        });
-    }
-
     const frameworkRoot = path.resolve(__dirname, '../../../');
-    ['components', 'pages', 'circuits', 'database', 'diodes', 'assets'].forEach(folder => {
+    ['components', 'pages', 'assets'].forEach(folder => {
         const srcFolder = path.join(frameworkRoot, folder);
         if (fs.existsSync(srcFolder)) {
             fs.cpSync(srcFolder, path.join(dir, folder), { recursive: true });
@@ -70,6 +53,10 @@ function cmdInit(appName) {
     const srcApp = path.join(frameworkRoot, 'app.jsx');
     if (fs.existsSync(srcApp)) {
         fs.copyFileSync(srcApp, path.join(dir, 'app.jsx'));
+    }
+    const srcAppLogic = path.join(frameworkRoot, 'app.logic.js');
+    if (fs.existsSync(srcAppLogic)) {
+        fs.copyFileSync(srcAppLogic, path.join(dir, 'app.logic.js'));
     }
 
     if (!fs.existsSync(path.join(dir, 'components', 'AppBar.jsx'))) {
@@ -241,78 +228,8 @@ export default function SettingsPage() {
 }
 `);
 
-    // ── 4. circuits/main.circuit.js (Motherboard Logic) ─────────
-    fs.writeFileSync(path.join(dir, 'circuits', 'main.circuit.js'),
-`// ⚡ TITAN MOTHERBOARD CIRCUIT (circuits/main.circuit.js)
-// Single Source of Truth for Business Logic, Validations & Register Wires
-import { SYS, TELEMETRY, ROOMS } from '../registers/schema';
-
-export default {
-  // ── 1. Master System Power (Parent Register: SYS.POWER) ──────
-  powerSwitch: {
-    address: SYS.POWER,
-    initialValue: true,
-    onReceive: (val, { tx }) => {
-      console.log("[Circuit] Power state changed:", val ? "ON" : "OFF");
-      if (!val) tx(TELEMETRY.AUDIO_VOL, 0); // If power OFF, mute audio
-    }
-  },
-
-  // ── 2. Hotel Room Checkout Action (ROOMS.ACT_CHECKOUT) ───────
-  checkoutAction: {
-    address: ROOMS.ACT_CHECKOUT,
-    initialValue: null,
-    onReceive: (data, { tx, rx }) => {
-      const roomNum = data?.roomNumber || 101;
-      console.log(\`[Circuit] Checking out room #\${roomNum}\`);
-      tx(SYS.ALERT_TOAST, \`कोठा #\${roomNum} चेकआउट सम्पन्न भयो!\`);
-      tx(SYS.HW_HAPTIC, 100);
-    }
-  },
-
-  // ── 3. Battery Telemetry Guard (TELEMETRY.BATTERY) ───────────
-  telemetryBattery: {
-    address: TELEMETRY.BATTERY,
-    initialValue: 98,
-    onReceive: (level, { tx }) => {
-      if (level < 20) {
-        tx(SYS.ALERT_TOAST, "⚠️ ब्याट्री कम भयो! चार्ज गर्नुहोस्।");
-      }
-    }
-  }
-};
-`);
-
+    
     } // End fallback write
-
-    // ── 5. diodes/node.diode.js (Node.js Polyglot Bridge) ────────
-    fs.writeFileSync(path.join(dir, 'diodes', 'node.diode.js'),
-`// 🛡️ Node.js Diode Bridge
-// Connects Node.js backend processes directly to Titan Bus
-const net = require('net');
-
-const client = new net.Socket();
-client.connect(9092, '127.0.0.1', () => {
-  console.log("🛡️ Node.js Diode connected to Titan Bus (Port 9092)!");
-});
-
-client.on('data', (chunk) => {
-  if (chunk.length >= 6 && chunk[0] === 0x54 && chunk[1] === 0x42) {
-    const addr = (chunk[2] << 8) | chunk[3];
-    const val  = (chunk[4] << 8) | chunk[5];
-    console.log(\`[Node Diode] Received Reg 0x\${addr.toString(16)} = \${val}\`);
-  }
-});
-`);
-
-    // ── 6. diodes/python.diode.py (Python AI Bridge) ─────────────
-    fs.writeFileSync(path.join(dir, 'diodes', 'python.diode.py'),
-`# 🛡️ Python AI Diode Bridge
-# Run this for Python / AI Edge integration with Titan Bus
-import socket, struct, time
-
-print("🐍 Python AI Diode Ready...")
-`);
 
     // ── 7. Default Assets (1x1 Transparent PNGs) ─────────────────
     const defaultPngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
@@ -403,8 +320,7 @@ export default function App() {
             'build:android': 'danphe android build',
         },
         dependencies: {
-            "danphe-native": "file:../danphe-native",
-            "titan-bus-client": "file:../titan-bus-client"
+            "danphe-web": "git+https://github.com/Phuyalshankar/danphe-web.git"
         }
     };
     fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify(pkg, null, 2));
@@ -422,43 +338,42 @@ dist/
     fs.writeFileSync(path.join(dir, 'README.md'),
 `# ${appName}
 
-Built with 🏔️ **Danphe-Native & Titan-Bus Unified Platform**
+Built with 🏔️ **Danphe-Web Platform** (Carrier Slots • Direct DOM • Serial Communicator)
 
-## Project Structure (Titan-Bus Architecture)
+## Project Structure
 
 \`\`\`
 ${appName}/
-├── circuits/           ← Motherboard Circuit (main.circuit.js)
-├── registers/          ← Master 16-Bit Hardware Registers (registers.dolphin)
-├── diodes/             ← Polyglot Diode Bridges (node.diode.js, python.diode.py)
-├── components/         ← Reusable UI Components
-├── backend/            ← Backend Services
-├── assets/             ← Icons, Splashes, Fonts
-├── app.jsx             ← Universal Shared TitanJSX View
-├── dolphin.config.js   ← Native Android APK Config
+├── components/         ← Reusable UI Components (Cards, Buttons, Nav)
+├── pages/              ← Modular Screens (HomePage.jsx, SettingsPage.jsx)
+├── assets/             ← Images, Wallpapers, Icons
+├── app.jsx             ← Universal Shared View (Master Registers & Slots)
+├── app.logic.js        ← Application Logic & Serial Handlers ({ rx, tx })
+├── index.html          ← Browser HTML Preview Entry
+├── dolphin.config.js   ← Build & Platform Config
 └── package.json
 \`\`\`
 
 ## Commands
 
 - **Development:** \`danphe dev\`
-- **Build APK:** \`danphe android build\`
+- **Build Web:** \`danphe build\`
 `);
 
     console.log('');
-    console.log(`  🏔️ \x1b[1m\x1b[36mTitan-Bus project created:\x1b[0m ${appName}/`);
+    console.log(`  🏔️ \x1b[1m\x1b[36mDanphe-Web project created:\x1b[0m ${appName}/`);
     console.log('');
     console.log('  \x1b[90mStructure:\x1b[0m');
-    console.log(`    ${appName}/circuits/       ← motherboard logic`);
-    console.log(`    ${appName}/registers/      ← master 16-bit register map (registers.dolphin)`);
-    console.log(`    ${appName}/diodes/         ← polyglot bridges (Node, Python)`);
-    console.log(`    ${appName}/app.jsx         ← universal TitanJSX view`);
-    console.log(`    ${appName}/dolphin.config.js ← Android APK builder config`);
+    console.log(`    ${appName}/components/       ← reusable UI components`);
+    console.log(`    ${appName}/pages/            ← application screens`);
+    console.log(`    ${appName}/assets/           ← icons & wallpapers`);
+    console.log(`    ${appName}/app.jsx           ← reactive view (carrier slots)`);
+    console.log(`    ${appName}/app.logic.js      ← application logic ({ rx, tx })`);
+    console.log(`    ${appName}/dolphin.config.js ← build config`);
     console.log('');
     console.log('  \x1b[90mNext steps:\x1b[0m');
     console.log(`    cd ${appName}`);
     console.log('    danphe dev              (Live preview)');
-    console.log('    danphe android build    (Compile native Android APK)');
     console.log('');
 }
 

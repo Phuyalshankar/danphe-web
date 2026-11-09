@@ -115,7 +115,11 @@ class StyleTokenizer {
       else if (t.startsWith('ml-')) style.margin.left = parseUnits(t.slice(3));
 
       // 3. Background
-      else if (t.startsWith('bg-gradient-')) {
+      else if (t === 'bg-everest' || t.startsWith('fx-')) {
+        if (!style.fx) style.fx = [];
+        style.fx.push(t);
+        if (t === 'bg-everest') style.bg.everest = true;
+      } else if (t.startsWith('bg-gradient-')) {
         style.bg.gradient = true;
       } else if (t.startsWith('bg-')) {
         const [pal, sh] = resolveColorAndShade(t.slice(3));
@@ -162,7 +166,13 @@ class StyleTokenizer {
       else if (t === 'flex-row') style.layout.direction = 0;
       else if (t.startsWith('gap-')) style.layout.gap = parseUnits(t.slice(4));
 
-      // 7. Carriers & Slots
+      // 7. Special FX Variants & Mount Everest Presets
+      else if (t.startsWith('fx-') || t === 'bg-everest') {
+        if (!style.fx) style.fx = [];
+        style.fx.push(t);
+      }
+
+      // 8. Carriers & Slots
       else if (t.startsWith('carrier-slot-') || t.startsWith('c-slot-') || t.startsWith('slot-')) {
         const sub = t.replace(/^carrier-slot-|^c-slot-|^slot-/, '');
         style.carrier.slot = parseInt(sub, 10) || 0;

@@ -46,9 +46,19 @@ if (require.extensions && !require.extensions['.dolphin']) {
 if (require.extensions && !require.extensions['.jsx']) {
   require.extensions['.jsx'] = function(module, filename) {
     const content = fs.readFileSync(filename, 'utf8');
-    const { TitanJSX } = require('./core');
-    const transpiled = TitanJSX.transpileJSX(content);
-    let cjsCode = transpiled
+    let cjsCode = '';
+
+    try {
+      const { DanpheParser, DanpheCodeGenerator } = require('./parser');
+      const ast = DanpheParser.parse(content);
+      cjsCode = DanpheCodeGenerator.toWebJS(ast);
+    } catch (_) {
+      // Graceful fallback to TitanJSX for legacy constructs
+      const { TitanJSX } = require('./core');
+      cjsCode = TitanJSX.transpileJSX(content);
+    }
+
+    cjsCode = cjsCode
       .replace(/export\s+default\s+function\s+([A-Za-z0-9_]+)/g, 'function $1')
       .replace(/export\s+default\s+([A-Za-z0-9_]+);?/g, 'module.exports = $1;')
       .replace(/import\s+([A-Za-z0-9_]+)\s+from\s+['"]([^'"]+)['"];?/g, (m, name, p) => {
@@ -94,9 +104,12 @@ module.exports = {
   parser,
   DanpheParser: parser.DanpheParser,
   DanpheLexer: parser.DanpheLexer,
+  DanpheCodeGenerator: parser.DanpheCodeGenerator,
   StyleTokenizer: parser.StyleTokenizer,
 
   // Built-in Titan Core (100% Standalone)
+  h: core.h || core.TitanJSX.h,
+  html: core.html || core.TitanJSX.html,
   TitanJSX: core.TitanJSX,
   TitanCSS: core.TitanCSS,
   TitanWidgets: require('./core/TitanWidgets'),
@@ -111,11 +124,17 @@ module.exports = {
   TitanTypeSystem: core.TitanTypeSystem,
   TitanCodec: core.TitanCodec,
   TitanVideoReassembler: core.TitanVideoReassembler,
+  TitanCommunicatorServer: require('./runtime/TitanCommunicatorServer').TitanCommunicatorServer,
 
   // 🏛️ Dynamic Registers & Namespace Structs
+  store: require('./core/store').defaultStore,
+  DanpheStore: require('./core/store').DanpheStore,
+  router: require('./core/router').defaultRouter,
+  DanpheRouter: require('./core/router').DanpheRouter,
+  generateCoreCSS: require('./core/dolphincss').generateCoreCSS,
   TitanRegisters: core.TitanRegisters,
   defineRegisters: core.defineRegisters,
-  reg: core.reg,
+  reg: require('./core/store').reg,
   resolveRegisterAndSlot: core.resolveRegisterAndSlot,
   FormRegister: core.FormRegister,
 
