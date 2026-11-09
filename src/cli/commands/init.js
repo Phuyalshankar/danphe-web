@@ -59,177 +59,135 @@ function cmdInit(appName) {
         fs.copyFileSync(srcAppLogic, path.join(dir, 'app.logic.js'));
     }
 
-    if (!fs.existsSync(path.join(dir, 'components', 'AppBar.jsx'))) {
-    // ── 3. components/ (Modular UI Components: AppBar, TabBar) ──
-    fs.writeFileSync(path.join(dir, 'components', 'AppBar.jsx'),
-`export default function AppBar({ title = "${appName}", subtitle = "Titan Bus Native • Everest Core" }) {
-  return (
-    <div className="w-full h-14 max-h-14 px-4 py-2 bg-slate-900/90 border-b border-slate-800 shadow-2xl flex items-center justify-between backdrop-blur-md shrink-0">
-      <div className="flex items-center gap-2.5 flex-1 min-w-0 mr-2">
-        <div className="p-1 rounded-xl bg-purple-950 border border-fuchsia-400/40 shadow-sm w-auto shrink-0">
-          <span className="text-xl">🦚</span>
-        </div>
-        <div className="flex flex-col flex-1 min-w-0">
-          <span className="text-sm font-black text-white tracking-wide flex items-center gap-1.5">
-            <span>{title}</span>
-            <span className="text-[10px] px-1.5 py-0.2 rounded bg-cyan-500 text-black font-extrabold uppercase">TITAN NATIVE</span>
-          </span>
-          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{subtitle}</span>
-        </div>
-      </div>
-      <div className="flex flex-col items-end gap-1 w-auto shrink-0">
-        <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-cyan-400 text-black font-black uppercase shadow">
-          ⚡ 0ms HOTPATCH
-        </span>
-        <span className="text-[9px] font-mono text-emerald-300 font-bold bg-slate-950 px-2 py-0.5 rounded-full border border-emerald-500/40">
-          BUS: READY
-        </span>
-      </div>
-    </div>
-  );
-}
-`);
-
-    fs.writeFileSync(path.join(dir, 'components', 'TabBar.jsx'),
-`export default function TabBar() {
-  return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 w-full h-16 max-h-16 px-3 py-2 bg-slate-900/95 backdrop-blur border-t border-indigo-500/40 shadow-2xl flex items-center justify-around shrink-0">
-      <button action="nav:Home" data-tab="0" className="flex-1 py-1.5 px-1 rounded-2xl flex flex-col items-center gap-0.5 border border-cyan-400 bg-cyan-500/20 text-cyan-300 font-bold transition-all cursor-pointer">
-        <span className="text-base">🏠</span>
-        <span className="text-[10px] uppercase tracking-wider">होम</span>
-      </button>
-      <button action="nav:Settings" data-tab="1" className="flex-1 py-1.5 px-1 rounded-2xl flex flex-col items-center gap-0.5 border border-transparent text-slate-400 font-bold transition-all cursor-pointer">
-        <span className="text-base">⚙️</span>
-        <span className="text-[10px] uppercase tracking-wider">सेटिङ</span>
-      </button>
-    </div>
-  );
-}
-`);
-
-    // ── 3.1 pages/ (Modular Multi-Screen Architecture) ────────────
-    fs.writeFileSync(path.join(dir, 'pages', 'HomePage.jsx'),
-`import { SYS, TELEMETRY, ROOMS } from '../registers/schema';
+    // ── Fallback creation if frameworkRoot didn't have components/pages ──
+    if (!fs.existsSync(path.join(dir, 'pages', 'HomePage.jsx'))) {
+        fs.writeFileSync(path.join(dir, 'pages', 'HomePage.jsx'),
+`import CounterCard from '../components/CounterCard';
+import InputCarrierCard from '../components/InputCarrierCard';
 
 export default function HomePage() {
   return (
-    <div data-page="0" className="w-full space-y-4">
-      {/* Welcome Banner */}
-      <div className="w-full p-4 rounded-3xl bg-gradient-to-r from-purple-900 to-indigo-950 border border-fuchsia-500/40 shadow-xl flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="text-xs font-bold text-fuchsia-300 uppercase tracking-widest">डल्फिन नेभ इन्स्ट्रुमेन्ट</span>
-          <span className="text-base font-black text-white mt-0.5">लाइभ हार्डवेयर ड्यासबोर्ड</span>
-          <span className="text-[10px] text-slate-300 mt-1">Titan-Bus SISO 0ms रियल-टाइम रिफ्लेक्स</span>
+    <div className="w-full space-y-5">
+      <div className="w-full card glass glow fx-glass p-4 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <span className="w-3 h-3 rounded-full bg-emerald-400" style={{ boxShadow: '0 0 10px #10b981' }}></span>
+          <span className="text-xs font-black text-white uppercase tracking-wider">सिस्टम स्टाटस (System Status)</span>
         </div>
-        <span className="px-2.5 py-1 rounded-xl bg-emerald-500 text-black font-black text-xs shadow">
-          ONLINE
-        </span>
-      </div>
-
-      {/* Semantic Hardware Register Deck */}
-      <div className="w-full p-4 rounded-3xl bg-slate-900 border border-indigo-500/30 shadow-xl space-y-3">
-        <div className="flex items-center justify-between border-b border-indigo-500/20 pb-2">
-          <span className="text-xs font-black uppercase tracking-wider text-lime-300 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-lime-400 animate-pulse"></span>
-            <span>हार्डवेयर टेलिमेट्री (Named Registers)</span>
+        <div className="flex items-center gap-2 font-mono text-xs">
+          <span className="badge fx-aqua">
+            🔋 <span rx="battery">100</span>%
           </span>
-          <span className="text-[10px] font-mono text-indigo-300 bg-indigo-950 px-2 py-0.5 rounded-full font-bold">
-            TYPE-SAFE
+          <span className="badge fx-neon">
+            📶 <span rx="network">अनलाइन</span>
           </span>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2.5 font-mono text-xs">
-          <div className="p-3 rounded-2xl bg-emerald-950 border border-emerald-500/50">
-            <div className="text-[10px] text-emerald-400 font-bold uppercase">BATTERY LEVEL</div>
-            <div className="text-emerald-300 font-black text-lg mt-1 flex items-baseline gap-1">
-              <span rx={TELEMETRY.BATTERY}>98</span>%
-            </div>
-          </div>
-          <div className="p-3 rounded-2xl bg-cyan-950 border border-cyan-500/50">
-            <div className="text-[10px] text-cyan-400 font-bold uppercase">AUDIO VOLUME</div>
-            <div className="text-cyan-300 font-black text-lg mt-1 flex items-baseline gap-1">
-              <span rx={TELEMETRY.AUDIO_VOL}>512</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-1">
-          <TitanSlider address={TELEMETRY.AUDIO_VOL} label="Master Volume Scrub" />
         </div>
       </div>
+      <CounterCard />
+      <InputCarrierCard />
+    </div>
+  );
+}
+`);
+    }
 
-      {/* 🏨 Dynamic Carrier Card (Demonstrating Parent Register + Child Slots) */}
-      <div className="w-full p-4 rounded-3xl bg-slate-900 border border-cyan-500/30 shadow-xl space-y-3">
-        <div className="flex items-center justify-between border-b border-cyan-500/20 pb-2">
-          <span className="text-xs font-black uppercase tracking-wider text-cyan-300">
-            होटल कोठा (Parent Register + Child Slots)
-          </span>
-          <span className="text-[10px] font-mono text-cyan-300 bg-cyan-950 px-2 py-0.5 rounded-full font-bold">
-            SLOT 1-8
-          </span>
+    if (!fs.existsSync(path.join(dir, 'pages', 'SettingsPage.jsx'))) {
+        fs.writeFileSync(path.join(dir, 'pages', 'SettingsPage.jsx'),
+`export default function SettingsPage() {
+  return (
+    <div className="w-full space-y-4">
+      <div className="w-full card glass glow p-5 space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl filled fx-crystal flex items-center justify-center">
+              <span className="text-base">⚙️</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs font-black uppercase tracking-wider text-white">
+                सिस्टम कन्फिगरेसन (Settings)
+              </span>
+              <span className="text-[10px] text-slate-300 font-mono">
+                DolphinCSS 2.0 • 12 Special FX Variants
+              </span>
+            </div>
+          </div>
+          <span className="badge fx-holo font-mono font-bold">ACTIVE</span>
         </div>
+        <div rx="alert_msg" className="w-full card outlined p-3.5 text-xs font-medium flex items-center gap-2 rounded-xl text-sky-300">
+          <span>ℹ️</span>
+          <span>कुनै पनि बटन थिचेर सेटिङ वा हिमालयन थिम परिवर्तन गर्नुहोस्।</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+`);
+    }
 
-        <div className="p-3 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-between">
+    if (!fs.existsSync(path.join(dir, 'components', 'CounterCard.jsx'))) {
+        fs.writeFileSync(path.join(dir, 'components', 'CounterCard.jsx'),
+`export default function CounterCard() {
+  return (
+    <div className="w-full card glass glow p-5 space-y-4">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl filled fx-holo flex items-center justify-center">
+            <span className="text-base">🔢</span>
+          </div>
           <div className="flex flex-col">
-            <span rx={ROOMS.STREAM} slot={ROOMS.SLOTS.ROOM_NUM} className="text-base font-black text-white">
-              Room 101
-            </span>
-            <span rx={ROOMS.STREAM} slot={ROOMS.SLOTS.GUEST_NAME} className="text-xs text-slate-400">
-              Roshan Sharma
-            </span>
-          </div>
-          <div className="flex flex-col items-end">
-            <span rx={ROOMS.STREAM} slot={ROOMS.SLOTS.PRICE} className="text-sm font-black text-emerald-400">
-              Rs. 3500
-            </span>
-            <span rx={ROOMS.STREAM} slot={ROOMS.SLOTS.STATUS} className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
-              VACANT
-            </span>
+            <span className="text-xs font-black uppercase tracking-wider text-white">काउन्टर (Counter)</span>
+            <span className="text-[10px] text-slate-400 font-mono">DolphinCSS 2.0 • fx-neon / fx-aqua / fx-flare</span>
           </div>
         </div>
-
-        <button tx={ROOMS.ACT_CHECKOUT} txValue={{ roomNumber: 101 }} className="w-full py-2.5 rounded-xl bg-cyan-500 text-black font-black text-xs uppercase shadow hover:bg-cyan-400 cursor-pointer">
-          कोठा १०१ चेकआउट (Action Trigger)
+        <span className="badge fx-aurora font-mono font-bold">LIVE</span>
+      </div>
+      <div className="w-full card outlined fx-glass flex flex-col items-center justify-center p-6 my-2">
+        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">हालको काउन्टर मान (Value)</span>
+        <span rx="counter::value" className="text-5xl font-mono font-black glow my-2">0</span>
+      </div>
+      <div className="grid grid-cols-3 gap-3 pt-2">
+        <button tx="counter::inc" className="filled fx-neon md glow cursor-pointer flex flex-col items-center gap-1 py-3.5">
+          <span className="text-xl">➕</span>
+          <span className="text-xs font-bold">बढाउनुहोस् (+1)</span>
+        </button>
+        <button tx="counter::dec" className="filled fx-aqua md glow cursor-pointer flex flex-col items-center gap-1 py-3.5">
+          <span className="text-xl">➖</span>
+          <span className="text-xs font-bold">घटाउनुहोस् (-1)</span>
+        </button>
+        <button tx="counter::reset" className="filled fx-flare md glow cursor-pointer flex flex-col items-center gap-1 py-3.5">
+          <span className="text-xl">🔄</span>
+          <span className="text-xs font-bold">रिसेट (0)</span>
         </button>
       </div>
     </div>
   );
 }
 `);
+    }
 
-    fs.writeFileSync(path.join(dir, 'pages', 'SettingsPage.jsx'),
-`import { SYS } from '../registers/schema';
-
-export default function SettingsPage() {
+    if (!fs.existsSync(path.join(dir, 'components', 'InputCarrierCard.jsx'))) {
+        fs.writeFileSync(path.join(dir, 'components', 'InputCarrierCard.jsx'),
+`export default function InputCarrierCard() {
   return (
-    <div data-page="1" className="w-full space-y-4">
-      <div className="w-full p-4 rounded-3xl bg-slate-900 border border-emerald-500/40 shadow-xl space-y-3">
-        <div className="flex items-center justify-between border-b border-emerald-500/20 pb-2">
-          <span className="text-xs font-black uppercase tracking-wider text-emerald-300">
-            सिस्टम सेटिङ (Settings)
-          </span>
-          <span className="text-[10px] font-mono text-emerald-300 font-bold bg-emerald-950 px-2 py-0.5 rounded-full">
-            CONFIG
-          </span>
-        </div>
-
-        <div className="space-y-2.5 pt-1">
-          <div className="w-full p-3 rounded-xl bg-slate-800 border border-slate-700">
-            <switch tx={SYS.POWER} label="टाइटन सिस्टम पावर (Master Power)" className="w-full text-emerald-400" />
+    <div className="w-full card glass glow p-5 space-y-4">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl filled fx-neon flex items-center justify-center">
+            <span className="text-base">📝</span>
           </div>
-          <div className="flex items-center gap-4 p-2.5 rounded-xl bg-slate-800 border border-slate-700">
-            <radio tx={SYS.THEME_MODE} value={1} label="गाढा थिम (Dark)" className="text-indigo-300" />
-            <radio tx={SYS.THEME_MODE} value={2} label="उज्यालो थिम (Light)" className="text-amber-300" />
+          <div className="flex flex-col">
+            <span className="text-xs font-black uppercase tracking-wider text-white">डाटा प्रविष्टि (Direct Input Form)</span>
           </div>
         </div>
       </div>
+      <form tx="form::save" className="space-y-3">
+        <input name="form::note" type="text" placeholder="कुनै सन्देश वा नोट लेख्नुहोस्..." className="w-full input outlined fx-glass p-3 text-sm rounded-xl text-white" />
+        <button type="submit" className="w-full filled fx-aurora md glow cursor-pointer py-3 font-bold text-sm rounded-xl">सेभ गर्नुहोस् (Save)</button>
+      </form>
     </div>
   );
 }
 `);
-
-    
-    } // End fallback write
+    }
 
     // ── 7. Default Assets (1x1 Transparent PNGs) ─────────────────
     const defaultPngBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
@@ -259,33 +217,73 @@ module.exports = {
 
     // ── 9. app.jsx (Single Shared Universal Modular TitanJSX Scaffold) ──
     if (!fs.existsSync(path.join(dir, 'app.jsx'))) {
-    fs.writeFileSync(path.join(dir, 'app.jsx'),
-`import AppBar from './components/AppBar';
-import TabBar from './components/TabBar';
-import HomePage from './pages/HomePage';
+        fs.writeFileSync(path.join(dir, 'app.jsx'),
+`import HomePage from './pages/HomePage';
 import SettingsPage from './pages/SettingsPage';
+
+export const nav = reg('nav:: home, settings');
 
 export default function App() {
   return (
-    <div className="w-full h-screen max-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans select-none overflow-hidden">
-      
-      {/* 📱 Reusable Top Navigation AppBar */}
-      <AppBar title="${appName}" subtitle="Titan Bus Native • Everest Core" />
-
-      {/* 🧭 Modular Multi-Screen Page Container */}
-      <div className="flex-1 w-full p-3 pb-24 overflow-y-auto space-y-4">
+    <div id="app-root-container" className="min-h-screen w-full flex flex-col font-sans">
+      <header className="w-full card glass sticky top-0 z-50 p-3" style={{ borderRadius: '0px 0px 20px 20px', borderTop: 'none' }}>
+        <div className="max-w-4xl mx-auto px-2 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl filled fx-crystal glow flex items-center justify-center text-white font-black text-xl">
+              🦅
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-black tracking-tight text-white flex items-center gap-2">
+                ${appName}
+                <span className="badge fx-holo">DolphinCSS 2.0</span>
+              </span>
+              <span className="text-[11px] text-slate-300">Pure Reactive Web Architecture</span>
+            </div>
+          </div>
+          <nav className="flex items-center gap-2">
+            <button tx={nav.home} className="filled fx-neon sm glow cursor-pointer flex items-center gap-1.5">
+              <span>🏠</span>
+              <span>गृहपृष्ठ</span>
+            </button>
+            <button tx={nav.settings} className="filled fx-aurora sm glow cursor-pointer flex items-center gap-1.5">
+              <span>⚙️</span>
+              <span>सेटिङ</span>
+            </button>
+          </nav>
+        </div>
+      </header>
+      <main className="flex-1 max-w-4xl w-full mx-auto p-4 space-y-4">
         <HomePage />
         <SettingsPage />
-      </div>
-
-      {/* 🧭 Reusable Bottom Tab Navigation */}
-      <TabBar />
-
+      </main>
     </div>
   );
 }
 `);
+    }
 
+    if (!fs.existsSync(path.join(dir, 'app.logic.js'))) {
+        fs.writeFileSync(path.join(dir, 'app.logic.js'),
+`'use strict';
+
+module.exports = {
+  'counter::inc': ({ rx, tx }) => {
+    const val = ((rx ? rx('counter::value') : 0) || 0) + 1;
+    if (tx) tx('counter::value', val);
+  },
+  'counter::dec': ({ rx, tx }) => {
+    const val = Math.max(0, ((rx ? rx('counter::value') : 0) || 0) - 1);
+    if (tx) tx('counter::value', val);
+  },
+  'counter::reset': ({ tx }) => {
+    if (tx) tx('counter::value', 0);
+  },
+  'form::save': ({ rx, tx }) => {
+    const note = (rx ? rx('form::note') : '') || 'सामान्य नोट';
+    if (tx) tx('db_status', 'सेभ भयो: ' + note);
+  }
+};
+`);
     }
 
     // ── 10. index.html (Web Preview for Browser) ─────────────────
